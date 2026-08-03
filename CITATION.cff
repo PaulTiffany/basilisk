@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it and preserve the provenance statement."
+title: "The Basilisk Quartet and MAP-LB: Contract, Script, Blanket, Ledger"
+type: software
+authors:
+  - family-names: Tiffany
+    given-names: Paul
+repository-code: "https://github.com/PaulTiffany/basilisk-quartet"
+license: Apache-2.0
+version: 0.2.0-dev
+date-released: 2026-08-02
+keywords:
+  - AI control
+  - beneficial general intelligence
+  - human-in-the-loop
+  - Markov blanket
+  - Lipschitz stability
+  - audit ledger
+  - provenance
+  - SRMF

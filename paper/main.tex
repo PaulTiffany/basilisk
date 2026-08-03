@@ -1,0 +1,344 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage[hidelinks]{hyperref}
+
+\newtheorem{definition}{Definition}[section]
+\newtheorem{theorem}[definition]{Theorem}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{corollary}[definition]{Corollary}
+\newtheorem{remark}[definition]{Remark}
+\newtheorem{example}[definition]{Example}
+
+\newcommand{\Contract}{\mathsf{C}}
+\newcommand{\Script}{\mathsf{S}}
+\newcommand{\Blanket}{\mathsf{B}}
+\newcommand{\Ledger}{\mathsf{L}}
+\newcommand{\Tr}{\mathsf{Tr}}
+\newcommand{\Run}{\mathsf{Run}}
+\newcommand{\Reach}{\mathcal{R}}
+\newcommand{\supp}{\operatorname{supp}}
+\newcommand{\Pa}{\operatorname{Pa}}
+\newcommand{\Ch}{\operatorname{Ch}}
+\newcommand{\CoPa}{\operatorname{CoPa}}
+\newcommand{\id}{\operatorname{id}}
+
+\title{The Basilisk Quartet:\\Contract, Script, Blanket, and Ledger as Boundedness Artifacts}
+\author{Paul Tiffany}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We propose a four-artifact security architecture for beneficial general intelligence over a shared typed input/output boundary. A Contract specifies admissible boundary events; a Script realizes events through internal state; a Blanket mediates internal--external dependence; and a Ledger preserves an attested history from which accounts and certificates may be derived. The four artifacts are compatible but non-identical. We prove an initial local robustness theorem, give a finite non-identifiability construction separating Script from Ledger, state the invariant combinatorial form of a Bayesian-network Markov blanket, and introduce future-preserving boundedness to distinguish smooth operation from irreversible deletion of biological, cultural, and technological possibility.
+\end{abstract}
+
+\section{Typed ports and boundary events}
+
+\begin{definition}[Typed port]
+A typed port is a pair
+\[
+p=(I_p,O_p),
+\]
+where $I_p$ is an ingress space and $O_p$ is an egress space. Its boundary-event space is
+\[
+\Omega_p=I_p\times O_p.
+\]
+A finite trace is an element of the free monoid
+\[
+\Tr_p=\Omega_p^*.
+\]
+\end{definition}
+
+The boundary is zero-dimensional in the sense relevant here: no Euclidean membrane is assumed. The primitive datum is a typed cut through which observable coupling occurs.
+
+\begin{definition}[Basilisk quartet]
+A Basilisk quartet over $p$ is a tuple
+\[
+Q_p=(\Contract_p,\Script_p,\Blanket_p,\Ledger_p)
+\]
+whose components are respectively an admissibility artifact, a realization artifact, a separation artifact, and an attestation artifact over the same port.
+\end{definition}
+
+\section{Contract: admissibility boundedness}
+
+\begin{definition}[Contract]
+A Contract is a subset
+\[
+\Contract_p\subseteq\Omega_p
+\]
+or equivalently a predicate $\chi_{\Contract_p}:\Omega_p\to\{0,1\}$. Its trace lift is
+\[
+\Contract_p^*=\{(\omega_0,\ldots,\omega_{n-1})\in\Tr_p:
+\omega_t\in\Contract_p\text{ for every }t\}.
+\]
+\end{definition}
+
+When $\Omega_p$ is metric and $\Contract_p$ is closed, define the contract margin of a permitted event $\omega$ by
+\[
+m_{\Contract}(\omega)=d_{\Omega}(\omega,\Contract_p^c).
+\]
+The Contract corresponds to test-time differentiation collapse (TTDC): a larger possibility space is reduced to an admissible decision relation.
+
+\section{Script: realization boundedness}
+
+\begin{definition}[Script]
+Let $M$ be an internal state space. A Script is a deterministic map
+\[
+\Script_p:M\times I_p\to M\times O_p
+\]
+or, more generally, a Markov kernel
+\[
+\Script_p:M\times I_p\rightsquigarrow M\times O_p.
+\]
+Its boundary realization relation is
+\[
+R_{\Script_p}
+=
+\{(i,o):\exists m,m'\text{ with }\Script_p(m',o\mid m,i)>0\}.
+\]
+\end{definition}
+
+The basic Script--Contract refinement condition is
+\[
+R_{\Script_p}\subseteq\Contract_p.
+\]
+The Script corresponds to test-time integrative expansion (TTIE): it constructs a trajectory within the feasible relation.
+
+\begin{definition}[Lipschitz Script]
+For metric state and port spaces, a stochastic Script is $L_S$-Lipschitz when
+\[
+W_1\bigl(\Script_p(\cdot\mid m,i),\Script_p(\cdot\mid m',i')\bigr)
+\le
+L_S\bigl(d_M(m,m')+d_I(i,i')\bigr).
+\]
+\end{definition}
+
+\section{Blanket: coupling boundedness}
+
+\begin{definition}[Separator Blanket]
+Let $E$ be external state, $M$ internal state, and $B=(I_p,O_p)$ boundary state. A probabilistic Blanket satisfies
+\[
+E\perp M\mid B.
+\]
+For a joint law $P$, define the approximate Blanket defect
+\[
+\delta_B(P)=I_P(E;M\mid B),
+\]
+the conditional mutual information between external and internal state given the boundary.
+\end{definition}
+
+A Blanket does not assert a fixed cardinality or Euclidean shape. It asserts mediated dependence.
+
+\begin{definition}[Bayesian-network Markov shell]
+For a node $x$ in a directed acyclic graph,
+\[
+\operatorname{MB}(x)
+=
+\Pa(x)\cup\Ch(x)\cup
+\bigl(\Pa(\Ch(x))\setminus\{x\}\bigr).
+\]
+Equivalently, the shell contains parents, children, and other parents of those children.
+\end{definition}
+
+The third term is forced by collider closure: conditioning on a child $c$ in $x\to c\leftarrow z$ exposes dependence on the co-parent $z$. This is the invariant combinatorial pattern, even though drawings, geometry, and cardinality vary.
+
+\begin{proposition}[Markov-shell invariance under relabeling]
+Let $G$ be a directed graph and let $\pi$ be a vertex permutation. Then
+\[
+\pi(\operatorname{MB}_G(x))
+=
+\operatorname{MB}_{\pi G}(\pi x).
+\]
+\end{proposition}
+
+\begin{proof}
+Vertex relabeling preserves the parent, child, and co-parent relations. Applying $\pi$ to each set in the defining union yields the blanket of the relabeled node.
+\end{proof}
+
+The Blanket corresponds to test-time coherent sampling (TTCS): it specifies the dependency cut through which coherent observations and actions are mediated.
+
+\section{Ledger: refinement and claimability boundedness}
+
+\begin{definition}[Attested Ledger]
+Let $\Sigma$ contain timestamps, signatures, provenance, or proof material. A Ledger is a finite sequence
+\[
+\Ledger_p=((\omega_t,\sigma_t))_{t<n}\in(\Omega_p\times\Sigma)^*.
+\]
+An encoding map $\ell:\Tr_p\to\mathcal L_p$ is lossless when there exists a decoding map $d:\mathcal L_p\to\Tr_p$ such that
+\[
+d\circ\ell=\id_{\Tr_p}.
+\]
+\end{definition}
+
+An account is a refinement map
+\[
+\alpha_{\Contract}:\mathcal L_p\to\mathcal R_p
+\]
+into a residual space. A certificate is a witness $\pi$ accepted by a verifier $V_{\Contract}$ for a declared claim about the decoded trace. The Ledger corresponds to test-time precision refinement (TTPR): it turns a raw history into a stable account, residual, or certificate.
+
+\section{The quatradic lock}
+
+Let
+\[
+\partial:\Run(\Script_p,\Blanket_p)\to\Tr_p
+\]
+extract the boundary trace of a mediated run.
+
+\begin{definition}[Exact quatradic lock]
+A quartet is exactly locked on an intended run class when:
+\begin{enumerate}[label=(\roman*)]
+\item $\partial(\Run(\Script_p,\Blanket_p))\subseteq\Contract_p^*$;
+\item $\delta_B(P)=0$ for the declared joint law;
+\item $d\circ\ell=\id$ on extracted traces;
+\item $V_{\Contract}(\ell(\tau),\pi)=1$ if and only if $\tau\in\Contract_p^*$.
+\end{enumerate}
+\end{definition}
+
+The corresponding commuting requirement is
+\[
+V_{\Contract}\circ\ell\circ\partial
+=
+\chi_{\Contract_p^*}\circ\partial.
+\]
+The verifier and direct contract evaluation must agree; neither route is permitted to silently redefine the claim.
+
+\section{Local robust compliance}
+
+\begin{theorem}[Contract margin under Lipschitz realization]
+Let $X$ be a metric perturbation space, let $F:X\to\Omega_p$ be $L$-Lipschitz, and let $\Contract_p\subseteq\Omega_p$ be closed. Suppose
+\[
+r=d_{\Omega}(F(x_0),\Contract_p^c)>0.
+\]
+Then
+\[
+d_X(x,x_0)<\frac{r}{L}
+\quad\Longrightarrow\quad
+F(x)\in\Contract_p.
+\]
+\end{theorem}
+
+\begin{proof}
+By Lipschitz continuity,
+\[
+d_{\Omega}(F(x),F(x_0))<r.
+\]
+Every point of $\Contract_p^c$ is at distance at least $r$ from $F(x_0)$. Hence $F(x)\notin\Contract_p^c$, so $F(x)\in\Contract_p$.
+\end{proof}
+
+\begin{remark}
+The theorem controls local escape from the Contract. It does not establish Blanket closure, Ledger fidelity, or preservation of future possibility.
+\end{remark}
+
+\section{Non-collapse: the Ledger does not identify the Script}
+
+\begin{proposition}[Finite Script non-identifiability]
+There exist non-isomorphic deterministic Scripts that produce the same boundary trace for every input sequence and initial visible state.
+\end{proposition}
+
+\begin{proof}
+Let $I=O=\{0,1\}$ and let the visible output be $o=i$. Let Script $S_1$ have one internal state and output $i$. Let Script $S_2$ have two internal states, toggle its hidden state at every step, and also output $i$. Their hidden transition systems are non-isomorphic, but every input sequence induces the same I/O trace. Therefore any Ledger containing only the boundary trace cannot identify which Script ran.
+\end{proof}
+
+Thus
+\[
+\Ledger(S_1)=\Ledger(S_2)
+\not\Longrightarrow
+S_1\cong S_2.
+\]
+A certificate of trace compliance is not a certificate of complete generative identity.
+
+\section{Future-preserving boundedness}
+
+Let $X$ be a state space and $Y$ an ambient future space. Let
+\[
+\Reach:X\to\mathcal K(Y)
+\]
+assign each state a compact set of reachable futures.
+
+\begin{definition}[Irreversible deletion defect]
+For a transition $T:X\to X$ and measure $\mu$ on $Y$, define
+\[
+\delta_{\mathrm{irr}}(T;x)
+=
+\mu\bigl(\Reach(x)\setminus\Reach(Tx)\bigr).
+\]
+\end{definition}
+
+\begin{definition}[Future-bounded transition]
+A transition $T$ is $(L,\varepsilon)$-future-bounded when
+\[
+d_H(\Reach(Tx),\Reach(Tx'))\le Ld_X(x,x')
+\]
+for all $x,x'$, and
+\[
+\sup_x\delta_{\mathrm{irr}}(T;x)\le\varepsilon.
+\]
+\end{definition}
+
+The first condition bounds sensitivity of future sets; the second bounds one-way destruction. Neither implies the other. A smoothly executed extinction may have small local perturbation sensitivity and enormous irreversible deletion defect.
+
+\begin{proposition}[Deletion monotonicity under irreversible projection]
+Suppose $D:X\to X$ satisfies
+\[
+\Reach(Dx)\subseteq\Reach(x)
+\]
+for all $x$. Then
+\[
+\delta_{\mathrm{irr}}(D;x)
+=
+\mu(\Reach(x))-\mu(\Reach(Dx))
+\]
+whenever both sets are measurable and finite in measure.
+\end{proposition}
+
+\begin{proof}
+The inclusion makes the set difference disjoint and gives
+\[
+\Reach(x)=\Reach(Dx)\sqcup(\Reach(x)\setminus\Reach(Dx)).
+\]
+Finite additivity yields the claim.
+\end{proof}
+
+This provides a mathematical home for biological and cultural preservation inside the boundary architecture. The Contract sets a deletion budget, the Script realizes transitions, the Blanket limits uncontrolled externalization, and the Ledger records what future reachability was consumed.
+
+\section{Failure accounting}
+
+Let $\varepsilon_B$ bound the probability of behavior arising through undeclared coupling, and let $\varepsilon_L$ bound false acceptance by the Ledger verifier.
+
+\begin{proposition}[Elementary accepted-violation bound]
+If every Contract-violating accepted run lies in the union of a Blanket-failure event and a Ledger false-accept event, then
+\[
+\Pr[\text{violation accepted}]
+\le
+\varepsilon_B+\varepsilon_L.
+\]
+\end{proposition}
+
+\begin{proof}
+Apply the union bound.
+\end{proof}
+
+The proposition is intentionally modest. Stronger bounds require an explicit dependence model and cannot be obtained by naming the quartet alone.
+
+\section{Research directions}
+
+\begin{enumerate}[leftmargin=*]
+\item Dual and spectral certificates converting local Blanket observations into Script or Contract bounds.
+\item Lower bounds on the realization cost of Contracts.
+\item Local-to-global obstructions: locally compliant blankets with no coherent global Script.
+\item Correlated repetition theorems for adaptive boundary testing.
+\item Compressed Ledgers with moment-reconstruction guarantees.
+\item Formal counterexamples separating all four artifact classes.
+\item Polycentric governance in which inference authority and actuation authority remain distinct.
+\end{enumerate}
+
+\section*{Provenance note}
+The distributed-coherence intuitions behind this work were materially influenced by BaAka polyrhythmic musical practice as encountered through Michelle Kisliuk's scholarship. Formalization does not extinguish origin. A fuller statement appears in the repository's \texttt{PROVENANCE.md}.
+
+\end{document}

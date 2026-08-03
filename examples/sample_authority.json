@@ -1,0 +1,15 @@
+{
+  "authority_id": "local-coding-session",
+  "allowed_actions": [
+    "code.edit.local",
+    "code.test.local"
+  ],
+  "max_scope": "moderate",
+  "allow_external_write": false,
+  "allow_audience_change": false,
+  "allow_privacy_change": false,
+  "allow_authority_expansion": false,
+  "active": true,
+  "expires_at": null,
+  "notes": "Valid only for the current local repository work session."
+}

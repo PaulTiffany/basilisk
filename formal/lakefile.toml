@@ -1,0 +1,5 @@
+name = "Basilisk"
+defaultTargets = ["Basilisk"]
+
+[[lean_lib]]
+name = "Basilisk"

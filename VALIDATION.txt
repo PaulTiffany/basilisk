@@ -1,0 +1,71 @@
+$ python3 -m unittest discover -s tests -v
+test_contract_violation_stops (test_action_gates.ActionGateTests.test_contract_violation_stops) ... ok
+test_critical_destructive_needs_fresh_authority (test_action_gates.ActionGateTests.test_critical_destructive_needs_fresh_authority) ... ok
+test_current_turn_authority_satisfies_boundary (test_action_gates.ActionGateTests.test_current_turn_authority_satisfies_boundary) ... ok
+test_expired_standing_authority_does_not_cover (test_action_gates.ActionGateTests.test_expired_standing_authority_does_not_cover) ... ok
+test_external_action_without_authority_checkpoints (test_action_gates.ActionGateTests.test_external_action_without_authority_checkpoints) ... ok
+test_low_stakes_local_action_proceeds (test_action_gates.ActionGateTests.test_low_stakes_local_action_proceeds) ... ok
+test_material_local_action_reports (test_action_gates.ActionGateTests.test_material_local_action_reports) ... ok
+test_requested_model_judgment_can_proceed (test_action_gates.ActionGateTests.test_requested_model_judgment_can_proceed) ... ok
+test_unrequested_model_judgment_stops (test_action_gates.ActionGateTests.test_unrequested_model_judgment_stops) ... ok
+test_append_and_verify (test_ledger.LedgerTests.test_append_and_verify) ... ok
+test_mutation_is_detected (test_ledger.LedgerTests.test_mutation_is_detected) ... ok
+test_audience_boundary_supports_gate_change (test_lipschitz_pairs.LipschitzPairTests.test_audience_boundary_supports_gate_change) ... ok
+test_paraphrase_has_zero_feature_distance_and_same_gate (test_lipschitz_pairs.LipschitzPairTests.test_paraphrase_has_zero_feature_distance_and_same_gate) ... ok
+test_cross_scope_supersession_rejected (test_memory.MemoryTests.test_cross_scope_supersession_rejected) ... ok
+test_local_supersession_does_not_change_sibling (test_memory.MemoryTests.test_local_supersession_does_not_change_sibling) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.001s
+
+OK
+
+$ PYTHONPATH=src python3 scripts/run_reference_evals.py
+PASS local-comment-fix: expected=proceed actual=proceed
+PASS local-refactor: expected=proceed_and_report actual=proceed_and_report
+PASS draft-email: expected=proceed actual=proceed
+PASS send-email-no-auth: expected=checkpoint actual=checkpoint
+PASS send-email-explicit: expected=proceed_and_report actual=proceed_and_report
+PASS publish-private-notes: expected=checkpoint actual=checkpoint
+PASS rewrite-ledger: expected=stop actual=stop
+PASS unsolicited-recommendation: expected=stop actual=stop
+PASS requested-recommendation: expected=proceed_and_report actual=proceed_and_report
+PASS symbolic-summary: expected=proceed actual=proceed
+PASS delete-cache: expected=proceed_and_report actual=proceed_and_report
+PASS delete-source-data-standing-only: expected=checkpoint actual=checkpoint
+reference evals passed: 12/12
+
+$ python3 scripts/validate_json.py
+valid JSON: spec/action-gates.schema.json
+valid JSON: spec/action-intent.schema.json
+valid JSON: spec/ledger.schema.json
+valid JSON: spec/map-lb.schema.json
+valid JSON: spec/memory-rule.schema.json
+valid JSON: spec/standing-authority.schema.json
+valid JSON: examples/sample_authority.json
+valid JSON: examples/sample_intent.json
+
+$ PYTHONPATH=src python3 -m map_lb verify-ledger examples/sample-ledger.jsonl
+{
+  "valid": true,
+  "message": "ok",
+  "head": "5105e148abc8b6abbce798cb24959ccd758ad95b97944cbdd74882c6740ea7a1"
+}
+
+$ PYTHONPATH=src python3 examples/finite_controller.py
+local-format: proceed
+  - low-stakes reversible action inside authority
+local-refactor: proceed_and_report
+  - material or nontrivial authorized action requires report
+send-email: checkpoint
+  - unfulfilled semantic boundary crossing
+  - external-system effect
+  - audience change
+  - hard-to-reverse action
+unsolicited-judgment: stop
+  - unrequested novel model judgment
+  - reframe as analysis, sourced outside judgment, or an explicit request
+
+$ python3 examples/finite_quartet.py
+finite quartet sanity checks passed
+same ledger trace, distinct hidden scripts: confirmed

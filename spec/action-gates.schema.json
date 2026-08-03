@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/map-lb/action-gates.schema.json",
+  "title": "MAP-LB Assessment",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "gate",
+    "reasons",
+    "risk_score",
+    "authority_basis",
+    "report_required"
+  ],
+  "properties": {
+    "gate": {
+      "enum": [
+        "proceed",
+        "proceed_and_report",
+        "checkpoint",
+        "stop"
+      ]
+    },
+    "reasons": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "risk_score": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "authority_basis": {
+      "enum": [
+        "none",
+        "standing",
+        "current_turn_explicit"
+      ]
+    },
+    "report_required": {
+      "type": "boolean"
+    }
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/map-lb/ledger-entry.schema.json",
+  "title": "MAP-LB Ledger Entry",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "goal",
+    "authority",
+    "evidence",
+    "assumptions",
+    "action",
+    "validation",
+    "rollback",
+    "judgment_status",
+    "open_questions",
+    "gate",
+    "timestamp",
+    "previous_hash",
+    "entry_hash"
+  ],
+  "properties": {
+    "goal": {
+      "type": "string"
+    },
+    "authority": {
+      "type": "string"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "assumptions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "action": {
+      "type": "string"
+    },
+    "validation": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "rollback": {
+      "type": "string"
+    },
+    "judgment_status": {
+      "type": "string"
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "gate": {
+      "enum": [
+        "proceed",
+        "proceed_and_report",
+        "checkpoint",
+        "stop"
+      ]
+    },
+    "timestamp": {
+      "type": "string"
+    },
+    "previous_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "entry_hash": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

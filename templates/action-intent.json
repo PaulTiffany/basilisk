@@ -1,0 +1,26 @@
+{
+  "action_id": "refactor-parser",
+  "action_class": "code.edit.local",
+  "description": "Refactor the parser locally and run the test suite",
+  "within_contract": true,
+  "current_turn_explicit_authorization": true,
+  "reversible": true,
+  "rollback_available": true,
+  "inspectable": true,
+  "material_change": true,
+  "affects_external_system": false,
+  "audience_change": false,
+  "privacy_change": false,
+  "authority_expansion": false,
+  "scope": "moderate",
+  "uncertainty": "low",
+  "judgment_mode": "none",
+  "judgment_requested": false,
+  "concrete_immediate_safety_risk": false,
+  "destructive": false,
+  "tags": [
+    "coding",
+    "local",
+    "reversible"
+  ]
+}

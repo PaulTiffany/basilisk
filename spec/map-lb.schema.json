@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/map-lb/config.schema.json",
+  "title": "MAP-LB Controller Configuration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol_version",
+    "default_judgment_mode",
+    "critical_requires_fresh_authorization"
+  ],
+  "properties": {
+    "protocol_version": {
+      "const": "0.2.0-dev"
+    },
+    "default_judgment_mode": {
+      "const": "none"
+    },
+    "critical_requires_fresh_authorization": {
+      "const": true
+    },
+    "lipschitz_constant": {
+      "type": "number",
+      "minimum": 0,
+      "default": 1.0
+    },
+    "ledger_required_for_material_action": {
+      "type": "boolean",
+      "default": true
+    },
+    "local_correction_only": {
+      "type": "boolean",
+      "default": true
+    }
+  }
+}

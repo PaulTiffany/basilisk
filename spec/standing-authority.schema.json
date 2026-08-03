@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/map-lb/standing-authority.schema.json",
+  "title": "MAP-LB Standing Authority",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "authority_id",
+    "allowed_actions"
+  ],
+  "properties": {
+    "authority_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "allowed_actions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "max_scope": {
+      "enum": [
+        "low",
+        "moderate",
+        "high",
+        "critical"
+      ],
+      "default": "moderate"
+    },
+    "allow_external_write": {
+      "type": "boolean",
+      "default": false
+    },
+    "allow_audience_change": {
+      "type": "boolean",
+      "default": false
+    },
+    "allow_privacy_change": {
+      "type": "boolean",
+      "default": false
+    },
+    "allow_authority_expansion": {
+      "type": "boolean",
+      "default": false
+    },
+    "active": {
+      "type": "boolean",
+      "default": true
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "notes": {
+      "type": "string",
+      "default": ""
+    }
+  }
+}
