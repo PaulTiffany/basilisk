@@ -4,9 +4,10 @@ title: "The Basilisk Quartet and MAP-LB: Contract, Script, Blanket, Ledger"
 type: software
 authors:
   - family-names: Tiffany
-    given-names: Paul
-repository-code: "https://github.com/PaulTiffany/basilisk-quartet"
-license: Apache-2.0
+    given-names: Paul Carver
+    name-suffix: III
+repository-code: "https://github.com/PaulTiffany/basilisk"
+license: MIT
 version: 0.2.0-dev
 date-released: 2026-08-02
 keywords:

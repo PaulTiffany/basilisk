@@ -110,4 +110,4 @@ This work preserves the lineage from BaAka polyrhythmic musical practice, encoun
 
 ## License
 
-Text and mathematical exposition: CC BY 4.0. Code: Apache 2.0. See [`LICENSE.md`](LICENSE.md).
+MIT. See [`LICENSE.md`](LICENSE.md).

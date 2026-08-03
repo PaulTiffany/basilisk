@@ -1,6 +1,6 @@
 """Finite sanity model for the Basilisk quartet.
 
-SPDX-License-Identifier: Apache-2.0
+SPDX-License-Identifier: MIT
 """
 
 from __future__ import annotations
