@@ -10,7 +10,7 @@ The **Basilisk Quartet** supplies four distinct artifact classes for AI control.
 
 The basilisk may be clever. It may not silently expand its permission, substitute fluent synthesis for human judgment, cross an audience or privacy boundary without authorization, pierce its blanket, or eat its ledger.
 
-The governing commitments are developed in [`PHILOSOPHY.md`](PHILOSOPHY.md): bounded freedom, frame holding, non-collapse, kinematic correspondence without constitutional overreach, future preservation, grace, reciprocal inquiry, and operable provenance.
+The governing commitments are developed in [`PHILOSOPHY.md`](PHILOSOPHY.md). The repository's declared dependency structure, principle bindings, evidence, checks, and open gaps live in [`PROJECT_GRAPH.json`](PROJECT_GRAPH.json) and are explained in [`docs/project-orchestration.md`](docs/project-orchestration.md).
 
 ## Core control objective
 
@@ -69,10 +69,8 @@ Human-in-the-loop occurs at semantic branch points, not every keystroke.
 ## Quick start
 
 ```bash
-python3 -m unittest discover -s tests -v
-PYTHONPATH=src python3 scripts/run_reference_evals.py
-PYTHONPATH=src python3 examples/finite_controller.py
-python3 examples/finite_quartet.py
+make package-check
+cd formal && lake build
 ```
 
 To inspect one action intent:
@@ -84,6 +82,9 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 ## Repository map
 
 - [`PHILOSOPHY.md`](PHILOSOPHY.md) — operational philosophy and working covenant;
+- [`PROJECT_GRAPH.json`](PROJECT_GRAPH.json) — machine-readable project graph and philosophy-to-artifact bindings;
+- [`docs/project-orchestration.md`](docs/project-orchestration.md) — layer graph, CI claims, and change protocol;
+- [`PROVENANCE.md`](PROVENANCE.md) — cultural and technical lineage;
 - [`docs/protocol.md`](docs/protocol.md) — normative protocol;
 - [`docs/mathematical-model.md`](docs/mathematical-model.md) — boundary-aware Lipschitz model;
 - [`docs/human-authority-boundary.md`](docs/human-authority-boundary.md) — division of labor;
@@ -92,24 +93,18 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`docs/mutually-assured-progress.md`](docs/mutually-assured-progress.md) — useful initiative without surrender;
 - [`docs/threat-model.md`](docs/threat-model.md) — failure modes;
 - [`docs/assurance-case.md`](docs/assurance-case.md) — claims, evidence, and gaps;
-- [`docs/project-context.md`](docs/project-context.md) — map of the wider Tiffany research ecosystem this repository sits inside;
-- [`docs/glossary.md`](docs/glossary.md) — cross-project nomenclature, with overloaded terms disambiguated by source repository;
-- [`docs/lineage-and-non-collapse.md`](docs/lineage-and-non-collapse.md) — explicit non-collapse warnings and one unresolved provenance discrepancy;
+- [`docs/research-status.md`](docs/research-status.md) — implemented, specified, and open research objects;
+- [`formal/`](formal/) — Lean finite core;
 - [`src/map_lb/`](src/map_lb/) — dependency-free reference controller;
 - [`evals/`](evals/) — minimal pairs and scoring regime;
 - [`spec/`](spec/) — JSON schemas;
 - [`prompts/`](prompts/) — vendor-neutral pretest and compact memory;
-- [`paper/main.tex`](paper/main.tex) — mathematical note for the Quartet;
-- [`assets/`](assets/) — human-facing Basilisk images;
-- [`PROVENANCE.md`](PROVENANCE.md) — cultural and technical lineage.
+- [`paper/main.tex`](paper/main.tex) — mathematical note;
+- [`assets/`](assets/) — human-facing Basilisk images.
 
 ## Research status
 
 This is an early, falsifiable research and engineering object—not a proof of alignment. The reference implementation checks explicit fields supplied to it; it does not infer hidden intent, guarantee independent witnessing, or solve specification gaming. See [`docs/research-status.md`](docs/research-status.md).
-
-## Provenance
-
-This work preserves the lineage from BaAka polyrhythmic musical practice, encountered through Michelle Kisliuk's scholarship, to distributed-coherence intuitions that informed the `Come` mutation operator and subsequent SRMF work. Formalization does not extinguish origin. See [`PROVENANCE.md`](PROVENANCE.md).
 
 ## License
 
