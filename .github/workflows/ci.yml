@@ -1,3 +1,5 @@
+# Governing philosophy: PHILOSOPHY.md
+# Machine-readable orchestration: PROJECT_GRAPH.json
 name: Basilisk project CI
 
 on:
