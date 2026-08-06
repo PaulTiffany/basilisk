@@ -1,0 +1,75 @@
+name: BIS / bootstrap
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bis-bootstrap-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  runtime:
+    name: BIS / bootstrap runtime
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Run existing package checks
+        run: make package-check
+
+  formal:
+    name: BIS / bootstrap formal
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Build Lean core
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
+        with:
+          lake-package-directory: formal
+          auto-config: false
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: false
+          use-github-cache: false
+
+  merge-gate:
+    name: BIS / bootstrap gate
+    if: always()
+    needs: [runtime, formal]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+
+    steps:
+      - name: Require bootstrap checks
+        env:
+          RUNTIME_RESULT: ${{ needs.runtime.result }}
+          FORMAL_RESULT: ${{ needs.formal.result }}
+        run: |
+          test "$RUNTIME_RESULT" = success
+          test "$FORMAL_RESULT" = success
