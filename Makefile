@@ -1,4 +1,7 @@
-.PHONY: test eval validate example paper clean package-check
+.PHONY: project test eval validate example formal paper clean package-check
+
+project:
+	python3 scripts/validate_project.py
 
 test:
 	python3 -m unittest discover -s tests -v
@@ -13,10 +16,13 @@ example:
 	PYTHONPATH=src python3 examples/finite_controller.py
 	python3 examples/finite_quartet.py
 
+formal:
+	cd formal && lake build
+
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 
-package-check: test eval validate example
+package-check: project test eval validate example
 
 clean:
 	cd paper && latexmk -C
