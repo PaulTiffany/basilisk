@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "project": "Basilisk Quartet + MAP-LB",
+  "entrypoints": {
+    "orientation": "README.md",
+    "philosophy": "PHILOSOPHY.md",
+    "provenance": "PROVENANCE.md",
+    "orchestration": "docs/project-orchestration.md",
+    "protocol": "docs/protocol.md",
+    "assurance": "docs/assurance-case.md",
+    "formal_core": "formal/Basilisk.lean",
+    "runtime": "src/map_lb/controller.py"
+  },
