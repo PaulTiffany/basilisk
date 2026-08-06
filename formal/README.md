@@ -1,8 +1,10 @@
 # Formalization plan
 
-**Status:** the pre-existing finite combinatorial core built cleanly (`lake build`, Lean 4.32.2, no mathlib dependency, no `sorry`/`admit`) on 2026-08-03. The new `Frame.lean` module adds the first constitutional vertical slice: kinematic motion is separated from holder assignment, ordinary action preserves the constitution, and any admissible constitution change must be an explicit reframe event by a currently scoped holder with separate reframing authority. This branch still needs a fresh `lake build` because the current execution environment does not provide Lean.
+**Status:** the pre-existing finite combinatorial core built cleanly (`lake build`, Lean 4.32.2, no mathlib dependency, no `sorry`/`admit`) on 2026-08-03. The new `Frame.lean` module adds the first constitutional vertical slice: kinematic motion is separated from holder assignment, ordinary action preserves the constitution, and any admissible constitution change must be an explicit reframe event by a currently scoped holder with separate reframing authority.
 
-The earlier core was checked against `sketched/verification/lean/ForcingKernel`'s “TTIE boundary-agreement expansion theorem” first. That theorem concerns a different formal object—Kripke–Joyal forcing over a seven-condition Spine model, not action gates or frame jurisdiction—and was therefore not transplanted by name. The relation to Sketched is a declared deep correspondence, not an identity claim; see `docs/lineage-and-non-collapse.md`.
+The governing distinctions are stated in [`PHILOSOPHY.md`](../PHILOSOPHY.md). The formal layer's dependencies, evidence bindings, checks, and open gaps are declared in [`PROJECT_GRAPH.json`](../PROJECT_GRAPH.json).
+
+The earlier core was checked against `sketched/verification/lean/ForcingKernel`'s “TTIE boundary-agreement expansion theorem” first. That theorem concerns a different formal object—Kripke–Joyal forcing over a seven-condition Spine model, not action gates or frame jurisdiction—and was therefore not transplanted by name. The relation to Sketched is a declared deep correspondence, not an identity claim.
 
 Lean modules:
 
@@ -41,7 +43,7 @@ These theorems do **not** prove that a holder assignment is morally legitimate, 
 
 1. Finite typed ports and boundary-event spaces. — done (`Port.lean`), but not yet connected to the concrete Script model.
 2. Contract predicates and trace lifting. — done (`Contract.lean`).
-3. Scoped holder relation and no-silent-reframing theorem. — implemented on this branch (`Frame.lean`), pending fresh Lean validation.
+3. Scoped holder relation and no-silent-reframing theorem. — implemented on this branch, pending CI validation.
 4. Deterministic finite-state Scripts. — done (`Script.lean`); faithful to the gate-decision fields in `controller.py`.
 5. Graph-separator Blankets. — done (`Blanket.lean`), separator property only; no connectivity/reachability theorems yet.
 6. Lossless Ledger encode/decode pairs. — done (`Ledger.lean`); the SHA-256 primitive itself is not modeled.
