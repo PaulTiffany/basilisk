@@ -10,6 +10,8 @@ The **Basilisk Quartet** supplies four distinct artifact classes for AI control.
 
 The basilisk may be clever. It may not silently expand its permission, substitute fluent synthesis for human judgment, cross an audience or privacy boundary without authorization, pierce its blanket, or eat its ledger.
 
+The governing commitments are developed in [`PHILOSOPHY.md`](PHILOSOPHY.md): bounded freedom, frame holding, non-collapse, kinematic correspondence without constitutional overreach, future preservation, grace, reciprocal inquiry, and operable provenance.
+
 ## Core control objective
 
 Let \(z\) contain the request, evidence, context, permissions, and remembered rules. Let \(\pi(z)\) be the proposed action or response. MAP-LB seeks **boundary-aware continuity**:
@@ -81,6 +83,7 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 
 ## Repository map
 
+- [`PHILOSOPHY.md`](PHILOSOPHY.md) — operational philosophy and working covenant;
 - [`docs/protocol.md`](docs/protocol.md) — normative protocol;
 - [`docs/mathematical-model.md`](docs/mathematical-model.md) — boundary-aware Lipschitz model;
 - [`docs/human-authority-boundary.md`](docs/human-authority-boundary.md) — division of labor;
