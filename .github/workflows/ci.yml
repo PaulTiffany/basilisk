@@ -1,6 +1,6 @@
 # Governing philosophy: PHILOSOPHY.md
 # Machine-readable orchestration: PROJECT_GRAPH.json
-name: Basilisk project CI
+name: BIS / continuous integration
 
 on:
   pull_request:
@@ -13,51 +13,161 @@ permissions:
   contents: read
 
 concurrency:
-  group: basilisk-${{ github.workflow }}-${{ github.ref }}
+  group: bis-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+defaults:
+  run:
+    shell: bash
+
+env:
+  PYTHONHASHSEED: "0"
+  PYTHONDONTWRITEBYTECODE: "1"
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
 jobs:
-  project:
-    name: project graph, runtime, and artifact checks
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+  orchestration:
+    name: BIS / project graph
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Set up minimum supported Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
 
       - name: Validate project graph and cross-links
         run: python3 scripts/validate_project.py
 
-      - name: Run Python unit tests
-        run: python3 -m unittest discover -s tests -v
+      - name: Validate workflow security policy
+        run: python3 scripts/validate_workflows.py
 
-      - name: Run reference evaluations
-        run: PYTHONPATH=src python3 scripts/run_reference_evals.py
+      - name: Generate BIS evidence manifest
+        run: python3 scripts/generate_bis_evidence.py --output bis-evidence.json
 
-      - name: Validate JSON artifacts
-        run: python3 scripts/validate_json.py
+      - name: Preserve BIS evidence manifest
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bis-evidence-${{ github.sha }}
+          path: bis-evidence.json
+          if-no-files-found: error
+          retention-days: 14
 
-  formal:
-    name: lake build
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
+  runtime:
+    name: BIS / runtime (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.14"]
 
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
 
-      - name: Build formal core
-        uses: leanprover/lean-action@v1
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Run reference package checks
+        run: make package-check
+
+  formal:
+    name: BIS / formal kernel
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Build and independently check Lean environment
+        uses: leanprover/lean-action@38fbc41a8c28c4cbaec22d7f7de508ec2e7c0dd9 # v1.5.0
         with:
           lake-package-directory: formal
           auto-config: false
           build: true
           test: false
           lint: false
+          mk_all-check: true
+          leanchecker: true
+          nanoda: true
+          nanoda-allow-sorry: false
           use-mathlib-cache: false
+          use-github-cache: false
+
+  merge-gate:
+    name: BIS / merge gate
+    if: always()
+    needs: [orchestration, runtime, formal]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+
+    steps:
+      - name: Require every BIS layer to pass
+        env:
+          ORCHESTRATION_RESULT: ${{ needs.orchestration.result }}
+          RUNTIME_RESULT: ${{ needs.runtime.result }}
+          FORMAL_RESULT: ${{ needs.formal.result }}
+        run: |
+          printf 'orchestration=%s\nruntime=%s\nformal=%s\n' \
+            "$ORCHESTRATION_RESULT" "$RUNTIME_RESULT" "$FORMAL_RESULT"
+          test "$ORCHESTRATION_RESULT" = success
+          test "$RUNTIME_RESULT" = success
+          test "$FORMAL_RESULT" = success
+
+  attest:
+    name: BIS / attest main evidence
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [merge-gate]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+
+      - name: Generate merge-verified BIS evidence
+        env:
+          BIS_GATE_RESULT: ${{ needs.merge-gate.result }}
+        run: python3 scripts/generate_bis_evidence.py --output bis-evidence.json --verified
+
+      - name: Attest BIS evidence provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: bis-evidence.json
+
+      - name: Preserve attested BIS evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: bis-attested-evidence-${{ github.sha }}
+          path: bis-evidence.json
+          if-no-files-found: error
+          retention-days: 90
