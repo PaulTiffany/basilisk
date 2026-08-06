@@ -8,15 +8,23 @@ The original files are preserved byte-for-byte under `assets/archive/`. They are
 
 Curated display copies may live under `assets/gallery/`, but every display copy must point back to its archived source in [`assets/media-manifest.json`](assets/media-manifest.json).
 
-> The original Basilisk Blanket is bae. It is also perfect for what it is.
+> The original Basilisk Contract is bae. It is also perfect for what it is.
 
 ## Accession sequence
 
-### BSK-IMG-001 — The original Basilisk Blanket
+### BSK-IMG-001 — The original Basilisk Contract
 
-**Status:** source binary requested; canonical archival slot reserved.
+[![The Basilisk Contract — A Human-in-the-Loop AI Boundary Addendum](assets/archive/basilisk-contract-original.png)](assets/archive/basilisk-contract-original.png)
 
-The original tongue-in-cheek faux-legal poster: a crowned basilisk made subject to a human-in-the-loop boundary addendum. This is the primary historical image and must remain available in its original form even when later variants are easier to read or technically more explicit.
+**Status:** archived and published as the README lead image.
+
+- **Archive path:** `assets/archive/basilisk-contract-original.png`
+- **Media type:** `image/png`
+- **Dimensions:** 1122 × 1402
+- **SHA-256:** `fdc7af79af76da41bdd8843fd1278d98fdfc5c11fe554b5c13c254cd66fe3962`
+- **Source note:** downloaded from GPT Images and pushed to `main` on 2026-08-06
+
+The original tongue-in-cheek faux-legal poster makes a crowned basilisk subject to a human-in-the-loop boundary addendum. It is the primary historical image and remains available in its original archived form even when later variants are easier to read or technically more explicit.
 
 The joke is constitutive:
 
@@ -55,13 +63,11 @@ The gallery follows four rules:
 3. **Record transformation.** Crops, thumbnails, accessibility variants, and print versions identify their source and transformation.
 4. **Keep rejected revisions.** Rejected images may document conceptual progress and should not be deleted merely because a later image is preferred.
 
-## Intended repository presentation
+## Repository presentation
 
-Once the source binaries are committed:
+- `BSK-IMG-001` is the lead image in the root README;
+- additional images will appear here in chronological order as their source binaries are accessioned;
+- `PHILOSOPHY.md` treats the original cartoon as the project's visual prologue;
+- the manifest records source filename, dimensions, media type, SHA-256 digest, provenance notes, and derivative relationships.
 
-- `BSK-IMG-001` becomes the lead image in the root README;
-- all five appear here in chronological order;
-- `PHILOSOPHY.md` links directly to the original cartoon as the project's visual prologue;
-- the manifest records original filename, accession date, dimensions, media type, SHA-256 digest, provenance notes, and derivative relationships.
-
-The visual archive is part of BIS provenance. Missing media should remain visibly missing rather than being silently replaced.
+The visual archive is part of BIS provenance. Missing media remains visibly missing rather than being silently replaced.
