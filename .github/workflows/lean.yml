@@ -1,0 +1,41 @@
+name: Lean formal core
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "formal/**"
+      - ".github/workflows/lean.yml"
+  push:
+    branches: [main]
+    paths:
+      - "formal/**"
+      - ".github/workflows/lean.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: lean-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: lake build (Lean 4.32.2)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build formal core
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: formal
+          auto-config: false
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: false
