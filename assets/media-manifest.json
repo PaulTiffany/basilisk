@@ -9,17 +9,17 @@
   "items": [
     {
       "id": "BSK-IMG-001",
-      "title": "The original Basilisk Blanket",
+      "title": "The original Basilisk Contract",
       "role": "primary archival original and README lead image",
-      "status": "source_requested",
-      "archive_path": null,
-      "source_filename": null,
-      "media_type": null,
-      "width": null,
-      "height": null,
-      "sha256": null,
+      "status": "archived",
+      "archive_path": "assets/archive/basilisk-contract-original.png",
+      "source_filename": "basilisk-contract-original.png",
+      "media_type": "image/png",
+      "width": 1122,
+      "height": 1402,
+      "sha256": "fdc7af79af76da41bdd8843fd1278d98fdfc5c11fe554b5c13c254cd66fe3962",
       "derived_from": null,
-      "notes": "Original tongue-in-cheek faux-legal Basilisk Blanket poster. Preserve exactly; do not replace with a recreation or later revision."
+      "notes": "Original tongue-in-cheek faux-legal Basilisk Contract poster, downloaded from GPT Images and archived exactly as pushed to main. Do not replace with a recreation or later revision."
     },
     {
       "id": "BSK-IMG-002",
