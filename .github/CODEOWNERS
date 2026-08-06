@@ -1,0 +1,18 @@
+# Default stewardship
+* @PaulTiffany
+
+# Constitutional and philosophical frame
+/PHILOSOPHY.md @PaulTiffany
+/PROVENANCE.md @PaulTiffany
+/PROJECT_GRAPH.json @PaulTiffany
+/SECURITY.md @PaulTiffany
+/docs/project-orchestration.md @PaulTiffany
+/docs/protocol.md @PaulTiffany
+/docs/human-authority-boundary.md @PaulTiffany
+
+# Executable orchestration and formal kernel
+/.github/ @PaulTiffany
+/scripts/validate_project.py @PaulTiffany
+/scripts/validate_workflows.py @PaulTiffany
+/scripts/generate_bis_evidence.py @PaulTiffany
+/formal/ @PaulTiffany
