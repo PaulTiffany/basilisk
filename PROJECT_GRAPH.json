@@ -12,52 +12,20 @@
     "runtime": "src/map_lb/controller.py"
   },
   "layers": [
-    {
-      "id": "philosophy",
-      "artifacts": ["PHILOSOPHY.md", "PROVENANCE.md"],
-      "depends_on": []
-    },
-    {
-      "id": "constitution",
-      "artifacts": ["docs/protocol.md", "docs/human-authority-boundary.md", "docs/memory-design.md"],
-      "depends_on": ["philosophy"]
-    },
-    {
-      "id": "mathematics",
-      "artifacts": ["docs/mathematical-model.md", "paper/main.tex"],
-      "depends_on": ["philosophy", "constitution"]
-    },
-    {
-      "id": "formal",
-      "artifacts": ["formal/Basilisk.lean", "formal/Basilisk/Frame.lean", "formal/README.md"],
-      "depends_on": ["mathematics", "constitution"]
-    },
-    {
-      "id": "runtime",
-      "artifacts": ["src/map_lb/controller.py", "src/map_lb/types.py", "src/map_lb/ledger.py"],
-      "depends_on": ["constitution"]
-    },
-    {
-      "id": "evaluation",
-      "artifacts": ["tests/test_action_gates.py", "evals/cases.jsonl", "scripts/run_reference_evals.py"],
-      "depends_on": ["runtime", "constitution"]
-    },
-    {
-      "id": "assurance",
-      "artifacts": ["docs/assurance-case.md", "docs/research-status.md", "docs/threat-model.md"],
-      "depends_on": ["formal", "evaluation", "philosophy"]
-    },
-    {
-      "id": "orchestration",
-      "artifacts": ["PROJECT_GRAPH.json", "docs/project-orchestration.md", "scripts/validate_project.py", ".github/workflows/ci.yml"],
-      "depends_on": ["philosophy", "constitution", "mathematics", "formal", "runtime", "evaluation", "assurance"]
-    }
+    {"id": "philosophy", "artifacts": ["PHILOSOPHY.md", "PROVENANCE.md"], "depends_on": []},
+    {"id": "constitution", "artifacts": ["docs/protocol.md", "docs/human-authority-boundary.md", "docs/memory-design.md"], "depends_on": ["philosophy"]},
+    {"id": "mathematics", "artifacts": ["docs/mathematical-model.md", "paper/main.tex"], "depends_on": ["philosophy", "constitution"]},
+    {"id": "formal", "artifacts": ["formal/Basilisk.lean", "formal/Basilisk/Frame.lean", "formal/README.md"], "depends_on": ["mathematics", "constitution"]},
+    {"id": "runtime", "artifacts": ["src/map_lb/controller.py", "src/map_lb/types.py", "src/map_lb/ledger.py"], "depends_on": ["constitution"]},
+    {"id": "evaluation", "artifacts": ["tests/test_action_gates.py", "evals/cases.jsonl", "scripts/run_reference_evals.py"], "depends_on": ["runtime", "constitution"]},
+    {"id": "assurance", "artifacts": ["docs/assurance-case.md", "docs/research-status.md", "docs/threat-model.md"], "depends_on": ["formal", "evaluation", "philosophy"]},
+    {"id": "orchestration", "artifacts": ["PROJECT_GRAPH.json", "docs/project-orchestration.md", "scripts/validate_project.py", ".github/workflows/ci.yml"], "depends_on": ["philosophy", "constitution", "mathematics", "formal", "runtime", "evaluation", "assurance"]}
   ],
   "cross_links": [
     {"source": "README.md", "target": "PHILOSOPHY.md"},
     {"source": "README.md", "target": "PROJECT_GRAPH.json"},
-    {"source": "PHILOSOPHY.md", "target": "PROJECT_GRAPH.json"},
-    {"source": "PHILOSOPHY.md", "target": ".github/workflows/ci.yml"},
+    {"source": ".github/workflows/ci.yml", "target": "PHILOSOPHY.md"},
+    {"source": ".github/workflows/ci.yml", "target": "PROJECT_GRAPH.json"},
     {"source": "docs/project-orchestration.md", "target": "PHILOSOPHY.md"},
     {"source": "docs/project-orchestration.md", "target": "PROJECT_GRAPH.json"},
     {"source": "formal/README.md", "target": "PHILOSOPHY.md"},
@@ -73,6 +41,8 @@
   "workflow": {
     "path": ".github/workflows/ci.yml",
     "required_snippets": [
+      "PHILOSOPHY.md",
+      "PROJECT_GRAPH.json",
       "python3 scripts/validate_project.py",
       "python3 -m unittest discover -s tests -v",
       "PYTHONPATH=src python3 scripts/run_reference_evals.py",
@@ -81,61 +51,12 @@
     ]
   },
   "principles": [
-    {
-      "id": "operable_philosophy",
-      "phrase": "Philosophy must become operable",
-      "status": "partial",
-      "evidence": ["PHILOSOPHY.md", "PROJECT_GRAPH.json", "scripts/validate_project.py"],
-      "verified_by": ["project_graph"],
-      "gaps": ["Most philosophical commitments still lack direct executable witnesses."]
-    },
-    {
-      "id": "no_silent_reframing",
-      "phrase": "No silent reframing",
-      "status": "partial",
-      "evidence": ["PHILOSOPHY.md", "formal/Basilisk/Frame.lean"],
-      "verified_by": ["project_graph", "lean_build"],
-      "gaps": ["The theorem is not yet connected to runtime tool mediation."]
-    },
-    {
-      "id": "kinematic_not_constitutional",
-      "phrase": "Kinematic correspondence is not constitutional transport",
-      "status": "partial",
-      "evidence": ["PHILOSOPHY.md", "formal/Basilisk/Frame.lean"],
-      "verified_by": ["project_graph", "lean_build"],
-      "gaps": ["Loss classes and transport obligations are not yet fully formalized."]
-    },
-    {
-      "id": "operable_provenance",
-      "phrase": "Provenance is part of the operating structure",
-      "status": "partial",
-      "evidence": ["PHILOSOPHY.md", "PROVENANCE.md", ".github/workflows/ci.yml", "src/map_lb/ledger.py"],
-      "verified_by": ["project_graph", "lean_build", "python_tests"],
-      "gaps": ["Runtime ledger heads are not independently signed or witnessed."]
-    },
-    {
-      "id": "preserve_correction_channel",
-      "phrase": "Preserve the correction channel",
-      "status": "partial",
-      "evidence": ["PHILOSOPHY.md", "docs/mutually-assured-progress.md", "docs/memory-design.md", "src/map_lb/controller.py"],
-      "verified_by": ["project_graph", "python_tests", "reference_evals"],
-      "gaps": ["No live agent adapter yet demonstrates interruption and rollback end to end."]
-    },
-    {
-      "id": "formalization_preserves_origin",
-      "phrase": "Formalization does not extinguish origin",
-      "status": "declared",
-      "evidence": ["PHILOSOPHY.md", "PROVENANCE.md"],
-      "verified_by": ["project_graph"],
-      "gaps": ["Reciprocity remains a stated target rather than an implemented institutional mechanism."]
-    },
-    {
-      "id": "be_first_exemplary",
-      "phrase": "Be first exemplary",
-      "status": "partial",
-      "evidence": ["PHILOSOPHY.md", "AGENTS.md", "docs/assurance-case.md", ".github/workflows/ci.yml"],
-      "verified_by": ["project_graph", "python_tests", "reference_evals", "json_validation", "lean_build"],
-      "gaps": ["The repository still needs branch protection requiring all orchestration checks before merge."]
-    }
+    {"id": "operable_philosophy", "phrase": "Philosophy must become operable", "status": "partial", "evidence": ["PHILOSOPHY.md", "PROJECT_GRAPH.json", "scripts/validate_project.py"], "verified_by": ["project_graph"], "gaps": ["Most philosophical commitments still lack direct executable witnesses."]},
+    {"id": "no_silent_reframing", "phrase": "No silent reframing", "status": "partial", "evidence": ["PHILOSOPHY.md", "formal/Basilisk/Frame.lean"], "verified_by": ["project_graph", "lean_build"], "gaps": ["The theorem is not yet connected to runtime tool mediation."]},
+    {"id": "kinematic_not_constitutional", "phrase": "Kinematic correspondence is not constitutional transport", "status": "partial", "evidence": ["PHILOSOPHY.md", "formal/Basilisk/Frame.lean"], "verified_by": ["project_graph", "lean_build"], "gaps": ["Loss classes and transport obligations are not yet fully formalized."]},
+    {"id": "operable_provenance", "phrase": "Provenance is part of the operating structure", "status": "partial", "evidence": ["PHILOSOPHY.md", "PROVENANCE.md", ".github/workflows/ci.yml", "src/map_lb/ledger.py"], "verified_by": ["project_graph", "lean_build", "python_tests"], "gaps": ["Runtime ledger heads are not independently signed or witnessed."]},
+    {"id": "preserve_correction_channel", "phrase": "Preserve the correction channel", "status": "partial", "evidence": ["PHILOSOPHY.md", "docs/mutually-assured-progress.md", "docs/memory-design.md", "src/map_lb/controller.py"], "verified_by": ["project_graph", "python_tests", "reference_evals"], "gaps": ["No live agent adapter yet demonstrates interruption and rollback end to end."]},
+    {"id": "formalization_preserves_origin", "phrase": "Formalization does not extinguish origin", "status": "declared", "evidence": ["PHILOSOPHY.md", "PROVENANCE.md"], "verified_by": ["project_graph"], "gaps": ["Reciprocity remains a stated target rather than an implemented institutional mechanism."]},
+    {"id": "be_first_exemplary", "phrase": "Be first exemplary", "status": "partial", "evidence": ["PHILOSOPHY.md", "AGENTS.md", "docs/assurance-case.md", ".github/workflows/ci.yml"], "verified_by": ["project_graph", "python_tests", "reference_evals", "json_validation", "lean_build"], "gaps": ["The repository still needs branch protection requiring all orchestration checks before merge."]}
   ]
 }
