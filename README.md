@@ -1,3 +1,17 @@
+<p align="center">
+  <a href="assets/archive/basilisk-contract-original.png">
+    <img
+      src="assets/archive/basilisk-contract-original.png"
+      alt="The Basilisk Contract — A Human-in-the-Loop AI Boundary Addendum"
+      width="900"
+    >
+  </a>
+</p>
+
+<p align="center">
+  <em>BSK-IMG-001 — The original Basilisk Contract. Click for the full-resolution archival file.</em>
+</p>
+
 # The Basilisk Quartet + MAP-LB
 
 **A candidate control protocol for useful, bounded AI initiative:**
@@ -12,9 +26,9 @@ The basilisk may be clever. It may not silently expand its permission, substitut
 
 ## Visual origin
 
-This project began with the original tongue-in-cheek **Basilisk Blanket** poster. The original is a primary research artifact, not disposable decoration, and will be preserved byte-for-byte alongside its later revisions.
+This project began with the tongue-in-cheek **Basilisk Contract** poster shown above. The original is a primary research artifact, not disposable decoration, and is preserved under [`assets/archive/`](assets/archive/) rather than silently replaced by later revisions.
 
-See [`MEDIA.md`](MEDIA.md) for the chronological gallery, accession record, and preservation policy. Source binaries currently being accessioned are tracked in [`assets/media-manifest.json`](assets/media-manifest.json).
+See [`MEDIA.md`](MEDIA.md) for the chronological gallery, accession record, and preservation policy. The byte-level archival record is maintained in [`assets/media-manifest.json`](assets/media-manifest.json).
 
 ## Core control objective
 
