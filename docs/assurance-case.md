@@ -1,6 +1,6 @@
 # Assurance case
 
-This document separates claims from available evidence and open gaps.
+This document separates claims from available evidence and open gaps. Its governing commitments come from [`PHILOSOPHY.md`](../PHILOSOPHY.md); their machine-readable bindings are declared in [`PROJECT_GRAPH.json`](../PROJECT_GRAPH.json).
 
 ## Claim C1 — Low-stakes authorized work can proceed without constant interruption
 
@@ -65,12 +65,24 @@ The ledger is not independently witnessed or signed. A compromised system can re
 
 - mathematical note;
 - finite example showing two hidden Scripts with the same Ledger trace (`examples/finite_quartet.py`);
-- machine-checked Lean witness of the same fact (`formal/Basilisk/Counterexamples.lean`: `scriptHonest_ne_scriptSneaky` and `ledger_does_not_identify_script`), verified by `lake build` with a clean axiom audit (no `sorry`, no `Classical.choice`; one lemma depends on `propext`).
+- machine-checked Lean witness of the same fact (`formal/Basilisk/Counterexamples.lean`).
 
 **Gap**
 
-The Lean witness is one checked instance (two specific Scripts, one specific observed trace), not a theorem quantifying over all Scripts and all traces. The full non-collapse theorem program remains open.
+The Lean witness is one checked instance, not a theorem quantifying over all Scripts and all traces. The full non-collapse theorem program remains open.
+
+## Claim C7 — Philosophy-to-artifact drift is made visible
+
+**Evidence in repository**
+
+- `PROJECT_GRAPH.json` declares layers, dependencies, principle bindings, evidence, checks, and explicit gaps;
+- `scripts/validate_project.py` rejects missing artifacts, broken local links, absent required cross-links, cyclic layer dependencies, unbound checks, and principles whose exact phrase disappears from `PHILOSOPHY.md`;
+- `.github/workflows/ci.yml` runs project validation, runtime tests, reference evaluations, JSON validation, and the Lean build as distinct jobs.
+
+**Gap**
+
+The graph proves neither philosophical adequacy nor semantic conformance. Many principles remain only partially witnessed, and branch protection still must require the full CI workflow before merge.
 
 ## Overall conclusion
 
-The repository supports a testable protocol and finite reference implementation. It does not establish general AI alignment, moral correctness, or secure deployment in an untrusted runtime.
+The repository supports a testable protocol, finite reference implementation, formal witnesses, and an initial project-orchestration layer. It does not establish general AI alignment, moral correctness, secure deployment in an untrusted runtime, or complete correspondence among philosophy, mathematics, proof, and implementation.
