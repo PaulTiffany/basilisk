@@ -10,6 +10,12 @@ The **Basilisk Quartet** supplies four distinct artifact classes for AI control.
 
 The basilisk may be clever. It may not silently expand its permission, substitute fluent synthesis for human judgment, cross an audience or privacy boundary without authorization, pierce its blanket, or eat its ledger.
 
+## Visual origin
+
+This project began with the original tongue-in-cheek **Basilisk Blanket** poster. The original is a primary research artifact, not disposable decoration, and will be preserved byte-for-byte alongside its later revisions.
+
+See [`MEDIA.md`](MEDIA.md) for the chronological gallery, accession record, and preservation policy. Source binaries currently being accessioned are tracked in [`assets/media-manifest.json`](assets/media-manifest.json).
+
 ## Core control objective
 
 Let \(z\) contain the request, evidence, context, permissions, and remembered rules. Let \(\pi(z)\) be the proposed action or response. MAP-LB seeks **boundary-aware continuity**:
@@ -81,6 +87,7 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 
 ## Repository map
 
+- [`MEDIA.md`](MEDIA.md) — visual gallery, accession record, and preservation policy;
 - [`docs/protocol.md`](docs/protocol.md) — normative protocol;
 - [`docs/mathematical-model.md`](docs/mathematical-model.md) — boundary-aware Lipschitz model;
 - [`docs/human-authority-boundary.md`](docs/human-authority-boundary.md) — division of labor;
@@ -97,7 +104,7 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`spec/`](spec/) — JSON schemas;
 - [`prompts/`](prompts/) — vendor-neutral pretest and compact memory;
 - [`paper/main.tex`](paper/main.tex) — mathematical note for the Quartet;
-- [`assets/`](assets/) — human-facing Basilisk images;
+- [`assets/`](assets/) — human-facing Basilisk images and archival manifest;
 - [`PROVENANCE.md`](PROVENANCE.md) — cultural and technical lineage.
 
 ## Research status
