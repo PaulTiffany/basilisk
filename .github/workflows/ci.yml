@@ -1,0 +1,61 @@
+name: Basilisk project CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: basilisk-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  project:
+    name: project graph, runtime, and artifact checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate project graph and cross-links
+        run: python3 scripts/validate_project.py
+
+      - name: Run Python unit tests
+        run: python3 -m unittest discover -s tests -v
+
+      - name: Run reference evaluations
+        run: PYTHONPATH=src python3 scripts/run_reference_evals.py
+
+      - name: Validate JSON artifacts
+        run: python3 scripts/validate_json.py
+
+  formal:
+    name: lake build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Build formal core
+        uses: leanprover/lean-action@v1
+        with:
+          lake-package-directory: formal
+          auto-config: false
+          build: true
+          test: false
+          lint: false
+          use-mathlib-cache: false
