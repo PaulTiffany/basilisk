@@ -1,0 +1,81 @@
+{
+  "schema": "basilisk-media-manifest/v1",
+  "policy": {
+    "archive_originals_byte_for_byte": true,
+    "allow_silent_substitution": false,
+    "require_sha256": true,
+    "require_derivative_lineage": true
+  },
+  "items": [
+    {
+      "id": "BSK-IMG-001",
+      "title": "The original Basilisk Blanket",
+      "role": "primary archival original and README lead image",
+      "status": "source_requested",
+      "archive_path": null,
+      "source_filename": null,
+      "media_type": null,
+      "width": null,
+      "height": null,
+      "sha256": null,
+      "derived_from": null,
+      "notes": "Original tongue-in-cheek faux-legal Basilisk Blanket poster. Preserve exactly; do not replace with a recreation or later revision."
+    },
+    {
+      "id": "BSK-IMG-002",
+      "title": "Explicit Markov Blanket revision",
+      "role": "historical revision",
+      "status": "source_requested",
+      "archive_path": null,
+      "source_filename": null,
+      "media_type": null,
+      "width": null,
+      "height": null,
+      "sha256": null,
+      "derived_from": "BSK-IMG-001",
+      "notes": "Revision that made the blanket visually perceptible rather than merely naming it."
+    },
+    {
+      "id": "BSK-IMG-003",
+      "title": "Boundary-correspondence revision",
+      "role": "historical revision",
+      "status": "source_requested",
+      "archive_path": null,
+      "source_filename": null,
+      "media_type": null,
+      "width": null,
+      "height": null,
+      "sha256": null,
+      "derived_from": "BSK-IMG-002",
+      "notes": "Revision attempting to connect visible boundary marks to the stated classes of violation."
+    },
+    {
+      "id": "BSK-IMG-004",
+      "title": "Basilisk Quartet visual",
+      "role": "conceptual gallery image",
+      "status": "source_requested",
+      "archive_path": null,
+      "source_filename": null,
+      "media_type": null,
+      "width": null,
+      "height": null,
+      "sha256": null,
+      "derived_from": null,
+      "notes": "Later visual rendering Contract, Script, Blanket, and Ledger as distinct coordinated artifacts."
+    },
+    {
+      "id": "BSK-IMG-005",
+      "title": "Frame-holder constitutional visual",
+      "role": "conceptual gallery image",
+      "status": "source_requested",
+      "archive_path": null,
+      "source_filename": null,
+      "media_type": null,
+      "width": null,
+      "height": null,
+      "sha256": null,
+      "derived_from": null,
+      "notes": "Later visual centered on who holds which frame and who may replace it."
+    }
+  ]
+}
