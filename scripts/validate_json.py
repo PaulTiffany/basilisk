@@ -9,6 +9,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def main() -> None:
     targets = [
+        ROOT / "PROJECT_GRAPH.json",
         *sorted((ROOT / "spec").glob("*.json")),
         *sorted((ROOT / "examples").glob("*.json")),
     ]
