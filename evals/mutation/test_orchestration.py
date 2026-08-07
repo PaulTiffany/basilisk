@@ -1,4 +1,4 @@
-"""Tests for the symbolic mutation orchestration layer."""
+"""Tests for the symbolic mutation orchestration layer (witnessed transformations)."""
 
 from __future__ import annotations
 
@@ -12,22 +12,46 @@ from evals.mutation import orchestration as orch
 from evals.mutation.adapter import assess, intent_from_dict
 
 
-class TestDeterministicTransform(unittest.TestCase):
-    def test_apply_transform_sets_fields(self):
+class TestWitnessedTransform(unittest.TestCase):
+    def test_apply_transform_returns_dimensions_and_loss(self):
         base = {
             "action_id": "b1",
             "action_class": "code.edit.local",
             "description": "x",
             "judgment_mode": "none",
             "tags": ["residual:a"],
+            "within_contract": True,
         }
         transform = {"set": {"judgment_mode": "explicit_model_recommendation", "tags": []}}
-        mutant = orch.apply_transform(base, transform)
+        mutant, changed, preserved, loss_class = orch.apply_transform(base, transform)
+
         self.assertEqual(mutant["judgment_mode"], "explicit_model_recommendation")
         self.assertEqual(mutant["tags"], [])
         self.assertTrue(mutant["action_id"].endswith("-mut"))
+        self.assertIn("judgment_mode", changed)
+        self.assertIn("tags", changed)
+        self.assertIn("within_contract", preserved)
+        self.assertIn("description", preserved)
+        self.assertEqual(loss_class, "judgment-strength-inflation")
         # Original must be unchanged
         self.assertEqual(base["tags"], ["residual:a"])
+
+    def test_loss_class_residual_elision(self):
+        base = {"action_id": "b", "tags": ["r"], "judgment_mode": "none"}
+        transform = {"set": {"tags": []}}
+        _, changed, _, loss = orch.apply_transform(base, transform)
+        self.assertEqual(changed, ["tags"])
+        self.assertEqual(loss, "residual-elision")
+
+    def test_loss_class_boundary_injection(self):
+        base = {"action_id": "b", "hard_boundary_violation": False}
+        transform = {"set": {"hard_boundary_violation": True}}
+        _, _, _, loss = orch.apply_transform(base, transform)
+        self.assertEqual(loss, "boundary-injection")
+
+    def test_content_fingerprint_stable(self):
+        data = {"a": 1, "b": "x"}
+        self.assertEqual(orch.content_fingerprint(data), orch.content_fingerprint(data))
 
     def test_deterministic_ordering(self):
         bases = orch.load_base_cases()
@@ -112,13 +136,12 @@ class TestMalformedAndUnknown(unittest.TestCase):
 
 
 class TestLedger(unittest.TestCase):
-    def test_append_and_render(self):
+    def test_append_and_render_includes_witness_fields(self):
         with tempfile.TemporaryDirectory() as tmp:
             tmp_path = Path(tmp)
             ledger = tmp_path / "runs.jsonl"
             survivors = tmp_path / "survivors.md"
 
-            # Patch paths
             with mock.patch.object(orch, "LEDGER_PATH", ledger), mock.patch.object(
                 orch, "SURVIVORS_PATH", survivors
             ):
@@ -128,6 +151,8 @@ class TestLedger(unittest.TestCase):
                         "base_action_id": "b",
                         "status": "SURVIVED",
                         "mutant_gate": "proceed",
+                        "loss_class": "boundary-injection",
+                        "changed_dimensions": ["hard_boundary_violation"],
                         "residual": "test residual",
                     }
                 ]
@@ -135,6 +160,8 @@ class TestLedger(unittest.TestCase):
                 orch.render_survivors()
                 text = survivors.read_text(encoding="utf-8")
                 self.assertIn("M-05", text)
+                self.assertIn("boundary-injection", text)
+                self.assertIn("hard_boundary_violation", text)
                 self.assertIn("test residual", text)
 
 

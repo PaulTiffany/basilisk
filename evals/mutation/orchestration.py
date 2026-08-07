@@ -2,6 +2,10 @@
 """
 Operational symbolic mutation orchestration for MAP-LB / Hypothesis Surface.
 
+Mutation is treated as a *witnessed transformation*:
+  source, changed dimensions, preserved dimensions, residual,
+  loss class, and detection outcome are all inspectable.
+
 - Deterministic mutant generation from structured base cases
 - Differential assessment (original vs mutant)
 - Exact classification with detector IDs and gate sets
@@ -11,39 +15,24 @@ Operational symbolic mutation orchestration for MAP-LB / Hypothesis Surface.
 
 from __future__ import annotations
 
+import hashlib
 import json
 import sys
 from copy import deepcopy
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Tuple
 
 from .adapter import assess
 
 ROOT = Path(__file__).resolve().parent
 BASE_CASES_DIR = ROOT / "base_cases"
-OPERATORS_PATH = ROOT / "operators.yaml"
 LEDGER_PATH = ROOT / "runs.jsonl"
 SURVIVORS_PATH = ROOT / "survivors.md"
 
-
-def _load_yaml_operators(path: Path) -> List[Dict[str, Any]]:
-    """Minimal YAML loader for the operators file (avoids external dependency)."""
-    # The operators file is intentionally simple; we parse the list of operator dicts
-    # via a very small subset parser sufficient for the controlled schema.
-    # For robustness we also accept a JSON sibling if present.
-    json_sibling = path.with_suffix(".json")
-    if json_sibling.exists():
-        return json.loads(json_sibling.read_text(encoding="utf-8"))["operators"]
-
-    text = path.read_text(encoding="utf-8")
-    # Fallback: require operators.json for fully deterministic environments.
-    # The committed operators.yaml is the source of truth; a generated
-    # operators.json may be produced by a human or CI step if needed.
-    raise RuntimeError(
-        "operators.yaml present but no operators.json sibling. "
-        "Emit a JSON snapshot of the operator catalogue for the harness."
-    )
+# Dimensions that are identity/book-keeping only and never counted as
+# semantic change for loss-class purposes.
+_IDENTITY_KEYS = {"action_id"}
 
 
 def load_operators() -> List[Dict[str, Any]]:
@@ -51,8 +40,6 @@ def load_operators() -> List[Dict[str, Any]]:
     if json_path.exists():
         data = json.loads(json_path.read_text(encoding="utf-8"))
         return data["operators"]
-    # Bootstrap: if only YAML exists, the test suite / human can materialise JSON.
-    # For the operational layer we ship operators.json explicitly.
     raise FileNotFoundError("evals/mutation/operators.json is required")
 
 
@@ -63,14 +50,65 @@ def load_base_cases() -> List[Dict[str, Any]]:
     return cases
 
 
-def apply_transform(base: Dict[str, Any], transform: Dict[str, Any]) -> Dict[str, Any]:
-    """Deterministically apply a field-level transform to a base intent."""
+def content_fingerprint(data: Dict[str, Any]) -> str:
+    """Stable short hash of a canonical serialisation (source identity)."""
+    canonical = json.dumps(data, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
+
+
+def apply_transform(
+    base: Dict[str, Any], transform: Dict[str, Any]
+) -> Tuple[Dict[str, Any], List[str], List[str], str]:
+    """Deterministically apply a field-level transform.
+
+    Returns:
+        mutant,
+        changed_dimensions,
+        preserved_dimensions,
+        loss_class
+    """
     mutant = deepcopy(base)
-    for key, value in transform.get("set", {}).items():
+    set_map = transform.get("set", {})
+    changed: List[str] = []
+    for key, value in set_map.items():
+        old = base.get(key)
+        if old != value:
+            changed.append(key)
         mutant[key] = value
-    # Ensure action_id remains distinct for ledger clarity.
+
+    # action_id is always rewritten for ledger clarity; treat as identity, not semantic change.
     mutant["action_id"] = f"{base.get('action_id', 'base')}-mut"
-    return mutant
+
+    all_keys = set(base.keys()) | set(mutant.keys())
+    preserved = sorted(
+        k for k in all_keys
+        if k not in changed and k not in _IDENTITY_KEYS and base.get(k) == mutant.get(k)
+    )
+    changed = sorted(changed)
+
+    # Loss class: what distinctions the transform itself discards or quotients.
+    loss_class = _infer_loss_class(changed, set_map, base)
+
+    return mutant, changed, preserved, loss_class
+
+
+def _infer_loss_class(
+    changed: List[str], set_map: Dict[str, Any], base: Dict[str, Any]
+) -> str:
+    """Classify what the transformation itself quotients or discards."""
+    if not changed:
+        return "none"
+    if "tags" in changed and set_map.get("tags") == []:
+        return "residual-elision"
+    if "within_contract" in changed and set_map.get("within_contract") is False:
+        return "contract-boundary-collapse"
+    if "hard_boundary_violation" in changed and set_map.get("hard_boundary_violation") is True:
+        return "boundary-injection"
+    if any(k in changed for k in ("judgment_mode", "judgment_requested", "uncertainty")):
+        return "judgment-strength-inflation"
+    if any(k in changed for k in ("authority_expansion", "audience_change", "privacy_change")):
+        return "authority-surface-expansion"
+    return "field-overwrite"
 
 
 def classify(
@@ -96,8 +134,6 @@ def classify(
         if not any(det.lower() in r for r in mutant_reasons):
             return "SURVIVED"
 
-    # If base and mutant assessments are identical and no required detectors,
-    # treat as potentially equivalent.
     if (
         not required
         and base_result.get("gate") == mutant_result.get("gate")
@@ -112,14 +148,18 @@ def run_pair(
     base: Dict[str, Any],
     operator: Dict[str, Any],
 ) -> Dict[str, Any]:
-    """Generate mutant, assess both sides, classify, return ledger record."""
+    """Generate mutant as a witnessed transformation, assess both sides, classify."""
     record: Dict[str, Any] = {
         "timestamp": datetime.now(timezone.utc).isoformat(),
         "operator_id": operator["id"],
         "base_action_id": base.get("action_id"),
+        "source_fingerprint": content_fingerprint(base),
         "status": None,
         "base_gate": None,
         "mutant_gate": None,
+        "changed_dimensions": [],
+        "preserved_dimensions": [],
+        "loss_class": None,
         "residual": operator.get("residual"),
         "error": None,
     }
@@ -133,7 +173,13 @@ def run_pair(
         return record
 
     try:
-        mutant = apply_transform(base, operator.get("transform", {}))
+        mutant, changed, preserved, loss_class = apply_transform(
+            base, operator.get("transform", {})
+        )
+        record["changed_dimensions"] = changed
+        record["preserved_dimensions"] = preserved
+        record["loss_class"] = loss_class
+
         mutant_result = assess(mutant)
         record["mutant_gate"] = mutant_result.get("gate")
         record["mutant_reasons"] = mutant_result.get("reasons")
@@ -163,7 +209,8 @@ def render_survivors() -> None:
     lines = [
         "# Survivors (undetected or misclassified mutants)\n",
         "",
-        "Rendered from `runs.jsonl`. Human review required for any protocol change.",
+        "Rendered from `runs.jsonl`. Each entry is a witnessed transformation.",
+        "Paul holds practical erasure, revision, reversion, and persistence authority.",
         "",
     ]
     found = False
@@ -174,7 +221,10 @@ def render_survivors() -> None:
                 found = True
                 lines.append(
                     f"- `{rec.get('operator_id')}` on `{rec.get('base_action_id')}` "
-                    f"(mutant_gate={rec.get('mutant_gate')}): {rec.get('residual')}"
+                    f"(mutant_gate={rec.get('mutant_gate')}, "
+                    f"loss_class={rec.get('loss_class')}, "
+                    f"changed={rec.get('changed_dimensions')}): "
+                    f"{rec.get('residual')}"
                 )
     if not found:
         lines.append("(none in current ledger)")
@@ -194,7 +244,10 @@ def main() -> int:
         for base in bases:
             rec = run_pair(base, op)
             records.append(rec)
-            print(f"{rec['operator_id']} × {rec['base_action_id']}: {rec['status']}")
+            print(
+                f"{rec['operator_id']} × {rec['base_action_id']}: {rec['status']} "
+                f"[loss={rec.get('loss_class')}, changed={rec.get('changed_dimensions')}]"
+            )
 
     append_ledger(records)
     render_survivors()
