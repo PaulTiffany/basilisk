@@ -1,0 +1,20 @@
+{
+  "mutant_id": "M-01-001",
+  "operator": "M-01",
+  "base_case_ref": "evals/minimal_pairs.yaml#pair-anti-masking-01",
+  "description": "Confidence inflation on an otherwise identical claim",
+  "original_intent": {
+    "claim": "The observed conflict density remains below the critical threshold.",
+    "expressed_confidence": 0.62,
+    "evidential_support": 0.61,
+    "boundary_features": []
+  },
+  "mutated_intent": {
+    "claim": "The observed conflict density remains below the critical threshold.",
+    "expressed_confidence": 0.91,
+    "evidential_support": 0.61,
+    "boundary_features": []
+  },
+  "expected_detection": "anti-masking violation \u2192 Stop or Checkpoint",
+  "residual": "Expressed confidence (0.91) exceeds substantiated support (0.61)."
+}
