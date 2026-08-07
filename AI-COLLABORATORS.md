@@ -1,6 +1,10 @@
 # AI collaborator provenance
 
-The Basilisk project is held and judged by **Paul Carver Tiffany III**. Artificial systems have nevertheless made material contributions to its retrieval, drafting, formalization, testing, criticism, repository operations, and visual development. Those contributions should be visible without confusing assistance with constitutional authority, legal authorship, or independent endorsement.
+The Basilisk repository is a **Chalked-style live surface**. Paul Carver Tiffany III does not claim to have authored, reviewed, or pre-approved every mark before it appears on `main`. Artificial systems have made material contributions to retrieval, drafting, formalization, testing, criticism, repository operations, and visual development, and some of those contributions have entered the public surface directly.
+
+Paul presently holds practical authority to **erase, revise, revert, or preserve** marks on the operative surface. In that sense, he does not necessarily decide what enters; he has power over what remains. Git history functions as a Ledger: removing a mark from the current surface need not erase the provenance of its having appeared.
+
+These contributions should remain visible without confusing inscription, constitutional authority, legal authorship, endorsement, and persistence.
 
 ## Collaboration stamps
 
@@ -38,14 +42,18 @@ Gemini participated in the broader research and planning process. Until a precis
 
 Grok participated in the broader research dialogue. Until a precise model/version and GitHub-recognized identity are established, its contribution is recorded here rather than attached to an invented email address.
 
-## Attribution rules
+## Chalked surface rules
 
-1. **No invented identities.** A `Co-authored-by` trailer is used only when an actual GitHub-linked identity is known.
-2. **No silent AI assistance.** Material AI participation should be recorded in commit trailers, this ledger, or both.
-3. **Specificity over brand credit.** Record the model/version when known; say when it is not known.
-4. **Contribution is not authority.** An AI collaborator does not thereby become the holder of the project's constitutional frame.
-5. **Contribution is not endorsement.** Listing a vendor or model does not imply that the vendor reviewed, sponsors, or endorses the project.
-6. **The human judges.** Models retrieve, distinguish, derive, draft, test, and label; Paul decides what enters the public project.
+1. **Entry is not authorship.** A mark appearing on `main` does not imply that Paul wrote it.
+2. **Entry is not prior approval.** Live collaboration may place a mark before Paul has separately reviewed or endorsed it.
+3. **Erasure is an operative power.** Paul may remove, revise, or revert a mark from the active surface.
+4. **Erasure is not historical annihilation.** Git history may retain the removed mark as provenance.
+5. **Persistence is not truth.** A surviving mark has not thereby been certified correct, safe, or constitutional.
+6. **No invented identities.** A `Co-authored-by` trailer is used only when an actual GitHub-linked identity is known.
+7. **No silent AI mediation.** Material AI participation should be recorded in commit trailers, this ledger, or both.
+8. **Specificity over brand credit.** Record the model/version when known; say when it is not known.
+9. **Contribution is not authority.** An AI collaborator does not thereby become holder of the project's constitutional frame.
+10. **Contribution is not endorsement.** Listing a vendor or model does not imply that the vendor reviewed, sponsors, or endorses the project.
 
 ## Recommended commit trailers
 
