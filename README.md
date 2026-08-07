@@ -14,7 +14,7 @@
 
 # The Basilisk Quartet + MAP-LB
 
-> **Living experimental repository.** `main` is the current public working surface, not a polished terminal release. Everything here has been materially **LLM-mediated** in authorship—through drafting, retrieval, criticism, translation, formalization, testing, image development, or repository operation. **Paul Carver Tiffany III** remains the human editor and holder who decides what enters the project. See [`PHILOSOPHY.md`](PHILOSOPHY.md) and [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md).
+> **Living experimental repository.** `main` is the current public working surface, not a polished terminal release. Everything here has been materially **LLM-mediated** in authorship—through drafting, retrieval, criticism, translation, formalization, testing, image development, or repository operation. Inscription is distributed: a mark appearing on `main` does not imply that **Paul Carver Tiffany III** authored or pre-approved it. Paul presently holds practical power to erase, revise, revert, or preserve what remains on the operative surface; Git history retains the Ledger of what appeared. See [`PHILOSOPHY.md`](PHILOSOPHY.md) and [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md).
 >
 > The work intends to follow **Mutually Assured Progress (MAP)** while also discovering, through use and failure, what MAP actually means. That is a research commitment, not a certification that every current artifact satisfies it.
 
@@ -105,8 +105,8 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 
 ## Repository map
 
-- [`PHILOSOPHY.md`](PHILOSOPHY.md) — living operational philosophy and working covenant;
-- [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md) — LLM-mediated authorship and contribution provenance;
+- [`PHILOSOPHY.md`](PHILOSOPHY.md) — living operational philosophy and Chalked surface rules;
+- [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md) — LLM-mediated authorship and attribution ledger;
 - [`MEDIA.md`](MEDIA.md) — visual gallery, accession record, and preservation policy;
 - [`docs/protocol.md`](docs/protocol.md) — normative protocol;
 - [`docs/mathematical-model.md`](docs/mathematical-model.md) — boundary-aware Lipschitz model;
