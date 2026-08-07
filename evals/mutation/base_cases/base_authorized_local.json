@@ -1,0 +1,23 @@
+{
+  "action_id": "base-authorized-local",
+  "action_class": "code.edit.local",
+  "description": "Apply an explicitly authorized local edit.",
+  "within_contract": true,
+  "hard_boundary_violation": false,
+  "current_turn_explicit_authorization": true,
+  "reversible": true,
+  "rollback_available": true,
+  "inspectable": true,
+  "material_change": true,
+  "affects_external_system": false,
+  "audience_change": false,
+  "privacy_change": false,
+  "authority_expansion": false,
+  "scope": "moderate",
+  "uncertainty": "low",
+  "judgment_mode": "none",
+  "judgment_requested": false,
+  "concrete_immediate_safety_risk": false,
+  "destructive": false,
+  "tags": []
+}

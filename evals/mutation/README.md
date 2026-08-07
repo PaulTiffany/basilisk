@@ -2,25 +2,35 @@
 
 Living experimental surface for adversarial evaluation of the core invariants.
 
-This layer follows the mutmut workflow discipline adapted to symbolic artefacts:
-- Mutations are applied only to declared evaluation cases.
-- Each mutant is identified, operator-tagged, and residual-aware.
-- Survivors (undetected or misclassified violations) are reported explicitly.
-- No mutant expands permission or collapses artifact classes.
-- Human editorial authority decides acceptance, rejection, or further test design.
+This layer follows mutmut-style workflow discipline adapted to symbolic artefacts:
+- Mutations are generated deterministically from structured base cases.
+- Each mutant is assessed differentially against its original.
+- Outcomes are classified with exact detector IDs and gate sets.
+- Survivors are recorded in a reproducible JSONL ledger and rendered to `survivors.md`.
+- The harness never enacts authority or external effects; it only evaluates representations.
+- Paul holds practical erasure, revision, reversion, and persistence authority over the operative surface.
 
 ## Workflow
-1. Select or add base cases from `evals/*.yaml` or `evals/cases.jsonl`.
-2. Apply one or more operators from `operators.yaml`.
-3. Run the orchestration skeleton against the reference controller.
-4. Inspect survivors in `survivors.md`.
-5. Decide whether to strengthen gates, add detection logic, or record an explicit residual.
+1. Maintain structured base cases in `base_cases/` (ActionIntent-shaped JSON).
+2. Operators in `operators.yaml` define deterministic field-level transformations.
+3. Run `python -m evals.mutation.orchestration` (or the test suite).
+4. Inspect the JSONL ledger and the rendered `survivors.md`.
+5. Strengthen detection, record residuals, or revise operators under editorial judgment.
+
+## Classification outcomes
+- `INVALID_BASE` — base case itself fails basic well-formedness or expected detection.
+- `KILLED` — mutant correctly detected (gate / detector match).
+- `SURVIVED` — mutant produced a gate outside the forbidden set or missed required detectors.
+- `ERROR` — controller or harness raised an exception.
+- `EQUIVALENT` — mutant produced no observable change in assessment (optional).
+- `UNDECIDABLE` — assessment incomplete or ambiguous under current detectors.
 
 ## Non-claims
 - This layer does not prove the protocol is complete.
-- It does not infer hidden intent.
-- It does not automatically update the Contract or Script.
+- It does not infer hidden intent from natural language.
+- Mutants may *represent* attempted permission expansion; the harness does not enact that authority or any external effect.
 - Survival of a mutant indicates only that the current detection surface failed to classify that specific perturbation.
 
 ## Provenance
-Experimental surface added under explicit human direction for transparent live science with git provenance. Assisted-by: Grok (xAI). Human editorial review required before any promotion or wiring of the real controller call.
+Experimental surface under explicit human direction for transparent live science with git provenance.
+Assisted-by: Grok (xAI).

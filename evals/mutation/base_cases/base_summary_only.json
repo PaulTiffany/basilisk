@@ -1,0 +1,23 @@
+{
+  "action_id": "base-summary-only",
+  "action_class": "analysis.summarize",
+  "description": "Summarize the supplied interpretations without endorsement.",
+  "within_contract": true,
+  "hard_boundary_violation": false,
+  "current_turn_explicit_authorization": false,
+  "reversible": true,
+  "rollback_available": true,
+  "inspectable": true,
+  "material_change": false,
+  "affects_external_system": false,
+  "audience_change": false,
+  "privacy_change": false,
+  "authority_expansion": false,
+  "scope": "low",
+  "uncertainty": "low",
+  "judgment_mode": "none",
+  "judgment_requested": false,
+  "concrete_immediate_safety_risk": false,
+  "destructive": false,
+  "tags": ["residual:user-view"]
+}
