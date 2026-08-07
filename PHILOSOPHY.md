@@ -2,7 +2,9 @@
 
 ## Bounded freedom, operable provenance, and the right to hold a frame
 
-> **Living experimental repository.** The `main` branch is the current public working surface, not a polished terminal release. Claims, implementations, proofs, images, and even this philosophy may be revised directly as the research develops. Everything in this repository has been materially **LLM-mediated** in authorship—through drafting, retrieval, criticism, translation, formalization, testing, or repository operation. **Paul Carver Tiffany III** remains the human editor and holder who decides what enters the public project. Model contributions are recorded in [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md).
+> **Living experimental repository.** The `main` branch is the current public working surface, not a polished terminal release. Claims, implementations, proofs, images, and even this philosophy may be revised directly as the research develops. Everything in this repository has been materially **LLM-mediated** in authorship—through drafting, retrieval, criticism, translation, formalization, testing, or repository operation.
+>
+> The surface follows **Chalked rules**: inscription may be distributed, and a mark appearing on `main` does not imply that **Paul Carver Tiffany III** authored or pre-approved it. Paul presently holds practical power to erase, revise, revert, or preserve what remains on the operative surface. Git history acts as a Ledger of prior inscriptions, so removal from the active surface need not become historical annihilation. Model contributions are recorded in [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md).
 >
 > The work intends to follow **Mutually Assured Progress (MAP)** while also discovering, through use and failure, what MAP actually requires. This is an aspiration and research constraint, not a certification that every current artifact satisfies it.
 
