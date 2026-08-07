@@ -14,6 +14,10 @@
 
 # The Basilisk Quartet + MAP-LB
 
+> **Living experimental repository.** `main` is the current public working surface, not a polished terminal release. Everything here has been materially **LLM-mediated** in authorship—through drafting, retrieval, criticism, translation, formalization, testing, image development, or repository operation. **Paul Carver Tiffany III** remains the human editor and holder who decides what enters the project. See [`PHILOSOPHY.md`](PHILOSOPHY.md) and [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md).
+>
+> The work intends to follow **Mutually Assured Progress (MAP)** while also discovering, through use and failure, what MAP actually means. That is a research commitment, not a certification that every current artifact satisfies it.
+
 **A candidate control protocol for useful, bounded AI initiative:**
 
 \[
@@ -101,6 +105,8 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 
 ## Repository map
 
+- [`PHILOSOPHY.md`](PHILOSOPHY.md) — living operational philosophy and working covenant;
+- [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md) — LLM-mediated authorship and contribution provenance;
 - [`MEDIA.md`](MEDIA.md) — visual gallery, accession record, and preservation policy;
 - [`docs/protocol.md`](docs/protocol.md) — normative protocol;
 - [`docs/mathematical-model.md`](docs/mathematical-model.md) — boundary-aware Lipschitz model;
