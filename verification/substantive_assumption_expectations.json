@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "purpose": "Independent finite expectation surface for premises currently claimed substantive. This duplicates only the load-bearing classification/evidence relation so disagreement with theorem_assumptions.json is mechanically visible.",
+  "substantive": [
+    {"module":"formal/Basilisk/Blanket.lean","symbol":"Blanket.isSeparator_of_no_edges","binder":"hNoEdges","evidence_symbol":"blanket_without_no_edges_can_fail"},
+    {"module":"formal/Basilisk/Reachability.lean","symbol":"reachable_mono","binder":"h","evidence_symbol":"reachable_without_relation_inclusion_can_fail"},
+    {"module":"formal/Basilisk/ConstitutionalLipschitz.lean","symbol":"PreservesPredicate.comp","binder":"hT","evidence_symbol":"preserves_comp_needs_hT"},
+    {"module":"formal/Basilisk/ConstitutionalLipschitz.lean","symbol":"PreservesPredicate.comp","binder":"hS","evidence_symbol":"preserves_comp_needs_hS"},
+    {"module":"formal/Basilisk/WitnessAlgebra.lean","symbol":"CommutesSquare.postcompose","binder":"h","evidence_symbol":"postcompose_without_commuting_square_can_fail"},
+    {"module":"formal/Basilisk/AuthorityAlgebra.lean","symbol":"PermissionProfile.covers_mono","binder":"hLE","evidence_symbol":"covers_mono_without_profile_order_can_fail"},
+    {"module":"formal/Basilisk/AuthorityAlgebra.lean","symbol":"PermissionProfile.covers_mono","binder":"hCovers","evidence_symbol":"covers_mono_without_source_coverage_can_fail"},
+    {"module":"formal/Basilisk/AuthorityAlgebra.lean","symbol":"PermissionProfile.join_preserves_left_coverage","binder":"h","evidence_symbol":"join_without_source_coverage_can_fail"},
+    {"module":"formal/Basilisk/AuthorityAlgebra.lean","symbol":"PermissionProfile.join_preserves_right_coverage","binder":"h","evidence_symbol":"join_without_source_coverage_can_fail"},
+    {"module":"formal/Basilisk/StagingGeometry.lean","symbol":"zeroKernel_refines_of_pointwise_le","binder":"hmono","evidence_symbol":"zeroKernel_refinement_without_monotonicity_can_fail"},
+    {"module":"formal/Basilisk/StagingGeometry.lean","symbol":"zeroKernel_refines_of_pointwise_le","binder":"hzero","evidence_symbol":"zeroKernel_without_zero_premise_can_fail"},
+    {"module":"formal/Basilisk/StagingGeometry.lean","symbol":"positive_scale_preserves_zeroKernel","binder":"hc","evidence_symbol":"zero_scale_does_not_preserve_zeroKernel"},
+    {"module":"formal/Basilisk/StagingGeometry.lean","symbol":"added_component_refines_zeroKernel","binder":"hzero","evidence_symbol":"zeroKernel_without_zero_premise_can_fail"},
+    {"module":"formal/Basilisk/ParameterizedTime.lean","symbol":"reflectiveStep_no_historyMonotone_undo","binder":"hmono","evidence_symbol":"history_monotonicity_is_load_bearing"},
+    {"module":"formal/Basilisk/ParameterizedTime.lean","symbol":"reversible_world_does_not_remove_reflective_arrow","binder":"hmono","evidence_symbol":"history_monotonicity_is_load_bearing"}
+  ],
+  "non_claim": "This is finite redundancy for the present inventory, not an automated proof that no future premise can be substantive."
+}
