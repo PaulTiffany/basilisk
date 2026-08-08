@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MATH-009","kind":"lean","path":"formal/Basilisk/LedgerSemantics.lean","fragment":"theorem chained_does_not_entail_claim_truth :","sha256":"a106cb5ccead525db2ab64d51a3deb4f34a7d00d523aa56715f9e0a6324521b6"},
+    {"claim_id":"C-MECH-010","kind":"python","path":"src/map_lb/ledger.py","fragment":"def verify(self) -> tuple[bool, str]:","sha256":"6fee90ecebdfe0c663584a98faafbac1c587a1733dbc09194d4d8b0b6e53d153"},
+    {"claim_id":"C-MECH-010","kind":"mechanism","path":"verification/check_ledger_integrity.py","fragment":"print(\"LEDGER INTEGRITY CHECK: PASS — strict schema, fixed SHA-256 receipt, tamper detection, truth separation\")","sha256":"3cc71b86df4c11d090b93e604881a345338411e905dcdd7dc7fd8ca232bc3e3b"}
+  ]
+}
