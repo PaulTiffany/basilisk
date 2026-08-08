@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -10,7 +11,8 @@ from map_lb.controller import assess_action
 from map_lb.types import ActionIntent, RiskLevel, StandingAuthority
 from registry_io import strict_load_json
 
-ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(os.environ.get("BASILISK_ROOT", DEFAULT_ROOT)).resolve()
 VECTORS = ROOT / "verification" / "authority_vectors.json"
 
 
