@@ -24,6 +24,7 @@ mathlib dependency):
   * DependencyCut.lean    — parent/child/co-parent family closure
   * DependencyMutationWitness.lean — shared topology-mutation instance
   * Ledger.lean           — lossless encode/decode and chain discipline
+  * LedgerSemantics.lean  — structural integrity does not entail semantic truth
   * Quartet.lean          — bundles the four as distinct fields
   * Counterexamples.lean  — Script/Ledger non-identifiability witness
   * Reachability.lean     — hypothesis-relative reachable-future monotonicity
@@ -48,6 +49,7 @@ import Basilisk.Blanket
 import Basilisk.DependencyCut
 import Basilisk.DependencyMutationWitness
 import Basilisk.Ledger
+import Basilisk.LedgerSemantics
 import Basilisk.Quartet
 import Basilisk.Counterexamples
 import Basilisk.Reachability
@@ -99,6 +101,8 @@ namespace Basilisk
 #print axioms DepGraph.familyClosure_iff
 #print axioms dependency_mutation_adds_coparent
 #print axioms LedgerEntry.decode_encode
+#print axioms chained_does_not_entail_claim_truth
+#print axioms lossless_record_does_not_entail_claim_truth
 #print axioms scriptHonest_ne_scriptSneaky
 #print axioms ledger_does_not_identify_script
 #print axioms reachable_mono
