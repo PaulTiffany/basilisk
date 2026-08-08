@@ -2,6 +2,6 @@
   "schema_version": 1,
   "bindings": [
     {"claim_id":"C-MATH-010","kind":"lean","path":"formal/Basilisk/StagingGeometry.lean","fragment":"theorem zeroKernel_refines_of_pointwise_le","sha256":"25204bb324852028d0f8abe72ad169f8a675d8222bdcd0e67788dea53e2b17bb"},
-    {"claim_id":"C-MATH-010","kind":"mechanism","path":"verification/check_staging_geometry.py","fragment":"STAGING GEOMETRY CHECK: PASS — ","sha256":"4ef08c79f03afeaf8e444d483efbd92460afce0ef4617a5977695829f95bb3e8"}
+    {"claim_id":"C-MATH-010","kind":"mechanism","path":"verification/check_staging_geometry.py","fragment":"STAGING GEOMETRY CHECK: PASS — ","sha256":"e9532cf63273a5dfd8f8445e7bebc97bb4a4f9ea0358e89d8c9eecbbc14e146d"}
   ]
 }
