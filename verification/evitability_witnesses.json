@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "non_claim": "These are finite constitutional witnesses for the distinction between nominal availability and viable refusal. They do not model any particular culture, community, person, or full socioeconomic viability condition.",
+  "embodiments": ["integrated", "alternative"],
+  "cases": [
+    {
+      "id": "EV-001",
+      "name": "nominal option retained while alternative loses viability",
+      "before": {
+        "available": {"integrated": true, "alternative": true},
+        "viable": {"integrated": true, "alternative": true}
+      },
+      "after": {
+        "available": {"integrated": true, "alternative": true},
+        "viable": {"integrated": true, "alternative": false}
+      },
+      "expect_nominal_preservation": true,
+      "expect_evitability_preservation": false
+    },
+    {
+      "id": "EV-002",
+      "name": "plural identity control",
+      "before": {
+        "available": {"integrated": true, "alternative": true},
+        "viable": {"integrated": true, "alternative": true}
+      },
+      "after": {
+        "available": {"integrated": true, "alternative": true},
+        "viable": {"integrated": true, "alternative": true}
+      },
+      "expect_nominal_preservation": true,
+      "expect_evitability_preservation": true
+    }
+  ]
+}
