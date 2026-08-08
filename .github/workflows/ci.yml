@@ -19,6 +19,9 @@ jobs:
     name: BIS / bootstrap runtime
     runs-on: ubuntu-24.04
     timeout-minutes: 10
+    env:
+      PYTHONHASHSEED: "0"
+      PYTHONDONTWRITEBYTECODE: "1"
 
     steps:
       - name: Check out repository
