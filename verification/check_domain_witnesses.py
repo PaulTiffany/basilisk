@@ -1,18 +1,11 @@
 #!/usr/bin/env python3
-"""Check two distinct instantiations of the generic witness algebra.
-
-1. Lipschitz counterexample: shared JSON -> NumPy observable and Lean witness.
-2. Dependency topology: shared JSON -> executable graph mutation and Lean witness.
-
-This checker does not prove the Lean theorems; the Lean build does that. It checks
-that both formal witnesses are explicitly bound to the current shared source and
-that the independent executable observations agree with the registered source.
-"""
+"""Check distinct instantiations of the generic witness algebra."""
 
 from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import sys
 from pathlib import Path
@@ -35,6 +28,46 @@ def require_source_receipt(spec: Path, lean: Path, errors: list[str]) -> None:
     text = lean.read_text(encoding="utf-8")
     if receipt not in text:
         errors.append(f"{lean.name}: source receipt does not match {spec.name}: {receipt}")
+
+
+def validate_lipschitz_spec(spec: dict) -> list[str]:
+    errors: list[str] = []
+    if spec.get("schema_version") != 1:
+        errors.append(f"unsupported Lipschitz schema_version: {spec.get('schema_version')!r}")
+    carrier = spec.get("carrier")
+    if not isinstance(carrier, list) or len(carrier) < 2:
+        return errors + ["Lipschitz carrier must contain at least two labels"]
+    if any(not isinstance(label, str) or not label for label in carrier):
+        errors.append("Lipschitz carrier labels must be non-empty strings")
+    if len(carrier) != len(set(carrier)):
+        errors.append("Lipschitz carrier labels must be unique")
+    labels = set(carrier)
+    if spec.get("distance") != "discrete":
+        errors.append(f"unsupported Lipschitz witness distance: {spec.get('distance')!r}")
+
+    mapping = spec.get("map")
+    if not isinstance(mapping, dict) or set(mapping) != labels:
+        errors.append("Lipschitz map must be total with exactly one entry per carrier label")
+    elif any(value not in labels for value in mapping.values()):
+        errors.append("Lipschitz map must map every label back into the carrier")
+
+    for field in ("source_predicate", "target_predicate"):
+        predicate = spec.get(field)
+        if not isinstance(predicate, dict) or set(predicate) != labels:
+            errors.append(f"{field} must be total on the carrier")
+        elif any(type(value) is not bool for value in predicate.values()):
+            errors.append(f"{field} values must be Boolean")
+
+    expected = spec.get("expected")
+    if not isinstance(expected, dict) or set(expected) != {"lipschitz_constant", "preserves_predicate"}:
+        errors.append("Lipschitz expected must contain exactly lipschitz_constant and preserves_predicate")
+    else:
+        constant = expected.get("lipschitz_constant")
+        if not isinstance(constant, (int, float)) or isinstance(constant, bool) or not math.isfinite(float(constant)) or float(constant) < 0:
+            errors.append("expected Lipschitz constant must be a finite nonnegative number")
+        if type(expected.get("preserves_predicate")) is not bool:
+            errors.append("expected preserves_predicate must be Boolean")
+    return errors
 
 
 def lipschitz_numpy(spec: dict) -> dict:
@@ -71,10 +104,12 @@ def main() -> int:
 
     lip_path = VERIFY / "lipschitz_counterexample.json"
     lip = json.loads(lip_path.read_text(encoding="utf-8"))
-    lip_observed = lipschitz_numpy(lip)
-    if lip_observed != lip["expected"]:
-        errors.append(f"C-MATH-001 NumPy disagreement: {lip_observed} != {lip['expected']}")
-    if statuses.get(lip["claim_id"]) != "lean_theorem":
+    errors.extend(validate_lipschitz_spec(lip))
+    if not errors:
+        lip_observed = lipschitz_numpy(lip)
+        if lip_observed != lip["expected"]:
+            errors.append(f"C-MATH-001 NumPy disagreement: {lip_observed} != {lip['expected']}")
+    if statuses.get(lip.get("claim_id")) != "lean_theorem":
         errors.append("C-MATH-001 is no longer typed as lean_theorem")
     lip_lean = ROOT / "formal" / "Basilisk" / "LipschitzWitness.lean"
     require_source_receipt(lip_path, lip_lean, errors)
@@ -85,11 +120,23 @@ def main() -> int:
 
     dep_path = VERIFY / "dependency_mutation.json"
     dep = json.loads(dep_path.read_text(encoding="utf-8"))
-    dep_result = evaluate_dependency(dep)
-    dep_observed = {key: dep_result[key] for key in dep["expected"]}
-    if dep_observed != dep["expected"]:
-        errors.append(f"C-MATH-007 mutation disagreement: {dep_observed} != {dep['expected']}")
-    if statuses.get(dep["claim_id"]) != "lean_theorem":
+    try:
+        dep_result = evaluate_dependency(dep)
+    except (ValueError, KeyError, TypeError) as exc:
+        dep_result = None
+        errors.append(f"C-MATH-007 malformed dependency witness: {exc}")
+    if dep_result is not None:
+        expected = dep.get("expected")
+        if not isinstance(expected, dict) or not expected:
+            errors.append("C-MATH-007 expected must be a non-empty object")
+        else:
+            unknown_expected = sorted(set(expected) - set(dep_result))
+            if unknown_expected:
+                errors.append(f"C-MATH-007 expected contains unknown observation keys: {unknown_expected}")
+            dep_observed = {key: dep_result.get(key) for key in expected}
+            if dep_observed != expected:
+                errors.append(f"C-MATH-007 mutation disagreement: {dep_observed} != {expected}")
+    if statuses.get(dep.get("claim_id")) != "lean_theorem":
         errors.append("C-MATH-007 is not typed as lean_theorem")
     dep_lean = ROOT / "formal" / "Basilisk" / "DependencyMutationWitness.lean"
     require_source_receipt(dep_path, dep_lean, errors)
