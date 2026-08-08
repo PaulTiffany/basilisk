@@ -11,6 +11,8 @@ mathlib dependency):
   * Contract.lean         — admissible-event predicate, trace lifting
   * Script.lean           — finite mirror of gate-relevant Python state/law
   * Authority.lean        — structured standing authority before Boolean projection
+  * AuthorityVectors.lean — mechanically transcribed structured authority corpus
+  * AuthorityAlgebra.lean — permission breadth and authorization-freshness joins
   * ControllerVectors.lean — shared Python/Lean observable gate vectors
   * WitnessAlgebra.lean   — typed transports, loss classes, commuting squares
   * LipschitzWitness.lean — shared JSON/NumPy/Lean counterexample instance
@@ -32,6 +34,8 @@ import Basilisk.Port
 import Basilisk.Contract
 import Basilisk.Script
 import Basilisk.Authority
+import Basilisk.AuthorityVectors
+import Basilisk.AuthorityAlgebra
 import Basilisk.ControllerVectors
 import Basilisk.WitnessAlgebra
 import Basilisk.ConstitutionalLipschitz
@@ -57,6 +61,19 @@ namespace Basilisk
 #print axioms ActionIntent.current_authorization_dominates_projection
 #print axioms ActionIntent.assessWithStanding_eq_assess_projection
 #print axioms standing_authority_does_not_replace_fresh_high_scope_authorization
+#print axioms authority_vectors_hold
+#print axioms RiskLevel.le_max_left
+#print axioms RiskLevel.le_max_right
+#print axioms PermissionProfile.le_join_left
+#print axioms PermissionProfile.le_join_right
+#print axioms PermissionProfile.covers_mono
+#print axioms PermissionProfile.join_preserves_left_coverage
+#print axioms PermissionProfile.join_preserves_right_coverage
+#print axioms AuthorityBasis.join_comm
+#print axioms AuthorityBasis.join_assoc
+#print axioms AuthorityBasis.join_idem
+#print axioms AuthorityBasis.standing_join_current
+#print axioms AuthorityBasis.none_join_standing
 #print axioms controller_vectors_hold
 #print axioms CommutesSquare.identity
 #print axioms CommutesSquare.postcompose
