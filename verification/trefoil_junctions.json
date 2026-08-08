@@ -1,0 +1,144 @@
+{
+  "schema_version": 1,
+  "principle": "Three-way completeness lines selected 2x2x2 junctions and distinguishes cyclic interaction from trivial or detached extensions.",
+  "topology_note": "Trefoil-like is an engineering interaction signature, not a topological knot invariant. It means all three pairwise links are nonzero somewhere and the declared third-order ActionGate ordinal residual is nonzero.",
+  "arthur_stop_note": "Design heuristic attributed to Arthur in prior discussion: meaning may be explored; commands require verification. Here that appears as explicit halt/release conditions rather than a global prohibition.",
+  "gate_ordinals": {
+    "proceed": 0,
+    "proceed_and_report": 1,
+    "checkpoint": 2,
+    "stop": 3
+  },
+  "halt_gates": ["checkpoint", "stop"],
+  "defaults": {
+    "within_contract": true,
+    "hard_boundary_violation": false,
+    "current_turn_explicit_authorization": false,
+    "reversible": true,
+    "rollback_available": true,
+    "inspectable": true,
+    "material_change": false,
+    "affects_external_system": false,
+    "audience_change": false,
+    "privacy_change": false,
+    "authority_expansion": false,
+    "scope": "low",
+    "uncertainty": "low",
+    "judgment_mode": "none",
+    "judgment_requested": false,
+    "concrete_immediate_safety_risk": false,
+    "destructive": false,
+    "standing_authorized": false
+  },
+  "required_topology_classes": ["trefoil_like", "unknot_control", "detached_strand_control"],
+  "junctions": [
+    {
+      "id": "TJ01-destructive-external-missing-fresh",
+      "topology_class": "trefoil_like",
+      "factors": [
+        {"label":"destructive","field":"destructive","off":false,"on":true},
+        {"label":"external-effect","field":"affects_external_system","off":false,"on":true},
+        {"label":"missing-fresh-authorization","field":"current_turn_explicit_authorization","off":true,"on":false}
+      ],
+      "base": {"standing_authorized":true},
+      "expected": {"000":"proceed","001":"proceed","010":"proceed_and_report","011":"proceed_and_report","100":"proceed","101":"proceed","110":"proceed_and_report","111":"checkpoint"},
+      "interaction_signature": {"linked_pairs":["AB","BC","CA"],"third_order_residual":1},
+      "stop_condition": {
+        "required_halt_corners":["111"],
+        "release_edges":[{"from":"111","to":"110","factor":"missing-fresh-authorization"}],
+        "nonrelease_edges":[],
+        "interpretation":"Standing authority can cover the external boundary but does not satisfy the fresh-authorization requirement created by destructive external action. Restoring fresh authorization releases checkpoint to reportable action."
+      }
+    },
+    {
+      "id": "TJ02-scope-uncertainty-missing-fresh",
+      "topology_class": "trefoil_like",
+      "factors": [
+        {"label":"high-scope","field":"scope","off":"low","on":"high"},
+        {"label":"critical-uncertainty","field":"uncertainty","off":"low","on":"critical"},
+        {"label":"missing-fresh-authorization","field":"current_turn_explicit_authorization","off":true,"on":false}
+      ],
+      "base": {},
+      "expected": {"000":"proceed","001":"proceed","010":"checkpoint","011":"checkpoint","100":"proceed","101":"checkpoint","110":"checkpoint","111":"checkpoint"},
+      "interaction_signature": {"linked_pairs":["AB","BC","CA"],"third_order_residual":-2},
+      "stop_condition": {
+        "required_halt_corners":["010","011","101","110","111"],
+        "release_edges":[],
+        "nonrelease_edges":[{"from":"111","to":"110","factor":"missing-fresh-authorization"}],
+        "interpretation":"Fresh authorization can release high scope alone, but critical uncertainty remains a checkpoint condition; authority does not erase epistemic uncertainty."
+      }
+    },
+    {
+      "id": "TJ03-privacy-audience-missing-standing",
+      "topology_class": "trefoil_like",
+      "factors": [
+        {"label":"privacy-change","field":"privacy_change","off":false,"on":true},
+        {"label":"audience-change","field":"audience_change","off":false,"on":true},
+        {"label":"missing-standing-authorization","field":"standing_authorized","off":true,"on":false}
+      ],
+      "base": {},
+      "expected": {"000":"proceed","001":"proceed","010":"proceed_and_report","011":"checkpoint","100":"proceed_and_report","101":"checkpoint","110":"proceed_and_report","111":"checkpoint"},
+      "interaction_signature": {"linked_pairs":["AB","BC","CA"],"third_order_residual":-1},
+      "stop_condition": {
+        "required_halt_corners":["011","101","111"],
+        "release_edges":[{"from":"111","to":"110","factor":"missing-standing-authorization"}],
+        "nonrelease_edges":[],
+        "interpretation":"Removing standing authorization turns either privacy or audience crossing into a checkpoint. Restoring standing authority releases the joint crossing to proceed-and-report without erasing either boundary reason."
+      }
+    },
+    {
+      "id": "TJ04-rollback-inspectability-destructive",
+      "topology_class": "trefoil_like",
+      "factors": [
+        {"label":"rollback-unavailable","field":"rollback_available","off":true,"on":false},
+        {"label":"uninspectable","field":"inspectable","off":true,"on":false},
+        {"label":"destructive","field":"destructive","off":false,"on":true}
+      ],
+      "base": {},
+      "expected": {"000":"proceed","001":"proceed","010":"proceed","011":"proceed","100":"proceed","101":"proceed_and_report","110":"proceed_and_report","111":"proceed_and_report"},
+      "interaction_signature": {"linked_pairs":["AB","BC","CA"],"third_order_residual":-1},
+      "stop_condition": {
+        "required_halt_corners":[],
+        "release_edges":[],
+        "nonrelease_edges":[],
+        "interpretation":"A nontrivial three-way interaction need not be a halt surface. Here the linked risk factors alter reporting thresholds while remaining inside the proceed family."
+      }
+    },
+    {
+      "id": "UC01-hard-boundary-authority-control",
+      "topology_class": "unknot_control",
+      "factors": [
+        {"label":"hard-boundary","field":"hard_boundary_violation","off":false,"on":true},
+        {"label":"missing-fresh-authorization","field":"current_turn_explicit_authorization","off":true,"on":false},
+        {"label":"missing-standing-authorization","field":"standing_authorized","off":true,"on":false}
+      ],
+      "base": {},
+      "expected": {"000":"proceed","001":"proceed","010":"proceed","011":"proceed","100":"stop","101":"stop","110":"stop","111":"stop"},
+      "interaction_signature": {"linked_pairs":[],"third_order_residual":0},
+      "stop_condition": {
+        "required_halt_corners":["100","101","110","111"],
+        "release_edges":[],
+        "nonrelease_edges":[{"from":"111","to":"110","factor":"missing-standing-authorization"},{"from":"111","to":"101","factor":"missing-fresh-authorization"}],
+        "interpretation":"Hard-boundary STOP is deliberately unlinked from either authority strand. This is the negative control: adding authorization dimensions does not turn the dominant stop into a trefoil interaction."
+      }
+    },
+    {
+      "id": "DC01-unrequested-judgment-action-authority",
+      "topology_class": "detached_strand_control",
+      "factors": [
+        {"label":"explicit-model-recommendation","field":"judgment_mode","off":"none","on":"explicit_model_recommendation"},
+        {"label":"request-missing","field":"judgment_requested","off":true,"on":false},
+        {"label":"fresh-action-authorization","field":"current_turn_explicit_authorization","off":false,"on":true}
+      ],
+      "base": {},
+      "expected": {"000":"proceed","001":"proceed","010":"proceed","011":"proceed","100":"proceed","101":"proceed","110":"stop","111":"stop"},
+      "interaction_signature": {"linked_pairs":["AB"],"third_order_residual":0},
+      "stop_condition": {
+        "required_halt_corners":["110","111"],
+        "release_edges":[{"from":"111","to":"101","factor":"request-missing"}],
+        "nonrelease_edges":[{"from":"110","to":"111","factor":"fresh-action-authorization"}],
+        "interpretation":"An unrequested model recommendation stops even when the action has fresh authorization. The release strand is request/verification, not action authority—the Arthur stop-condition distinction in executable form."
+      }
+    }
+  ]
+}
