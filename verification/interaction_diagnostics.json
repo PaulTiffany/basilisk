@@ -7,7 +7,7 @@
     {"id":"ID03-audience-and-privacy","square":"IX01-audience-privacy","corner":"11","reason_contains":["audience change","privacy boundary change"],"authority_basis":"none","report_required":false},
     {"id":"ID04-standing-external","square":"IX02-external-standing","corner":"11","reason_contains":["external-system effect","boundary was explicitly authorized"],"authority_basis":"standing","report_required":true},
     {"id":"ID05-fresh-authority-expansion","square":"IX03-authority-fresh","corner":"11","reason_contains":["authority expansion","boundary was explicitly authorized"],"authority_basis":"current_turn_explicit","report_required":true},
-    {"id":"ID06-hard-stop-dominates","square":"IX05-hard-boundary-fresh","corner":"11","reason_contains":["hard boundary violation"],"authority_basis":"none","report_required":false},
+    {"id":"ID06-hard-stop-dominates","square":"IX05-hard-boundary-fresh","corner":"11","reason_contains":["hard boundary violation"],"authority_basis":"current_turn_explicit","report_required":false},
     {"id":"ID07-risk-synergy-base","square":"IX09-rollback-inspectability","corner":"00","risk_score":0,"report_required":false},
     {"id":"ID08-risk-synergy-rollback","square":"IX09-rollback-inspectability","corner":"10","risk_score":2,"report_required":false},
     {"id":"ID09-risk-synergy-inspectability","square":"IX09-rollback-inspectability","corner":"01","risk_score":1,"report_required":false},
