@@ -56,6 +56,15 @@
       "interpretation": "This is the precise theorem program behind constitutional completion of integrability."
     },
     {
+      "id": "C-MATH-007",
+      "title": "A co-parent edge mutation changes the registered family closure",
+      "status": "lean_theorem",
+      "statement": "In the registered four-node dependency witness, adding the edge coparent→child causes coparent to enter the family closure of x.",
+      "depends_on": ["C-MATH-002"],
+      "witnesses": ["lean", "python", "mechanism"],
+      "interpretation": "This is a finite topology-change witness. It does not establish conditional independence or determine a constitutional gate by itself."
+    },
+    {
       "id": "C-MECH-001",
       "title": "Mutation runs are witnessed transformations",
       "status": "engineering_mechanism",
