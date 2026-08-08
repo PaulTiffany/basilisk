@@ -22,11 +22,12 @@ CHECKS = {
     "cross": ROOT / "verification" / "check_cross_witness.py",
     "domain": ROOT / "verification" / "check_domain_witnesses.py",
     "witness": ROOT / "verification" / "check_witness_graph.py",
+    "json": ROOT / "scripts" / "validate_json.py",
 }
 
 
 def clone_minimal(dst: Path) -> None:
-    for name in ("verification", "formal", "docs", "evals", "src"):
+    for name in ("verification", "formal", "docs", "evals", "src", "scripts", "spec", "examples"):
         src = ROOT / name
         if src.exists():
             shutil.copytree(src, dst / name)
@@ -103,7 +104,18 @@ def mutate_erase_loss_residual(root: Path) -> None:
 def mutate_false_exact_transport(root: Path) -> None:
     path = root / "verification" / "witness_graph.json"
     doc = json.loads(path.read_text(encoding="utf-8"))
-    next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")["loss_class"] = "exact"
+    edge = next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")
+    edge["loss_class"] = "exact"
+    edge["residual"] = ""
+    # No exactness_scope is added: exactness cannot be silently asserted.
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_fake_substrate_independence(root: Path) -> None:
+    path = root / "verification" / "witness_graph.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    next(n for n in doc["nodes"] if n["id"] == "R-LEAN")["substrate"] = "python"
+    next(n for n in doc["nodes"] if n["id"] == "R-LEAN-VECTORS")["substrate"] = "python"
     path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 
 
@@ -129,6 +141,20 @@ def mutate_dependency_source_but_keep_execution_consistent(root: Path) -> None:
     path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 
 
+def mutate_noop_dependency(root: Path) -> None:
+    path = root / "verification" / "dependency_mutation.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["mutation"] = {"operator": "add_edge", "edge": ["x", "child"]}
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_duplicate_json_key(root: Path) -> None:
+    path = root / "verification" / "lipschitz_counterexample.json"
+    text = path.read_text(encoding="utf-8")
+    text = text.replace('"schema_version": 1,', '"schema_version": 1,\n  "schema_version": 1,', 1)
+    path.write_text(text, encoding="utf-8")
+
+
 CASES = [
     ("bad provenance receipt", "provenance", mutate_bad_receipt),
     ("undeclared recursive justification", "recursivity", mutate_cycle),
@@ -139,8 +165,11 @@ CASES = [
     ("corrupted Lean vector transcription", "cross", mutate_lean_vector_transcription),
     ("erased transport residual", "witness", mutate_erase_loss_residual),
     ("falsely exact transport", "witness", mutate_false_exact_transport),
+    ("fake substrate independence", "witness", mutate_fake_substrate_independence),
     ("Lipschitz source changed behind Lean witness", "domain", mutate_lipschitz_source_but_keep_numeric_consistent),
     ("dependency source changed behind Lean witness", "domain", mutate_dependency_source_but_keep_execution_consistent),
+    ("no-op dependency mutation", "domain", mutate_noop_dependency),
+    ("duplicate JSON object key", "json", mutate_duplicate_json_key),
 ]
 
 
