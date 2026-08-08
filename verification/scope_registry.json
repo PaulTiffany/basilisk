@@ -28,7 +28,8 @@
     {"id":"C-MECH-008","layer":"bridge"},
     {"id":"C-MECH-009","layer":"core"},
     {"id":"C-MECH-010","layer":"core"},
-    {"id":"C-MECH-011","layer":"core"}
+    {"id":"C-MECH-011","layer":"core"},
+    {"id":"C-MECH-012","layer":"core"}
   ],
   "frontier_scope": [
     {"id":"CF-001","layer":"core","schedule":"deferred","reason":"Universal Python/Lean correspondence remains open, but current notebook_compiler language work is expected to reduce the cost of the Lean transport."},
