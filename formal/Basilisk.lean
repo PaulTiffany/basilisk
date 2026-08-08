@@ -19,6 +19,7 @@ mathlib dependency):
   * StagingGeometry.lean  — frame-indexed refinement and scale-invariant zero kernels
   * ParameterizedTime.lean — reflective history arrow and amortized parameter transport
   * AssumptionSurfaces.lean — countermodels for dropped composition hypotheses
+  * AssumptionNecessity.lean — countermodels for substantive theorem premises
   * JunctionTopology.lean — three-way interaction signatures and controls
   * Promotion.lean        — imagination/verification/authority promotion boundaries
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
@@ -46,6 +47,7 @@ import Basilisk.LipschitzWitness
 import Basilisk.StagingGeometry
 import Basilisk.ParameterizedTime
 import Basilisk.AssumptionSurfaces
+import Basilisk.AssumptionNecessity
 import Basilisk.JunctionTopology
 import Basilisk.Promotion
 import Basilisk.Materiality
@@ -95,6 +97,16 @@ namespace Basilisk
 #print axioms amortized_parameter_compilation_fixture
 #print axioms preserves_comp_needs_hT
 #print axioms preserves_comp_needs_hS
+#print axioms AssumptionNecessity.blanket_without_no_edges_can_fail
+#print axioms AssumptionNecessity.reachable_without_relation_inclusion_can_fail
+#print axioms AssumptionNecessity.postcompose_without_commuting_square_can_fail
+#print axioms AssumptionNecessity.covers_mono_without_profile_order_can_fail
+#print axioms AssumptionNecessity.covers_mono_without_source_coverage_can_fail
+#print axioms AssumptionNecessity.join_without_source_coverage_can_fail
+#print axioms AssumptionNecessity.zeroKernel_refinement_without_monotonicity_can_fail
+#print axioms AssumptionNecessity.zeroKernel_without_zero_premise_can_fail
+#print axioms AssumptionNecessity.zero_scale_does_not_preserve_zeroKernel
+#print axioms AssumptionNecessity.history_monotonicity_is_load_bearing
 #print axioms tj01TrefoilWitness
 #print axioms tj01StopReleaseWitness
 #print axioms uc01UnknotWitness
