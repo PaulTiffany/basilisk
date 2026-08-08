@@ -19,6 +19,7 @@ The repository currently contains:
 - finite materiality witnesses distinguishing shared obstruction from shared belief;
 - JSON schemas, examples, reference evaluations, and unit tests;
 - a dependency-free Lean 4 formal core with theorem inventory and axiom-audit surface;
+- a complete theorem-assumption exterior relative to the current formal inventory and explicit proof-premise naming discipline, including finite necessity witnesses for substantive premises;
 - claim/provenance bindings, formal-closure checks, frontier closure receipts, and mutation/meta-mutation checks.
 
 The controller trusts the typed features supplied to it. Natural-language extraction into those features remains outside the trusted core.
@@ -49,8 +50,11 @@ The following remain unsolved or deliberately incomplete:
 - **Universal Python/Lean controller correspondence (CF-001).** The gate has a finite 11-bit quotient and an exhaustive 2^11 truth table, but the complete cross-substrate equivalence argument remains open. This item is currently scheduled as deferred during consolidation while language/compiler infrastructure is improved elsewhere.
 - **Constitutional significance of dependency-topology change (CF-006).** Topology change is visible; its general gate consequence is not yet specified.
 - **Higher-order controller interaction sufficiency (CF-007).** Selected pairwise and three-way surfaces are lined; no general interaction-order sufficiency theorem exists.
-- **Complete theorem-assumption exterior (CF-008).** Countermodels do not yet cover every substantive formal hypothesis.
 - **Natural-language classification boundary (CF-009).** No bounded extractor/classifier is yet part of the trusted core.
+
+## Closed formal-assurance debt
+
+The theorem-assumption exterior (CF-008) is closed relative to the complete currently registered local Lean theorem/lemma inventory and the repository's explicit `h...` / `_h...` proof-premise naming discipline. Every such premise is classified as structural, definitional, or substantive; substantive premises resolve to registered finite necessity/countermodel witnesses. This does not claim that every hidden semantic assumption, conceivable theorem, or future formalization has already been discovered.
 
 ## Parked Research Bridges
 
