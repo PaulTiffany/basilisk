@@ -136,6 +136,15 @@
       "statement_sha256": "e0cace33aa6eaac898ffa91cdb15041260b38ff61a6e862bb386fff6bf624438",
       "semantic_claim_id": "C-MATH-003",
       "semantic_depends_on": []
+    },
+    {
+      "id": "F-016",
+      "module": "formal/Basilisk/ControllerVectors.lean",
+      "symbol": "controller_vectors_hold",
+      "signature": "theorem controller_vectors_hold : controllerVectorsProp",
+      "statement_sha256": "c00438a0375a4c57cce75db77545641473b08afbf946e3828bedf8731c219bb1",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
     }
   ]
 }
