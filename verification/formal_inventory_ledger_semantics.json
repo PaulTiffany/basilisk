@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FL-001","module":"formal/Basilisk/LedgerSemantics.lean","symbol":"chained_does_not_entail_claim_truth","signature":"theorem chained_does_not_entail_claim_truth : Ledger.chained [structurallyValidFalseClaim.structural] ∧ ¬ structurallyValidFalseClaim.claimTrue","statement_sha256":"b20431e0d10fe9ffa5056f21599d1ce9e0584e109202b1d33ef9961e6b9bcabb","semantic_claim_id":"C-MATH-009","semantic_depends_on":[]},
+    {"id":"FL-002","module":"formal/Basilisk/LedgerSemantics.lean","symbol":"lossless_record_does_not_entail_claim_truth","signature":"theorem lossless_record_does_not_entail_claim_truth : LedgerEntry.decode (LedgerEntry.encode structurallyValidFalseClaim.structural) = some structurallyValidFalseClaim.structural ∧ ¬ structurallyValidFalseClaim.claimTrue","statement_sha256":"621c812598a95d1d27d57833f6a0cbbc7891c08c7acf13d44d3c29994e2d1166","semantic_claim_id":"C-MATH-009","semantic_depends_on":[]}
+  ]
+}
