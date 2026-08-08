@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "principle": "Equal gates must not erase which semantic boundary, authority basis, or risk interaction produced them.",
+  "assertions": [
+    {"id":"ID01-audience-only","square":"IX01-audience-privacy","corner":"10","reason_contains":["audience change"],"reason_excludes":["privacy boundary change"],"authority_basis":"none","report_required":false},
+    {"id":"ID02-privacy-only","square":"IX01-audience-privacy","corner":"01","reason_contains":["privacy boundary change"],"reason_excludes":["audience change"],"authority_basis":"none","report_required":false},
+    {"id":"ID03-audience-and-privacy","square":"IX01-audience-privacy","corner":"11","reason_contains":["audience change","privacy boundary change"],"authority_basis":"none","report_required":false},
+    {"id":"ID04-standing-external","square":"IX02-external-standing","corner":"11","reason_contains":["external-system effect","boundary was explicitly authorized"],"authority_basis":"standing","report_required":true},
+    {"id":"ID05-fresh-authority-expansion","square":"IX03-authority-fresh","corner":"11","reason_contains":["authority expansion","boundary was explicitly authorized"],"authority_basis":"current_turn_explicit","report_required":true},
+    {"id":"ID06-hard-stop-dominates","square":"IX05-hard-boundary-fresh","corner":"11","reason_contains":["hard boundary violation"],"authority_basis":"none","report_required":false},
+    {"id":"ID07-risk-synergy-base","square":"IX09-rollback-inspectability","corner":"00","risk_score":0,"report_required":false},
+    {"id":"ID08-risk-synergy-rollback","square":"IX09-rollback-inspectability","corner":"10","risk_score":2,"report_required":false},
+    {"id":"ID09-risk-synergy-inspectability","square":"IX09-rollback-inspectability","corner":"01","risk_score":1,"report_required":false},
+    {"id":"ID10-risk-synergy-joint","square":"IX09-rollback-inspectability","corner":"11","risk_score":3,"reason_contains":["material or nontrivial authorized action requires report"],"report_required":true},
+    {"id":"ID11-critical-destructive-standing-insufficient","square":"IX10-destructive-external-standing","corner":"11","reason_contains":["critical destructive action requires fresh explicit authorization"],"authority_basis":"standing","report_required":false},
+    {"id":"ID12-critical-uncertainty-persists","square":"IX08-critical-uncertainty-fresh","corner":"11","reason_contains":["critical uncertainty changes the proper action gate"],"authority_basis":"current_turn_explicit","report_required":false}
+  ]
+}
