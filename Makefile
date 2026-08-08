@@ -1,4 +1,4 @@
-.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures scope-registry project-state controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation interpret paper clean package-check
+.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation interpret paper clean package-check
 
 compile:
 	python3 -m compileall -q src scripts verification tests examples
@@ -36,6 +36,9 @@ scope-registry:
 
 project-state:
 	python3 verification/render_project_state.py --check
+
+theorem-assumptions:
+	python3 verification/check_theorem_assumptions.py
 
 controller-vectors:
 	python3 verification/check_controller_vectors.py
@@ -89,8 +92,9 @@ meta-mutation:
 	python3 verification/meta_mutation_authority.py
 	python3 verification/meta_mutation_staging.py
 	python3 verification/meta_mutation_scope.py
+	python3 verification/meta_mutation_assumptions.py
 
-interpret: provenance recursivity numeric formal-closure frontier-closures scope-registry project-state controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation
+interpret: provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation
 
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
