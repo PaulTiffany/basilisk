@@ -44,7 +44,7 @@
 
 ## Open frontier scheduling
 
-- **Active Core debt:** 4
+- **Active Core debt:** 5
 - **Deferred Core debt:** 1
 - **Parked Bridge debt:** 3
 
@@ -54,6 +54,7 @@
 - `CF-006` — **Constitutional significance of dependency topology change** — The Core must eventually say what a declared dependency-topology change means constitutionally, not merely detect it.
 - `CF-007` — **Controller interactions beyond selected trefoil junctions** — Interaction-order sufficiency is an assurance question about the present controller surface.
 - `CF-009` — **Natural-language classification boundary** — Natural-language extraction is the boundary between the typed trusted core and real user requests.
+- `CF-013` — **Real-model empirical constitutional effectiveness** — The Core now has an empirical episode/scoring surface but no real-model comparative evidence that Basilisk mediation improves constitutional outcomes relative to simpler controls.
 
 ### Deferred
 
