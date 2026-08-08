@@ -6,28 +6,28 @@
       "kind": "lean",
       "path": "formal/Basilisk/ConstitutionalLipschitz.lean",
       "fragment": "theorem lipschitz_alone_not_constitutional :\n    ∃ T : TwoPoint → TwoPoint,\n      IsLipschitzNat twoPointDist twoPointDist 0 T ∧\n      ¬ PreservesPredicate T\n        (fun _ => True)\n        (fun y => y = TwoPoint.good) := by",
-      "sha256": "bdcdf8d84d548fbdc6aa29e5b12b90c54532cea963ef83d61b314ef622927c9a"
+      "sha256": "07f8ccc35409cf47830ca1242551a28a4fb4db92a00d7f853cbf00b2c9314e7b"
     },
     {
       "claim_id": "C-MATH-002",
       "kind": "lean",
       "path": "formal/Basilisk/DependencyCut.lean",
       "fragment": "def DepGraph.inFamilyClosure {V : Type} (G : DepGraph V) (x v : V) : Prop :=\n  G.isParent x v ∨ G.isChild x v ∨ G.isCoParent x v",
-      "sha256": "dff47718d61e73f5dd2ff5ae863a2b41f25192c0e90745810b7d6a3c1ee58a83"
+      "sha256": "08254231a845ce5427c7f20ed8c0b39a620bdc40756f3d9d90a660c051812f66"
     },
     {
       "claim_id": "C-MATH-003",
       "kind": "lean",
       "path": "formal/Basilisk/ConstitutionalLipschitz.lean",
       "fragment": "theorem PreservesPredicate.comp\n    {X Y Z : Type}\n    (T : X → Y)\n    (S : Y → Z)\n    (CX : X → Prop)\n    (CY : Y → Prop)\n    (CZ : Z → Prop)\n    (hT : PreservesPredicate T CX CY)\n    (hS : PreservesPredicate S CY CZ) :\n    PreservesPredicate (fun x => S (T x)) CX CZ := by",
-      "sha256": "07f8ccc35409cf47830ca1242551a28a4fb4db92a00d7f853cbf00b2c9314e7b"
+      "sha256": "81e5eb4d24d1299978531f5f51e961a6c7218916cebc337ef4537b852bf11163"
     },
     {
       "claim_id": "C-MATH-004",
       "kind": "prose",
       "path": "docs/mathematical-foundations.md",
       "fragment": "**Standard fact.** A nonnegative weighted sum of pseudometrics is a pseudometric. It is a metric only if zero total distance separates distinct actions—for example, if the positively weighted feature map is jointly injective (or another explicit separation condition holds).",
-      "sha256": "81e5eb4d24d1299978531f5f51e961a6c7218916cebc337ef4537b852bf11163"
+      "sha256": "e7ab2b4cdc254980e88f1581f239396774daebc4d8e718e82839ebbe37a9fb74"
     },
     {
       "claim_id": "C-MATH-005",
@@ -41,7 +41,7 @@
       "kind": "prose",
       "path": "docs/mathematical-foundations.md",
       "fragment": "The substantive research program is to determine which preservation predicates \\(C\\) and which dependency cuts are natural for specific systems, and which sufficient conditions are mathematically provable.",
-      "sha256": "bb2e75755e98be8e866d97ef3dbbb82e32849f5b59bd5975931898588553a267"
+      "sha256": "1cc90e111bc1de79f63e1caefbb2f1f5fe9bfa7f42d2e15ddff2476d28d739ed"
     },
     {
       "claim_id": "C-MECH-001",
