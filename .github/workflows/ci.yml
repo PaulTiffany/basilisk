@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: read
+  statuses: write
 
 concurrency:
   group: bis-bootstrap-${{ github.workflow }}-${{ github.ref }}
@@ -114,3 +115,39 @@ jobs:
           path: certification-receipt.json
           if-no-files-found: error
           retention-days: 90
+
+      - name: Publish commit certification status
+        if: github.event_name != 'pull_request'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TARGET_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import urllib.request
+
+          payload = json.dumps({
+              "state": "success",
+              "target_url": os.environ["TARGET_URL"],
+              "description": "package-check + Lean build green",
+              "context": "basilisk/certification",
+          }).encode("utf-8")
+          request = urllib.request.Request(
+              f"{os.environ['GITHUB_API_URL']}/repos/{os.environ['GITHUB_REPOSITORY']}/statuses/{os.environ['GITHUB_SHA']}",
+              data=payload,
+              method="POST",
+              headers={
+                  "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+                  "Accept": "application/vnd.github+json",
+                  "X-GitHub-Api-Version": "2022-11-28",
+                  "Content-Type": "application/json",
+              },
+          )
+          with urllib.request.urlopen(request, timeout=20) as response:
+              result = json.load(response)
+          print(
+              "CERTIFICATION STATUS PUBLISHED — "
+              f"sha={result['sha']} context={result['context']} state={result['state']}"
+          )
+          PY
