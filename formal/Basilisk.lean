@@ -16,6 +16,7 @@ mathlib dependency):
   * AssumptionSurfaces.lean — countermodels for dropped composition hypotheses
   * JunctionTopology.lean — three-way interaction signatures and controls
   * Promotion.lean        — imagination/verification/authority promotion boundaries
+  * Materiality.lean      — shared obstruction and recursive materialization witnesses
   * Blanket.lean          — direct-edge separator-property shape
   * DependencyCut.lean    — parent/child/co-parent family closure
   * DependencyMutationWitness.lean — shared topology-mutation instance
@@ -36,6 +37,7 @@ import Basilisk.LipschitzWitness
 import Basilisk.AssumptionSurfaces
 import Basilisk.JunctionTopology
 import Basilisk.Promotion
+import Basilisk.Materiality
 import Basilisk.Blanket
 import Basilisk.DependencyCut
 import Basilisk.DependencyMutationWitness
@@ -63,6 +65,9 @@ namespace Basilisk
 #print axioms ideal_cannot_self_authorize
 #print axioms verification_releases_assertion
 #print axioms human_authorization_releases_action
+#print axioms wall_shared_obstruction
+#print axioms shared_belief_not_obstruction
+#print axioms bridge_recursive_materialization
 #print axioms Contract.traceAdmissible_tail
 #print axioms Blanket.isSeparator_of_no_edges
 #print axioms DepGraph.familyClosure_iff
