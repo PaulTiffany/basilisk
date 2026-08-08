@@ -5,66 +5,38 @@
     {"id":"R-PYTHON","kind":"implementation","artifact":"src/map_lb/controller.py"},
     {"id":"R-LEAN","kind":"formal_model","artifact":"formal/Basilisk/Script.lean"},
     {"id":"R-LEAN-VECTORS","kind":"formal_witness","artifact":"formal/Basilisk/ControllerVectors.lean"},
-    {"id":"R-GATE","kind":"observable","artifact":"ActionGate"}
+    {"id":"R-GATE","kind":"observable","artifact":"ActionGate"},
+
+    {"id":"R-LIP-SPEC","kind":"shared_witness","artifact":"verification/lipschitz_counterexample.json"},
+    {"id":"R-LIP-NUMPY","kind":"numeric_witness","artifact":"verification/check_domain_witnesses.py"},
+    {"id":"R-LIP-LEAN","kind":"formal_witness","artifact":"formal/Basilisk/LipschitzWitness.lean"},
+    {"id":"R-LIP-OBS","kind":"observable","artifact":"verification/lipschitz_counterexample.json"},
+
+    {"id":"R-DEP-SPEC","kind":"shared_witness","artifact":"verification/dependency_mutation.json"},
+    {"id":"R-DEP-MUTATOR","kind":"mutation_witness","artifact":"verification/dependency_mutator.py"},
+    {"id":"R-DEP-LEAN","kind":"formal_witness","artifact":"formal/Basilisk/DependencyMutationWitness.lean"},
+    {"id":"R-DEP-OBS","kind":"observable","artifact":"verification/dependency_mutation.json"}
   ],
   "edges": [
-    {
-      "id":"T-VECTORS-PYTHON",
-      "source":"R-VECTORS",
-      "target":"R-PYTHON",
-      "claim_id":"C-MECH-002",
-      "loss_class":"projective",
-      "residual":"The shared corpus fixes only gate-relevant finite fields and a Boolean standing-authorized witness; it does not encode the full StandingAuthority object or free-text metadata.",
-      "checker":"verification/check_controller_vectors.py"
-    },
-    {
-      "id":"T-VECTORS-LEAN-VECTORS",
-      "source":"R-VECTORS",
-      "target":"R-LEAN-VECTORS",
-      "claim_id":"C-MECH-002",
-      "loss_class":"projective",
-      "residual":"JSON field names and enum strings are lowered into Lean constructors; action identity and descriptive metadata are intentionally absent.",
-      "checker":"verification/check_cross_witness.py"
-    },
-    {
-      "id":"T-LEAN-VECTORS-LEAN",
-      "source":"R-LEAN-VECTORS",
-      "target":"R-LEAN",
-      "claim_id":"C-MECH-002",
-      "loss_class":"exact",
-      "residual":"",
-      "checker":"formal/Basilisk/ControllerVectors.lean"
-    },
-    {
-      "id":"O-PYTHON-GATE",
-      "source":"R-PYTHON",
-      "target":"R-GATE",
-      "claim_id":"C-MECH-002",
-      "loss_class":"projective",
-      "residual":"Assessment reasons, score, authority basis, and report flag are projected away; only the gate is compared.",
-      "checker":"verification/check_controller_vectors.py"
-    },
-    {
-      "id":"O-LEAN-GATE",
-      "source":"R-LEAN",
-      "target":"R-GATE",
-      "claim_id":"C-MECH-002",
-      "loss_class":"exact",
-      "residual":"",
-      "checker":"formal/Basilisk/ControllerVectors.lean"
-    }
+    {"id":"T-VECTORS-PYTHON","source":"R-VECTORS","target":"R-PYTHON","claim_id":"C-MECH-002","loss_class":"projective","residual":"The shared corpus fixes only gate-relevant finite fields and a Boolean standing-authorized witness; it does not encode the full StandingAuthority object or free-text metadata.","checker":"verification/check_controller_vectors.py"},
+    {"id":"T-VECTORS-LEAN-VECTORS","source":"R-VECTORS","target":"R-LEAN-VECTORS","claim_id":"C-MECH-002","loss_class":"projective","residual":"JSON field names and enum strings are lowered into Lean constructors; action identity and descriptive metadata are intentionally absent.","checker":"verification/check_cross_witness.py"},
+    {"id":"T-LEAN-VECTORS-LEAN","source":"R-LEAN-VECTORS","target":"R-LEAN","claim_id":"C-MECH-002","loss_class":"exact","residual":"","checker":"formal/Basilisk/ControllerVectors.lean"},
+    {"id":"O-PYTHON-GATE","source":"R-PYTHON","target":"R-GATE","claim_id":"C-MECH-002","loss_class":"projective","residual":"Assessment reasons, score, authority basis, and report flag are projected away; only the gate is compared.","checker":"verification/check_controller_vectors.py"},
+    {"id":"O-LEAN-GATE","source":"R-LEAN","target":"R-GATE","claim_id":"C-MECH-002","loss_class":"exact","residual":"","checker":"formal/Basilisk/ControllerVectors.lean"},
+
+    {"id":"T-LIP-SPEC-NUMPY","source":"R-LIP-SPEC","target":"R-LIP-NUMPY","claim_id":"C-MATH-001","loss_class":"projective","residual":"The NumPy path evaluates the registered finite carrier, map, distance, and predicates but does not carry a proof object or generalize beyond the finite witness.","checker":"verification/check_domain_witnesses.py"},
+    {"id":"O-LIP-NUMPY","source":"R-LIP-NUMPY","target":"R-LIP-OBS","claim_id":"C-MATH-001","loss_class":"projective","residual":"Only the observed Lipschitz constant and predicate-preservation result are compared.","checker":"verification/check_domain_witnesses.py"},
+    {"id":"T-LIP-SPEC-LEAN","source":"R-LIP-SPEC","target":"R-LIP-LEAN","claim_id":"C-MATH-001","loss_class":"interpretive","residual":"JSON labels are lowered into the existing Lean TwoPoint carrier, discrete distance, collapseToBad map, and predicates; the source hash and semantic tokens are checked mechanically.","checker":"verification/check_domain_witnesses.py"},
+    {"id":"O-LIP-LEAN","source":"R-LIP-LEAN","target":"R-LIP-OBS","claim_id":"C-MATH-001","loss_class":"projective","residual":"The richer Lean proof object is observed only through the registered 0-Lipschitz and non-preservation facts.","checker":"formal/Basilisk/LipschitzWitness.lean"},
+
+    {"id":"T-DEP-SPEC-MUTATOR","source":"R-DEP-SPEC","target":"R-DEP-MUTATOR","claim_id":"C-MATH-007","loss_class":"projective","residual":"JSON serialization order and formatting are discarded when the edge set is loaded; graph vertices, directed edges, distinguished node, and mutation operator are preserved.","checker":"verification/dependency_mutator.py"},
+    {"id":"O-DEP-MUTATOR","source":"R-DEP-MUTATOR","target":"R-DEP-OBS","claim_id":"C-MATH-007","loss_class":"projective","residual":"The executable mutation emits family-closure membership plus mutation provenance, not a general theorem over all dependency graphs.","checker":"verification/check_domain_witnesses.py"},
+    {"id":"T-DEP-SPEC-LEAN","source":"R-DEP-SPEC","target":"R-DEP-LEAN","claim_id":"C-MATH-007","loss_class":"interpretive","residual":"String-labeled vertices and edge lists are lowered into the finite DNode inductive type and Boolean edge functions; source hash and mutation tokens are checked mechanically.","checker":"verification/check_domain_witnesses.py"},
+    {"id":"O-DEP-LEAN","source":"R-DEP-LEAN","target":"R-DEP-OBS","claim_id":"C-MATH-007","loss_class":"projective","residual":"The Lean theorem observes only that the target co-parent is absent before and present after; it does not claim Bayesian conditional independence or constitutional significance.","checker":"formal/Basilisk/DependencyMutationWitness.lean"}
   ],
   "agreements": [
-    {
-      "id":"A-CONTROLLER-GATE",
-      "claim_id":"C-MECH-002",
-      "source":"R-VECTORS",
-      "observable":"R-GATE",
-      "paths":[
-        ["T-VECTORS-PYTHON","O-PYTHON-GATE"],
-        ["T-VECTORS-LEAN-VECTORS","T-LEAN-VECTORS-LEAN","O-LEAN-GATE"]
-      ],
-      "scope":"The 16 registered finite controller vectors only; this is not universal Python/Lean functional equivalence."
-    }
+    {"id":"A-CONTROLLER-GATE","claim_id":"C-MECH-002","source":"R-VECTORS","observable":"R-GATE","paths":[["T-VECTORS-PYTHON","O-PYTHON-GATE"],["T-VECTORS-LEAN-VECTORS","T-LEAN-VECTORS-LEAN","O-LEAN-GATE"]],"scope":"The 16 registered finite controller vectors only; this is not universal Python/Lean functional equivalence."},
+    {"id":"A-LIPSCHITZ-COUNTEREXAMPLE","claim_id":"C-MATH-001","source":"R-LIP-SPEC","observable":"R-LIP-OBS","paths":[["T-LIP-SPEC-NUMPY","O-LIP-NUMPY"],["T-LIP-SPEC-LEAN","O-LIP-LEAN"]],"scope":"The registered two-point counterexample only. NumPy supplies a finite numerical witness; Lean supplies the proof. Agreement does not promote NumPy to a proof engine."},
+    {"id":"A-DEPENDENCY-MUTATION","claim_id":"C-MATH-007","source":"R-DEP-SPEC","observable":"R-DEP-OBS","paths":[["T-DEP-SPEC-MUTATOR","O-DEP-MUTATOR"],["T-DEP-SPEC-LEAN","O-DEP-LEAN"]],"scope":"The registered four-node edge-addition witness only. It establishes a family-closure topology change, not a probabilistic Markov-blanket theorem or a constitutional gate."}
   ]
 }
