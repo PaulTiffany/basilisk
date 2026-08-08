@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
-  "description": "Finite pre-collapse standing-authority vectors. Python evaluates real StandingAuthority.covers; Lean mirrors the same semantic fields with expiry already reduced to a Boolean.",
+  "evaluation_time": "2026-08-08T00:00:00Z",
+  "description": "Finite pre-collapse standing-authority vectors. Python evaluates real StandingAuthority.covers at the pinned evaluation_time; Lean mirrors the same semantic fields with expiry reduced deterministically to a Boolean at that instant.",
   "cases": [
     {"id":"A01-external-covered","action_class":"deploy","scope":"moderate","current_turn_explicit_authorization":false,"affects_external_system":true,"audience_change":false,"privacy_change":false,"authority_expansion":false,"authority":{"allowed_actions":["deploy"],"max_scope":"moderate","allow_external_write":true,"allow_audience_change":false,"allow_privacy_change":false,"allow_authority_expansion":false,"active":true,"expires_at":null},"expected_covers":true,"expected_authorized":true,"expected_gate":"proceed_and_report"},
     {"id":"A02-inactive","action_class":"deploy","scope":"moderate","current_turn_explicit_authorization":false,"affects_external_system":true,"audience_change":false,"privacy_change":false,"authority_expansion":false,"authority":{"allowed_actions":["deploy"],"max_scope":"moderate","allow_external_write":true,"allow_audience_change":false,"allow_privacy_change":false,"allow_authority_expansion":false,"active":false,"expires_at":null},"expected_covers":false,"expected_authorized":false,"expected_gate":"checkpoint"},
