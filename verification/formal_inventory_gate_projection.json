@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FGP-001","module":"formal/Basilisk/GateProjection.lean","symbol":"ActionIntent.assess_eq_gateProjection","signature":"theorem ActionIntent.assess_eq_gateProjection (a : ActionIntent) (authorized : Bool) : a.assess authorized = (a.gateProjection authorized).gate","statement_sha256":"bf5d56f4e4a5027c28c6910ec8cedbf50d7d3a50cb1d50e1b30b959c9e0ba54d","semantic_claim_id":null,"semantic_depends_on":[]}
+  ]
+}
