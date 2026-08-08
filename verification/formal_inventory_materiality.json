@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "normalization": "collapse-whitespace; theorem/lemma declaration through but excluding :=",
+  "formal_claims": [
+    {"id":"FM-001","module":"formal/Basilisk/Materiality.lean","symbol":"wall_shared_obstruction","signature":"theorem wall_shared_obstruction : SharedObstruction2 wallA wallB","statement_sha256":"37f55c863339dc15ebaeb72c5b1beb96201661c2fd776cf297c18500fa119f92","semantic_claim_id":"C-MECH-008","semantic_depends_on":[]},
+    {"id":"FM-002","module":"formal/Basilisk/Materiality.lean","symbol":"shared_belief_not_obstruction","signature":"theorem shared_belief_not_obstruction : ¬ SharedObstruction2 beliefA beliefB","statement_sha256":"fda36939a8f79c45915544dbe301f3973a301b8bec7219fbd32e944c9042f902","semantic_claim_id":"C-MECH-008","semantic_depends_on":[]},
+    {"id":"FM-003","module":"formal/Basilisk/Materiality.lean","symbol":"bridge_recursive_materialization","signature":"theorem bridge_recursive_materialization : RecursiveMaterialization2 bridgeTransition bridgeA bridgeB","statement_sha256":"f9050dc86ec8527f8b15063c6f5456639479e5888624158aa304e7ff8bc763da","semantic_claim_id":"C-MECH-008","semantic_depends_on":[]}
+  ]
+}
