@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MECH-009","kind":"python","path":"src/map_lb/controller.py","fragment":"def assess_action(\n    intent: ActionIntent,\n    standing_authority: StandingAuthority | None = None,\n) -> Assessment:","sha256":"00829b1b0177458ed0213930edad9b5436297437d4d557ca38af6d20866a7f87"},
+    {"claim_id":"C-MECH-009","kind":"lean","path":"formal/Basilisk/Authority.lean","fragment":"def StandingAuthority.covers\n    (auth : StandingAuthority) (actionClass : String) (a : ActionIntent) : Bool :=","sha256":"1ee83b98d1c9dbd780f65fb9063dd505924dfbca33b72b3c602829d8fec38d26"},
+    {"claim_id":"C-MECH-009","kind":"mechanism","path":"verification/check_authority_vectors.py","fragment":"print(f\"AUTHORITY VECTOR CHECK: PASS — {len(cases)} structured authority vectors\")","sha256":"c7ef01dd7239db01f996611e6b07f1e7f28a1a6f95c9288ecce2878ff2d2978e"}
+  ]
+}
