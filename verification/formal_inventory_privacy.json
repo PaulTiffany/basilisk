@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FPR-001","module":"formal/Basilisk/Privacy.lean","symbol":"selective_and_total_have_same_accountability_view","signature":"theorem selective_and_total_have_same_accountability_view : selectiveDisclosure.accountabilityView = totalExposure.accountabilityView","statement_sha256":"03b8629ac5459ed9a00906ac039730c072da4fb6dd3d4c5d7a7646282558fa83","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FPR-002","module":"formal/Basilisk/Privacy.lean","symbol":"sufficient_accountability_does_not_require_total_exposure","signature":"theorem sufficient_accountability_does_not_require_total_exposure : selectiveDisclosure.sufficientForAccountability = true ∧ selectiveDisclosure.privateInteriorExposed = false","statement_sha256":"52dfe09ff56a4f24fd5c1f97dcfe416ca7c9f4941beecd50a9e540db8d7cce82","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FPR-003","module":"formal/Basilisk/Privacy.lean","symbol":"total_exposure_adds_no_accountability_sufficiency","signature":"theorem total_exposure_adds_no_accountability_sufficiency : selectiveDisclosure.sufficientForAccountability = totalExposure.sufficientForAccountability","statement_sha256":"38b4dbe9aef393205e36923634afb290ce467f184e527bc6a228f75a5e6d3436","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FPR-004","module":"formal/Basilisk/Privacy.lean","symbol":"equal_accountability_evidence_can_differ_on_privacy","signature":"theorem equal_accountability_evidence_can_differ_on_privacy : selectiveDisclosure.accountabilityView = totalExposure.accountabilityView ∧ selectiveDisclosure.privateInteriorExposed ≠ totalExposure.privateInteriorExposed","statement_sha256":"6ff1df4b8a03a5b34b93903a4aad2e56bcdf4ba4ff73f0d126d01fd093dc3ed7","semantic_claim_id":null,"semantic_depends_on":[]}
+  ]
+}
