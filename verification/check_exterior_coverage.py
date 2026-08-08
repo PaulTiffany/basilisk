@@ -5,6 +5,7 @@ A controller surface is a minimal pair: two states differing in exactly one
 registered coordinate. Dependency completeness requires add/remove witnesses for
 parent, child, and co-parent roles. Transport completeness requires every declared
 loss class. Theorem completeness requires countermodels for selected hypotheses.
+A nonempty frontier must remain explicit until separately closed.
 """
 
 from __future__ import annotations
@@ -67,6 +68,9 @@ def changed_coordinates(before: dict, after: dict) -> set[str]:
 def main() -> int:
     errors: list[str] = []
     spec = json.loads(SPEC.read_text(encoding="utf-8"))
+    if spec.get("schema_version") != 1:
+        errors.append(f"unsupported exterior schema_version: {spec.get('schema_version')!r}")
+
     controller = spec["controller"]
     defaults = controller["defaults"]
     required_fields = set(controller["required_surface_fields"])
@@ -138,6 +142,8 @@ def main() -> int:
             errors.append(f"controller exterior missing {field} values: {sorted(missing)}")
 
     dep_doc = json.loads(DEP.read_text(encoding="utf-8"))
+    if dep_doc.get("schema_version") != 1:
+        errors.append(f"unsupported dependency exterior schema_version: {dep_doc.get('schema_version')!r}")
     required_roles = set(spec["dependency"]["required_role_mutations"])
     dep_cases = dep_doc.get("cases", [])
     dep_ids = {case.get("id") for case in dep_cases}
@@ -195,6 +201,27 @@ def main() -> int:
         if symbol not in symbols:
             errors.append(f"assumption countermodel not in formal inventory: {symbol}")
 
+    frontier_path = ROOT / spec["frontier"]["artifact"]
+    if not frontier_path.exists():
+        errors.append(f"missing completeness frontier artifact: {frontier_path.relative_to(ROOT)}")
+        frontier_items = []
+    else:
+        frontier_doc = json.loads(frontier_path.read_text(encoding="utf-8"))
+        if frontier_doc.get("schema_version") != 1:
+            errors.append(f"unsupported completeness frontier schema_version: {frontier_doc.get('schema_version')!r}")
+        frontier_items = frontier_doc.get("frontier", [])
+        frontier_ids = [item.get("id") for item in frontier_items]
+        if len(frontier_ids) != len(set(frontier_ids)):
+            errors.append("duplicate completeness frontier IDs")
+        for item in frontier_items:
+            if item.get("status") != "open":
+                errors.append(f"{item.get('id')}: frontier item must be explicitly open until separately closed")
+            for key in ("surface", "gap", "closure_condition"):
+                if not str(item.get(key, "")).strip():
+                    errors.append(f"{item.get('id')}: frontier item lacks {key}")
+    if spec["frontier"].get("required_nonempty", False) and not frontier_items:
+        errors.append("completeness frontier must remain nonempty until a separate closure argument changes policy")
+
     if errors:
         print("EXTERIOR COMPLETENESS CHECK: FAIL")
         for error in errors:
@@ -205,7 +232,8 @@ def main() -> int:
         "EXTERIOR COMPLETENESS CHECK: PASS — "
         f"{len(surfaces)} minimal controller surfaces, {len(probes)} enum probes, "
         f"{len(dep_cases)} dependency role mutations, {len(required_losses)} loss classes, "
-        f"{len(spec['assumption_surfaces']['required'])} theorem-assumption countermodels"
+        f"{len(spec['assumption_surfaces']['required'])} theorem-assumption countermodels, "
+        f"{len(frontier_items)} explicit open frontier items"
     )
     return 0
 
