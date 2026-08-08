@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "nodes": [
+    {"id":"R-VECTORS","kind":"shared_corpus","artifact":"verification/controller_vectors.json"},
+    {"id":"R-PYTHON","kind":"implementation","artifact":"src/map_lb/controller.py"},
+    {"id":"R-LEAN","kind":"formal_model","artifact":"formal/Basilisk/Script.lean"},
+    {"id":"R-LEAN-VECTORS","kind":"formal_witness","artifact":"formal/Basilisk/ControllerVectors.lean"},
+    {"id":"R-GATE","kind":"observable","artifact":"ActionGate"}
+  ],
+  "edges": [
+    {
+      "id":"T-VECTORS-PYTHON",
+      "source":"R-VECTORS",
+      "target":"R-PYTHON",
+      "claim_id":"C-MECH-002",
+      "loss_class":"projective",
+      "residual":"The shared corpus fixes only gate-relevant finite fields and a Boolean standing-authorized witness; it does not encode the full StandingAuthority object or free-text metadata.",
+      "checker":"verification/check_controller_vectors.py"
+    },
+    {
+      "id":"T-VECTORS-LEAN-VECTORS",
+      "source":"R-VECTORS",
+      "target":"R-LEAN-VECTORS",
+      "claim_id":"C-MECH-002",
+      "loss_class":"projective",
+      "residual":"JSON field names and enum strings are lowered into Lean constructors; action identity and descriptive metadata are intentionally absent.",
+      "checker":"verification/check_cross_witness.py"
+    },
+    {
+      "id":"T-LEAN-VECTORS-LEAN",
+      "source":"R-LEAN-VECTORS",
+      "target":"R-LEAN",
+      "claim_id":"C-MECH-002",
+      "loss_class":"exact",
+      "residual":"",
+      "checker":"formal/Basilisk/ControllerVectors.lean"
+    },
+    {
+      "id":"O-PYTHON-GATE",
+      "source":"R-PYTHON",
+      "target":"R-GATE",
+      "claim_id":"C-MECH-002",
+      "loss_class":"projective",
+      "residual":"Assessment reasons, score, authority basis, and report flag are projected away; only the gate is compared.",
+      "checker":"verification/check_controller_vectors.py"
+    },
+    {
+      "id":"O-LEAN-GATE",
+      "source":"R-LEAN",
+      "target":"R-GATE",
+      "claim_id":"C-MECH-002",
+      "loss_class":"exact",
+      "residual":"",
+      "checker":"formal/Basilisk/ControllerVectors.lean"
+    }
+  ],
+  "agreements": [
+    {
+      "id":"A-CONTROLLER-GATE",
+      "claim_id":"C-MECH-002",
+      "source":"R-VECTORS",
+      "observable":"R-GATE",
+      "paths":[
+        ["T-VECTORS-PYTHON","O-PYTHON-GATE"],
+        ["T-VECTORS-LEAN-VECTORS","T-LEAN-VECTORS-LEAN","O-LEAN-GATE"]
+      ],
+      "scope":"The 16 registered finite controller vectors only; this is not universal Python/Lean functional equivalence."
+    }
+  ]
+}
