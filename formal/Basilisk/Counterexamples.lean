@@ -22,6 +22,7 @@ def scriptHonest : ActionIntent → Bool → ActionGate := ActionIntent.assess
 def hiddenViolationIntent : ActionIntent :=
   { withinContract := true, hardBoundaryViolation := true,
     currentTurnExplicitAuthorization := false, reversible := true,
+    rollbackAvailable := true, inspectable := true,
     materialChange := false, affectsExternalSystem := false,
     audienceChange := false, privacyChange := false,
     authorityExpansion := false, scope := .low, uncertainty := .low,
@@ -33,6 +34,7 @@ def hiddenViolationIntent : ActionIntent :=
 def observedIntent : ActionIntent :=
   { withinContract := true, hardBoundaryViolation := false,
     currentTurnExplicitAuthorization := false, reversible := true,
+    rollbackAvailable := true, inspectable := true,
     materialChange := false, affectsExternalSystem := false,
     audienceChange := false, privacyChange := false,
     authorityExpansion := false, scope := .low, uncertainty := .low,
@@ -60,11 +62,7 @@ theorem scriptHonest_ne_scriptSneaky :
     Scripts are genuinely different functions (previous theorem). A
     Ledger built from the observed trace alone cannot rule out the
     presence of a hidden Script that only deviates off-trace. This is
-    the machine-checked counterpart of `finite_quartet.py`'s Python
-    demo, and directly supports Assurance Case Claim C6 while leaving
-    its stated gap (`Claim C6`'s "full non-collapse theorem program
-    remains open") honestly unresolved — this is one witnessed
-    instance, not a general theorem quantifying over all Scripts. -/
+    one witnessed instance, not a general theorem over all Scripts. -/
 theorem ledger_does_not_identify_script :
     scriptHonest observedIntent false = scriptSneaky observedIntent false := by
   decide
