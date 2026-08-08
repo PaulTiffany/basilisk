@@ -22,11 +22,13 @@ CHECKS = {
     "recursivity": ROOT / "verification" / "check_recursivity.py",
     "numeric": ROOT / "verification" / "check_numeric.py",
     "formal": ROOT / "verification" / "check_formal_closure.py",
+    "controller": ROOT / "verification" / "check_controller_vectors.py",
+    "cross": ROOT / "verification" / "check_cross_witness.py",
 }
 
 
 def clone_minimal(dst: Path) -> None:
-    for name in ("verification", "formal", "docs", "evals"):
+    for name in ("verification", "formal", "docs", "evals", "src"):
         src = ROOT / name
         if src.exists():
             shutil.copytree(src, dst / name)
@@ -84,12 +86,32 @@ def mutate_remove_root_import(root: Path) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def mutate_vector_expected_gate(root: Path) -> None:
+    path = root / "verification" / "controller_vectors.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["cases"][0]["expected_gate"] = "stop"
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_lean_vector_transcription(root: Path) -> None:
+    path = root / "formal" / "Basilisk" / "ControllerVectors.lean"
+    text = path.read_text(encoding="utf-8")
+    old = ".assess false = .proceed ∧"
+    new = ".assess false = .stop ∧"
+    if old not in text:
+        raise RuntimeError("expected V01 Lean vector expression not found")
+    text = text.replace(old, new, 1)
+    path.write_text(text, encoding="utf-8")
+
+
 CASES = [
     ("bad provenance receipt", "provenance", mutate_bad_receipt),
     ("undeclared recursive justification", "recursivity", mutate_cycle),
     ("falsified numerical evidence", "numeric", mutate_numeric_expected),
     ("unregistered Lean theorem", "formal", mutate_remove_inventory_entry),
     ("unreachable Lean proof module", "formal", mutate_remove_root_import),
+    ("false shared controller expectation", "controller", mutate_vector_expected_gate),
+    ("corrupted Lean vector transcription", "cross", mutate_lean_vector_transcription),
 ]
 
 
