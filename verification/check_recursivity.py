@@ -8,9 +8,11 @@ unless the exact component is declared in recursion_policy.allowed_components.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(os.environ.get("BASILISK_ROOT", DEFAULT_ROOT)).resolve()
 CLAIMS_PATH = ROOT / "verification" / "claims.json"
 
 
