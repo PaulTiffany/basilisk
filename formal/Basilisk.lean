@@ -10,9 +10,10 @@ mathlib dependency):
   * Port.lean             — typed ports, Ω_p = I_p × O_p (not yet wired
                             into Script.lean's concrete model)
   * Contract.lean         — admissible-event predicate, trace lifting
-  * Script.lean           — a faithful finite mirror of
-                            `src/map_lb/controller.py`'s `assess_action`
-                            gate-priority logic
+  * Script.lean           — finite mirror of the gate-relevant Python
+                            controller state and decision law
+  * ControllerVectors.lean — shared Python/Lean observable gate vectors
+                            proved by computation on the Lean side
   * Blanket.lean          — direct-edge separator-property shape over a
                             dependency graph; not a probability theorem
   * DependencyCut.lean    — exact finite parent/child/co-parent family
@@ -36,6 +37,7 @@ and natural-language classification. Those remain explicit next targets.
 import Basilisk.Port
 import Basilisk.Contract
 import Basilisk.Script
+import Basilisk.ControllerVectors
 import Basilisk.Blanket
 import Basilisk.DependencyCut
 import Basilisk.Ledger
@@ -49,6 +51,7 @@ namespace Basilisk
 /- Axiom audit: the core should use only decidable/computational
    reasoning, propext, and Classical.choice if invoked anywhere. -/
 #print axioms ActionGate.fromNat_toNat
+#print axioms controller_vectors_hold
 #print axioms Contract.traceAdmissible_tail
 #print axioms Blanket.isSeparator_of_no_edges
 #print axioms DepGraph.familyClosure_iff
