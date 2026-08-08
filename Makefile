@@ -1,4 +1,7 @@
-.PHONY: test eval validate example provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph meta-mutation interpret paper clean package-check
+.PHONY: compile test eval validate example provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph meta-mutation interpret paper clean package-check
+
+compile:
+	python3 -m compileall -q src scripts verification tests examples
 
 test:
 	python3 -m unittest discover -s tests -v
@@ -45,7 +48,7 @@ interpret: provenance recursivity numeric formal-closure controller-vectors cros
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 
-package-check: test eval validate example interpret
+package-check: compile test eval validate example interpret
 
 clean:
 	cd paper && latexmk -C
