@@ -81,6 +81,15 @@
       "depends_on": [],
       "witnesses": ["python", "lean", "mechanism"],
       "interpretation": "Cross-substrate agreement is mechanically checked on a finite observable corpus; this is not yet a universal equivalence theorem."
+    },
+    {
+      "id": "C-MECH-003",
+      "title": "Declared semantic exteriors are mechanically lined",
+      "status": "engineering_mechanism",
+      "statement": "Every semantic surface currently declared in exterior_coverage.json has a mechanical witness: minimal controller pairs, dependency role add/remove mutations, transport loss classes, and selected theorem-assumption countermodels.",
+      "depends_on": ["C-MECH-002", "C-MATH-002", "C-MATH-003"],
+      "witnesses": ["mechanism"],
+      "interpretation": "This is completeness relative to the declared exterior registry, not a claim that the registry already contains every important future surface."
     }
   ],
   "recursion_policy": {
