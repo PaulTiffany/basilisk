@@ -3,8 +3,11 @@
 
 The semantic claim Atlas is intentionally small. This checker separately requires
 that every local theorem/lemma declaration in formal/Basilisk/*.lean is registered
-in formal_inventory.json, has the same normalized statement fingerprint, and is
-reachable from the root formal/Basilisk.lean import surface.
+in one of verification/formal_inventory*.json, has the same normalized statement
+fingerprint, and is reachable from the root formal/Basilisk.lean import surface.
+
+Inventory shards are merged deterministically by filename. IDs and theorem symbols
+remain globally unique across shards; sharding is organizational, not semantic.
 """
 
 from __future__ import annotations
@@ -19,7 +22,7 @@ DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 ROOT = Path(os.environ.get("BASILISK_ROOT", DEFAULT_ROOT)).resolve()
 FORMAL_DIR = ROOT / "formal" / "Basilisk"
 ROOT_KERNEL = ROOT / "formal" / "Basilisk.lean"
-INVENTORY = ROOT / "verification" / "formal_inventory.json"
+INVENTORY_GLOB = "formal_inventory*.json"
 CLAIMS = ROOT / "verification" / "claims.json"
 
 DECL_START = re.compile(r"^(theorem|lemma)\s+([A-Za-z0-9_'.]+)")
@@ -35,13 +38,6 @@ def sha256(text: str) -> str:
 
 
 def extract_declarations(path: Path) -> list[dict]:
-    """Extract theorem/lemma signatures, stopping immediately before `:=` or `:= by`.
-
-    The current kernel uses ordinary top-level declarations. This scanner is
-    deliberately conservative: if it encounters a declaration start but cannot find
-    its terminator before another declaration begins, closure fails rather than
-    silently skipping it.
-    """
     lines = path.read_text(encoding="utf-8").splitlines()
     out: list[dict] = []
     i = 0
@@ -69,8 +65,7 @@ def extract_declarations(path: Path) -> list[dict]:
             terminated = ":=" in nxt
 
         joined = " ".join(parts)
-        signature = joined.split(":=", 1)[0].rstrip()
-        signature = normalize(signature)
+        signature = normalize(joined.split(":=", 1)[0].rstrip())
         out.append(
             {
                 "kind": kind,
@@ -87,27 +82,44 @@ def module_name(path: Path) -> str:
     return path.stem
 
 
+def load_inventory_entries(errors: list[str]) -> tuple[list[dict], list[str]]:
+    paths = sorted((ROOT / "verification").glob(INVENTORY_GLOB))
+    if not paths:
+        errors.append("no formal inventory shards found")
+        return [], []
+    entries: list[dict] = []
+    names: list[str] = []
+    for path in paths:
+        names.append(path.name)
+        try:
+            doc = json.loads(path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as exc:
+            errors.append(f"{path.name}: malformed JSON: {exc}")
+            continue
+        if doc.get("schema_version") != 1:
+            errors.append(f"{path.name}: unsupported schema_version {doc.get('schema_version')!r}")
+        entries.extend(doc.get("formal_claims", []))
+    return entries, names
+
+
 def main() -> int:
     errors: list[str] = []
 
-    inventory_doc = json.loads(INVENTORY.read_text(encoding="utf-8"))
-    entries = inventory_doc.get("formal_claims", [])
+    entries, inventory_names = load_inventory_entries(errors)
     claims_doc = json.loads(CLAIMS.read_text(encoding="utf-8"))
     semantic_ids = {c["id"] for c in claims_doc.get("claims", [])}
 
     ids = [e.get("id") for e in entries]
     if len(ids) != len(set(ids)):
-        errors.append("duplicate formal inventory IDs")
+        errors.append("duplicate formal inventory IDs across shards")
     symbols = [e.get("symbol") for e in entries]
     if len(symbols) != len(set(symbols)):
-        errors.append("duplicate formal theorem symbols in inventory")
+        errors.append("duplicate formal theorem symbols across inventory shards")
 
     by_key = {(e.get("module"), e.get("symbol")): e for e in entries}
 
     discovered: dict[tuple[str, str], dict] = {}
-    module_files = sorted(
-        p for p in FORMAL_DIR.glob("*.lean") if p.name != "Basilisk.lean"
-    )
+    module_files = sorted(p for p in FORMAL_DIR.glob("*.lean") if p.name != "Basilisk.lean")
     for path in module_files:
         rel = path.relative_to(ROOT).as_posix()
         try:
@@ -131,9 +143,7 @@ def main() -> int:
             continue
         registered_signature = normalize(entry.get("signature", ""))
         if registered_signature != actual["signature"]:
-            errors.append(
-                f"statement drift for {symbol}: registered signature no longer matches source"
-            )
+            errors.append(f"statement drift for {symbol}: registered signature no longer matches source")
         registered_sha = entry.get("statement_sha256", "")
         if registered_sha != actual["statement_sha256"]:
             errors.append(
@@ -153,26 +163,17 @@ def main() -> int:
         if match:
             imports.add(match.group(1))
 
-    modules_with_proofs = {
-        module_name(ROOT / module)
-        for (module, _symbol) in discovered
-    }
+    modules_with_proofs = {module_name(ROOT / module) for (module, _symbol) in discovered}
     for module in sorted(modules_with_proofs):
         if module not in imports:
             errors.append(
                 f"formal module containing local proofs is not imported by root kernel: Basilisk.{module}"
             )
 
-    # No orphan Lean semantic claims: every claim advertised as a Lean theorem must
-    # be pointed to by at least one complete-inventory entry.
-    linked_semantic = {
-        e.get("semantic_claim_id") for e in entries if e.get("semantic_claim_id")
-    }
+    linked_semantic = {e.get("semantic_claim_id") for e in entries if e.get("semantic_claim_id")}
     for claim in claims_doc.get("claims", []):
         if claim.get("status") == "lean_theorem" and claim["id"] not in linked_semantic:
-            errors.append(
-                f"semantic Lean claim lacks formal-inventory linkage: {claim['id']}"
-            )
+            errors.append(f"semantic Lean claim lacks formal-inventory linkage: {claim['id']}")
 
     if errors:
         print("FORMAL CLOSURE CHECK: FAIL")
@@ -182,7 +183,7 @@ def main() -> int:
 
     print(
         f"FORMAL CLOSURE CHECK: PASS — {len(discovered)} local theorem/lemma "
-        f"declarations, {len(imports)} root imports"
+        f"declarations, {len(imports)} root imports, {len(inventory_names)} inventory shard(s)"
     )
     return 0
 
