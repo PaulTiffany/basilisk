@@ -24,6 +24,11 @@ classifiers = [
   "License :: OSI Approved :: MIT License"
 ]
 
+[project.optional-dependencies]
+verification = [
+  "numpy>=2.0,<3"
+]
+
 [project.scripts]
 map-lb = "map_lb.__main__:main"
 
