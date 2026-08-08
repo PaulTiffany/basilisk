@@ -44,6 +44,27 @@
       "sha256": "1cc90e111bc1de79f63e1caefbb2f1f5fe9bfa7f42d2e15ddff2476d28d739ed"
     },
     {
+      "claim_id": "C-MATH-007",
+      "kind": "lean",
+      "path": "formal/Basilisk/DependencyMutationWitness.lean",
+      "fragment": "theorem dependency_mutation_adds_coparent :\n    ¬ beforeGraph.inFamilyClosure DNode.x DNode.coparent ∧\n    afterGraph.inFamilyClosure DNode.x DNode.coparent := by",
+      "sha256": "5e1285cb2b28e76bd7a6b6d37da619a6c5472e574d1ad882cc7d9efbefa541e3"
+    },
+    {
+      "claim_id": "C-MATH-007",
+      "kind": "python",
+      "path": "verification/dependency_mutator.py",
+      "fragment": "print(\"DEPENDENCY MUTATION WITNESS: PASS\")",
+      "sha256": "41ca14ae8833517c8fe2c81fe629e1dfb4c538b03857421fd433e6ccf7b5c49b"
+    },
+    {
+      "claim_id": "C-MATH-007",
+      "kind": "mechanism",
+      "path": "verification/check_domain_witnesses.py",
+      "fragment": "print(\"DOMAIN WITNESS CHECK: PASS — Lipschitz and dependency instances agree across substrates\")",
+      "sha256": "c518034625952b0e88a055e307b55663a683f01e62c8ef19088fc4228d692b02"
+    },
+    {
       "claim_id": "C-MECH-001",
       "kind": "mechanism",
       "path": "evals/mutation/README.md",
