@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MATH-008","kind":"lean","path":"formal/Basilisk/AuthorityAlgebra.lean","fragment":"theorem PermissionProfile.covers_mono\n    {p q : PermissionProfile} {actionClass : String} {a : ActionIntent}\n    (hLE : PermissionProfile.LE p q)\n    (hCovers : p.Covers actionClass a) :\n    q.Covers actionClass a := by","sha256":"a87af4c2bddc873955eb33944c58e01b3a677d284cac8cfd6f9ba0ba909a7917"}
+  ]
+}
