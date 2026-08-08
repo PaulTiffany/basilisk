@@ -24,6 +24,7 @@ CHECKS = {
     "formal": ROOT / "verification" / "check_formal_closure.py",
     "controller": ROOT / "verification" / "check_controller_vectors.py",
     "cross": ROOT / "verification" / "check_cross_witness.py",
+    "witness": ROOT / "verification" / "check_witness_graph.py",
 }
 
 
@@ -104,6 +105,23 @@ def mutate_lean_vector_transcription(root: Path) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def mutate_erase_loss_residual(root: Path) -> None:
+    path = root / "verification" / "witness_graph.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    edge = next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")
+    edge["residual"] = ""
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_false_exact_transport(root: Path) -> None:
+    path = root / "verification" / "witness_graph.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    edge = next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")
+    edge["loss_class"] = "exact"
+    # Keep the disclosed residual: an exact edge is not allowed to carry one.
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
 CASES = [
     ("bad provenance receipt", "provenance", mutate_bad_receipt),
     ("undeclared recursive justification", "recursivity", mutate_cycle),
@@ -112,6 +130,8 @@ CASES = [
     ("unreachable Lean proof module", "formal", mutate_remove_root_import),
     ("false shared controller expectation", "controller", mutate_vector_expected_gate),
     ("corrupted Lean vector transcription", "cross", mutate_lean_vector_transcription),
+    ("erased transport residual", "witness", mutate_erase_loss_residual),
+    ("falsely exact transport", "witness", mutate_false_exact_transport),
 ]
 
 
