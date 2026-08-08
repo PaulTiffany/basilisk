@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "purpose": "Canonical machine entrypoint for reconstructing Basilisk claims, evidence, scope, theorem symbols, and frontier state without inferring repository conventions from prose.",
+  "identifiers": {
+    "semantic_claim": "C-MATH-* or C-MECH-*",
+    "frontier_item": "CF-*",
+    "formal_inventory_entry": "F*/FA*/FAA*/FP*/FM*/FL*/FSG*/FPT*/FGP*/FAV*",
+    "witness_node": "R-*",
+    "witness_edge": "T-* / O-* / Q-*",
+    "witness_agreement": "A-*"
+  },
+  "canonical_sources": {
+    "claims": {"path": "verification/claims.json", "payload": "claims", "key": "id"},
+    "scope": {"path": "verification/scope_registry.json", "payloads": ["claim_scope", "frontier_scope"], "key": "id"},
+    "open_frontier": {"path": "verification/completeness_frontier.json", "payload": "frontier", "key": "id"},
+    "closed_frontier": {"path": "verification/frontier_closures.json", "payload": "closures", "key": "id"},
+    "bindings": {"directory": "verification", "base_name": "bindings.json", "shard_prefix": "bindings_", "payload": "bindings", "foreign_key": "claim_id"},
+    "formal_inventory": {"directory": "verification", "base_name": "formal_inventory.json", "shard_prefix": "formal_inventory_", "payload": "formal_claims", "foreign_keys": ["semantic_claim_id", "semantic_depends_on"]},
+    "witness_graph": {"path": "verification/witness_graph.json", "payloads": ["nodes", "edges", "agreements"]},
+    "assumption_audit": {"path": "verification/theorem_assumptions.json", "payload": "assumptions", "foreign_key": "theorem_id"}
+  },
+  "relations": [
+    {"name": "claim_depends_on_claim", "source": "claims.id", "target": "claims.id", "field": "depends_on"},
+    {"name": "claim_has_scope", "source": "claims.id", "target": "scope.claim_scope.id", "cardinality": "exactly_one"},
+    {"name": "claim_has_binding", "source": "claims.id", "target": "bindings.claim_id", "cardinality": "one_or_more"},
+    {"name": "lean_claim_has_formal_symbol", "source": "claims.id", "target": "formal_inventory.semantic_claim_id", "condition": "status == lean_theorem", "cardinality": "one_or_more"},
+    {"name": "open_frontier_has_schedule", "source": "open_frontier.id", "target": "scope.frontier_scope.id", "cardinality": "exactly_one"},
+    {"name": "closed_frontier_has_no_schedule", "source": "closed_frontier.id", "target": "scope.frontier_scope.id", "cardinality": "zero"},
+    {"name": "closed_frontier_resolves_claims", "source": "closed_frontier.closed_by_claims", "target": "claims.id"},
+    {"name": "witness_transport_resolves_claim", "source": "witness_graph.edges.claim_id", "target": "claims.id"},
+    {"name": "witness_agreement_resolves_claim", "source": "witness_graph.agreements.claim_id", "target": "claims.id"}
+  ],
+  "query_interface": {
+    "path": "verification/query_project.py",
+    "modes": ["summary", "claim", "frontier", "all"],
+    "format": "deterministic JSON on stdout"
+  },
+  "non_claim": "This index describes registry topology and join semantics. It does not certify that any claim is true beyond the evidence status declared in the canonical registries."
+}
