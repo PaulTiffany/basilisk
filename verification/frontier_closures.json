@@ -5,51 +5,35 @@
       "id": "CF-002",
       "surface": "Standing-authority structure",
       "closed_by_claims": ["C-MECH-009"],
-      "evidence": [
-        "formal/Basilisk/Authority.lean",
-        "formal/Basilisk/AuthorityVectors.lean",
-        "verification/authority_vectors.json",
-        "verification/check_authority_vectors.py",
-        "verification/check_authority_transcription.py",
-        "verification/meta_mutation_authority.py"
-      ],
+      "evidence": ["formal/Basilisk/Authority.lean","formal/Basilisk/AuthorityVectors.lean","verification/authority_vectors.json","verification/check_authority_vectors.py","verification/check_authority_transcription.py","verification/meta_mutation_authority.py"],
       "closure": "The declared finite surface now carries structured standing authority before Boolean projection; expiry is evaluated at a pinned verification instant; the complete registered authority corpus is mechanically transcribed JSON-to-Lean and independently evaluated in Lean; provenance is preserved in an authority envelope and proved not to alter coverage semantics. Runtime datetime parsing remains an explicit transport boundary, not an omitted authority dimension."
     },
     {
       "id": "CF-004",
       "surface": "Authority lattice",
       "closed_by_claims": ["C-MATH-008", "C-MECH-009"],
-      "evidence": [
-        "formal/Basilisk/AuthorityAlgebra.lean",
-        "formal/Basilisk/Authority.lean"
-      ],
+      "evidence": ["formal/Basilisk/AuthorityAlgebra.lean","formal/Basilisk/Authority.lean"],
       "closure": "Permission breadth now has a typed preorder and join with proved upper-bound and coverage-monotonicity properties. Authorization freshness is modeled separately by an idempotent, commutative, associative basis join in which current-turn authority dominates standing authority. The existing high-scope witness proves that broader standing permission does not replace a fresh-current-turn requirement."
+    },
+    {
+      "id": "CF-007",
+      "surface": "Controller interactions beyond selected trefoil junctions",
+      "closed_by_claims": ["C-MECH-013"],
+      "evidence": ["verification/interaction_order.json","verification/check_interaction_order.py","verification/meta_mutation_interaction_order.py","src/map_lb/gate_projection.py"],
+      "closure": "Relative to the declared 11-bit GateProjection Boolean quotient and one-hot gate observables, the interaction exterior is exhaustively characterized rather than sampled. All 2^11 states are evaluated and exact subset Möbius inversion checks every coefficient. The resulting maximum orders are proceed=10, proceed_and_report=10, checkpoint=9, and stop=3, with exact coefficient spectra and maximum-order supports registered and mutation-tested. This closure is representation-relative and does not extend to richer ActionIntent states, authority preprocessing, natural-language extraction, or physical causal structure."
     },
     {
       "id": "CF-008",
       "surface": "Complete theorem-assumption exterior",
       "closed_by_claims": ["C-MECH-011"],
-      "evidence": [
-        "verification/theorem_assumptions.json",
-        "verification/check_theorem_assumptions.py",
-        "verification/meta_mutation_assumptions.py",
-        "formal/Basilisk/AssumptionSurfaces.lean",
-        "formal/Basilisk/AssumptionNecessity.lean",
-        "verification/formal_inventory_assumption_necessity.json"
-      ],
+      "evidence": ["verification/theorem_assumptions.json","verification/check_theorem_assumptions.py","verification/meta_mutation_assumptions.py","formal/Basilisk/AssumptionSurfaces.lean","formal/Basilisk/AssumptionNecessity.lean","verification/formal_inventory_assumption_necessity.json"],
       "closure": "Relative to the complete currently registered local Lean theorem/lemma inventory and the repository's explicit h.../_h... proof-premise naming discipline, every proof premise is classified exactly once as structural, definitional, or substantive. Every substantive premise resolves to a distinct registered finite necessity/countermodel witness on the declared assumption-necessity surface, while structural and definitional premises remain explicitly visible without ceremonial countermodels. The checker is wired into the interpretability gate and mutation-tested against missing classifications, false downgrades, and invalid witness placement. This closure does not claim that every conceivable theorem, hidden semantic assumption, or future formalization has already been discovered."
     },
     {
       "id": "CF-010",
       "surface": "Ledger cryptographic and semantic completeness",
       "closed_by_claims": ["C-MATH-009", "C-MECH-010"],
-      "evidence": [
-        "src/map_lb/ledger.py",
-        "tests/test_ledger.py",
-        "verification/check_ledger_integrity.py",
-        "formal/Basilisk/Ledger.lean",
-        "formal/Basilisk/LedgerSemantics.lean"
-      ],
+      "evidence": ["src/map_lb/ledger.py","tests/test_ledger.py","verification/check_ledger_integrity.py","formal/Basilisk/Ledger.lean","formal/Basilisk/LedgerSemantics.lean"],
       "closure": "Serialized Ledger ingestion now enforces the complete declared runtime field set, rejects unknown and mistyped fields, and validates canonical SHA-256 representations. A fixed payload has a registered SHA-256 receipt and tamper detection witnesses. Lean separately proves that chain validity and lossless structural encoding do not entail semantic truth. Cryptographic integrity, schema validity, and truth are therefore explicit distinct claims rather than one overloaded notion of Ledger correctness."
     }
   ]
