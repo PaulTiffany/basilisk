@@ -1,4 +1,4 @@
-.PHONY: test eval validate example paper clean package-check
+.PHONY: test eval validate example provenance recursivity numeric interpret paper clean package-check
 
 test:
 	python3 -m unittest discover -s tests -v
@@ -13,10 +13,21 @@ example:
 	PYTHONPATH=src python3 examples/finite_controller.py
 	python3 examples/finite_quartet.py
 
+provenance:
+	python3 verification/check_provenance.py
+
+recursivity:
+	python3 verification/check_recursivity.py
+
+numeric:
+	python3 verification/check_numeric.py
+
+interpret: provenance recursivity numeric
+
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 
-package-check: test eval validate example
+package-check: test eval validate example interpret
 
 clean:
 	cd paper && latexmk -C
