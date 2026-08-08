@@ -24,6 +24,19 @@
         "formal/Basilisk/Authority.lean"
       ],
       "closure": "Permission breadth now has a typed preorder and join with proved upper-bound and coverage-monotonicity properties. Authorization freshness is modeled separately by an idempotent, commutative, associative basis join in which current-turn authority dominates standing authority. The existing high-scope witness proves that broader standing permission does not replace a fresh-current-turn requirement."
+    },
+    {
+      "id": "CF-010",
+      "surface": "Ledger cryptographic and semantic completeness",
+      "closed_by_claims": ["C-MATH-009", "C-MECH-010"],
+      "evidence": [
+        "src/map_lb/ledger.py",
+        "tests/test_ledger.py",
+        "verification/check_ledger_integrity.py",
+        "formal/Basilisk/Ledger.lean",
+        "formal/Basilisk/LedgerSemantics.lean"
+      ],
+      "closure": "Serialized Ledger ingestion now enforces the complete declared runtime field set, rejects unknown and mistyped fields, and validates canonical SHA-256 representations. A fixed payload has a registered SHA-256 receipt and tamper detection witnesses. Lean separately proves that chain validity and lossless structural encoding do not entail semantic truth. Cryptographic integrity, schema validity, and truth are therefore explicit distinct claims rather than one overloaded notion of Ledger correctness."
     }
   ]
 }
