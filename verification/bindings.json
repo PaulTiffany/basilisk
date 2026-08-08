@@ -49,6 +49,27 @@
       "path": "evals/mutation/README.md",
       "fragment": "Mutation is treated as a **witnessed transformation**, not merely “generate a bad input.”",
       "sha256": "4e536561c7255fb10ad08c2788441319ab67f925f5a8bf0dd52de6b51e6766da"
+    },
+    {
+      "claim_id": "C-MECH-002",
+      "kind": "python",
+      "path": "verification/check_controller_vectors.py",
+      "fragment": "print(f\"CONTROLLER VECTOR CHECK: PASS — {len(doc.get('cases', []))} shared vectors\")",
+      "sha256": "520b95c6d0e42579b6b15bd6521a53415c8ec798153c119a113cc71e05f50896"
+    },
+    {
+      "claim_id": "C-MECH-002",
+      "kind": "lean",
+      "path": "formal/Basilisk/ControllerVectors.lean",
+      "fragment": "theorem controller_vectors_hold : controllerVectorsProp := by",
+      "sha256": "a8bc0561b2f9e1760edf1876fa42abdecfb4e2b97435d5dcc3827889891ccf05"
+    },
+    {
+      "claim_id": "C-MECH-002",
+      "kind": "mechanism",
+      "path": "verification/check_cross_witness.py",
+      "fragment": "print(\n        f\"CROSS-WITNESS TRANSCRIPTION CHECK: PASS — {len(cases)} JSON↔Lean vectors\"\n    )",
+      "sha256": "7b56bef21297e0f4cb4c5118898215584225537d15604f8da0a125038fbc2ad1"
     }
   ]
 }
