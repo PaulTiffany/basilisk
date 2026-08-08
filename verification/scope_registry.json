@@ -29,14 +29,14 @@
     {"id":"C-MECH-009","layer":"core"},
     {"id":"C-MECH-010","layer":"core"},
     {"id":"C-MECH-011","layer":"core"},
-    {"id":"C-MECH-012","layer":"core"}
+    {"id":"C-MECH-012","layer":"core"},
+    {"id":"C-MECH-013","layer":"core"}
   ],
   "frontier_scope": [
     {"id":"CF-001","layer":"core","schedule":"deferred","reason":"Universal Python/Lean correspondence remains open, but current notebook_compiler language work is expected to reduce the cost of the Lean transport."},
     {"id":"CF-003","layer":"core","schedule":"active","reason":"Boundary-aware Lipschitz control is part of the declared MAP-LB core objective."},
     {"id":"CF-005","layer":"bridge","schedule":"parked","reason":"Probabilistic and Fristonian blanket semantics are a richer domain transport beyond the present finite dependency cut."},
     {"id":"CF-006","layer":"core","schedule":"active","reason":"The Core must eventually say what a declared dependency-topology change means constitutionally, not merely detect it."},
-    {"id":"CF-007","layer":"core","schedule":"active","reason":"Interaction-order sufficiency is an assurance question about the present controller surface."},
     {"id":"CF-009","layer":"core","schedule":"active","reason":"Natural-language extraction is the boundary between the typed trusted core and real user requests."},
     {"id":"CF-011","layer":"bridge","schedule":"parked","reason":"General materiality extends the finite shared-obstruction witness into broader physical, social, or institutional domains."},
     {"id":"CF-012","layer":"bridge","schedule":"parked","reason":"Born-arrow and physical-time transport belongs to the Principia bridge, not the current Core closure queue."},
