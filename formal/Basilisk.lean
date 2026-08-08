@@ -10,6 +10,7 @@ mathlib dependency):
   * Port.lean             — typed ports, Ω_p = I_p × O_p
   * Contract.lean         — admissible-event predicate, trace lifting
   * Script.lean           — finite mirror of gate-relevant Python state/law
+  * GateProjection.lean   — exact finite quotient through which Script gate selection factors
   * Authority.lean        — structured standing authority before Boolean projection
   * AuthorityVectors.lean — mechanically transcribed structured authority corpus
   * AuthorityAlgebra.lean — permission breadth and authorization-freshness joins
@@ -40,6 +41,7 @@ mathlib dependency):
 import Basilisk.Port
 import Basilisk.Contract
 import Basilisk.Script
+import Basilisk.GateProjection
 import Basilisk.Authority
 import Basilisk.AuthorityVectors
 import Basilisk.AuthorityAlgebra
@@ -69,6 +71,7 @@ import Basilisk.Reachability
 namespace Basilisk
 
 #print axioms ActionGate.fromNat_toNat
+#print axioms ActionIntent.assess_eq_gateProjection
 #print axioms StandingAuthority.inactive_never_covers
 #print axioms StandingAuthority.expired_never_covers
 #print axioms StandingAuthority.external_effect_requires_permission
