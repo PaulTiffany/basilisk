@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "closures": [
+    {
+      "id": "CF-002",
+      "surface": "Standing-authority structure",
+      "closed_by_claims": ["C-MECH-009"],
+      "evidence": [
+        "formal/Basilisk/Authority.lean",
+        "formal/Basilisk/AuthorityVectors.lean",
+        "verification/authority_vectors.json",
+        "verification/check_authority_vectors.py",
+        "verification/check_authority_transcription.py",
+        "verification/meta_mutation_authority.py"
+      ],
+      "closure": "The declared finite surface now carries structured standing authority before Boolean projection; expiry is evaluated at a pinned verification instant; the complete registered authority corpus is mechanically transcribed JSON-to-Lean and independently evaluated in Lean; provenance is preserved in an authority envelope and proved not to alter coverage semantics. Runtime datetime parsing remains an explicit transport boundary, not an omitted authority dimension."
+    },
+    {
+      "id": "CF-004",
+      "surface": "Authority lattice",
+      "closed_by_claims": ["C-MATH-008", "C-MECH-009"],
+      "evidence": [
+        "formal/Basilisk/AuthorityAlgebra.lean",
+        "formal/Basilisk/Authority.lean"
+      ],
+      "closure": "Permission breadth now has a typed preorder and join with proved upper-bound and coverage-monotonicity properties. Authorization freshness is modeled separately by an idempotent, commutative, associative basis join in which current-turn authority dominates standing authority. The existing high-scope witness proves that broader standing permission does not replace a fresh-current-turn requirement."
+    }
+  ]
+}
