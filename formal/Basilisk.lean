@@ -10,6 +10,7 @@ mathlib dependency):
   * Port.lean             — typed ports, Ω_p = I_p × O_p
   * Contract.lean         — admissible-event predicate, trace lifting
   * Script.lean           — finite mirror of gate-relevant Python state/law
+  * Authority.lean        — structured standing authority before Boolean projection
   * ControllerVectors.lean — shared Python/Lean observable gate vectors
   * WitnessAlgebra.lean   — typed transports, loss classes, commuting squares
   * LipschitzWitness.lean — shared JSON/NumPy/Lean counterexample instance
@@ -30,6 +31,7 @@ mathlib dependency):
 import Basilisk.Port
 import Basilisk.Contract
 import Basilisk.Script
+import Basilisk.Authority
 import Basilisk.ControllerVectors
 import Basilisk.WitnessAlgebra
 import Basilisk.ConstitutionalLipschitz
@@ -49,6 +51,12 @@ import Basilisk.Reachability
 namespace Basilisk
 
 #print axioms ActionGate.fromNat_toNat
+#print axioms StandingAuthority.inactive_never_covers
+#print axioms StandingAuthority.expired_never_covers
+#print axioms StandingAuthority.external_effect_requires_permission
+#print axioms ActionIntent.current_authorization_dominates_projection
+#print axioms ActionIntent.assessWithStanding_eq_assess_projection
+#print axioms standing_authority_does_not_replace_fresh_high_scope_authorization
 #print axioms controller_vectors_hold
 #print axioms CommutesSquare.identity
 #print axioms CommutesSquare.postcompose
