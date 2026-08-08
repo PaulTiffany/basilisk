@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "source": "ActionGate",
+  "target": "InterruptionClass",
+  "partition": {
+    "proceed": "continue",
+    "proceed_and_report": "continue",
+    "checkpoint": "interrupt",
+    "stop": "interrupt"
+  },
+  "residual": "The quotient forgets whether continuation requires reporting and whether interruption is a checkpoint or a hard stop."
+}
