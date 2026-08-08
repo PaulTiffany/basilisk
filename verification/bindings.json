@@ -1,117 +1,23 @@
 {
   "schema_version": 1,
   "bindings": [
-    {
-      "claim_id": "C-MATH-001",
-      "kind": "lean",
-      "path": "formal/Basilisk/ConstitutionalLipschitz.lean",
-      "fragment": "theorem lipschitz_alone_not_constitutional :\n    ∃ T : TwoPoint → TwoPoint,\n      IsLipschitzNat twoPointDist twoPointDist 0 T ∧\n      ¬ PreservesPredicate T\n        (fun _ => True)\n        (fun y => y = TwoPoint.good) := by",
-      "sha256": "07f8ccc35409cf47830ca1242551a28a4fb4db92a00d7f853cbf00b2c9314e7b"
-    },
-    {
-      "claim_id": "C-MATH-002",
-      "kind": "lean",
-      "path": "formal/Basilisk/DependencyCut.lean",
-      "fragment": "def DepGraph.inFamilyClosure {V : Type} (G : DepGraph V) (x v : V) : Prop :=\n  G.isParent x v ∨ G.isChild x v ∨ G.isCoParent x v",
-      "sha256": "08254231a845ce5427c7f20ed8c0b39a620bdc40756f3d9d90a660c051812f66"
-    },
-    {
-      "claim_id": "C-MATH-003",
-      "kind": "lean",
-      "path": "formal/Basilisk/ConstitutionalLipschitz.lean",
-      "fragment": "theorem PreservesPredicate.comp\n    {X Y Z : Type}\n    (T : X → Y)\n    (S : Y → Z)\n    (CX : X → Prop)\n    (CY : Y → Prop)\n    (CZ : Z → Prop)\n    (hT : PreservesPredicate T CX CY)\n    (hS : PreservesPredicate S CY CZ) :\n    PreservesPredicate (fun x => S (T x)) CX CZ := by",
-      "sha256": "81e5eb4d24d1299978531f5f51e961a6c7218916cebc337ef4537b852bf11163"
-    },
-    {
-      "claim_id": "C-MATH-004",
-      "kind": "prose",
-      "path": "docs/mathematical-foundations.md",
-      "fragment": "**Standard fact.** A nonnegative weighted sum of pseudometrics is a pseudometric. It is a metric only if zero total distance separates distinct actions—for example, if the positively weighted feature map is jointly injective (or another explicit separation condition holds).",
-      "sha256": "e7ab2b4cdc254980e88f1581f239396774daebc4d8e718e82839ebbe37a9fb74"
-    },
-    {
-      "claim_id": "C-MATH-005",
-      "kind": "prose",
-      "path": "docs/mathematical-foundations.md",
-      "fragment": "This inequality is currently a **target specification**, not a proved property of the reference controller.",
-      "sha256": "b575afb29d589a8595aa13fa1bb33aa6a1a90f571af1cc3d40a131aefe1c0fb2"
-    },
-    {
-      "claim_id": "C-MATH-006",
-      "kind": "prose",
-      "path": "docs/mathematical-foundations.md",
-      "fragment": "The substantive research program is to determine which preservation predicates \\(C\\) and which dependency cuts are natural for specific systems, and which sufficient conditions are mathematically provable.",
-      "sha256": "1cc90e111bc1de79f63e1caefbb2f1f5fe9bfa7f42d2e15ddff2476d28d739ed"
-    },
-    {
-      "claim_id": "C-MATH-007",
-      "kind": "lean",
-      "path": "formal/Basilisk/DependencyMutationWitness.lean",
-      "fragment": "theorem dependency_mutation_adds_coparent :\n    ¬ beforeGraph.inFamilyClosure DNode.x DNode.coparent ∧\n    afterGraph.inFamilyClosure DNode.x DNode.coparent := by",
-      "sha256": "5e1285cb2b28e76bd7a6b6d37da619a6c5472e574d1ad882cc7d9efbefa541e3"
-    },
-    {
-      "claim_id": "C-MATH-007",
-      "kind": "python",
-      "path": "verification/dependency_mutator.py",
-      "fragment": "print(\"DEPENDENCY MUTATION WITNESS: PASS\")",
-      "sha256": "41ca14ae8833517c8fe2c81fe629e1dfb4c538b03857421fd433e6ccf7b5c49b"
-    },
-    {
-      "claim_id": "C-MATH-007",
-      "kind": "mechanism",
-      "path": "verification/check_domain_witnesses.py",
-      "fragment": "print(\"DOMAIN WITNESS CHECK: PASS — Lipschitz and dependency instances agree across substrates\")",
-      "sha256": "c518034625952b0e88a055e307b55663a683f01e62c8ef19088fc4228d692b02"
-    },
-    {
-      "claim_id": "C-MECH-001",
-      "kind": "mechanism",
-      "path": "evals/mutation/README.md",
-      "fragment": "Mutation is treated as a **witnessed transformation**, not merely “generate a bad input.”",
-      "sha256": "4e536561c7255fb10ad08c2788441319ab67f925f5a8bf0dd52de6b51e6766da"
-    },
-    {
-      "claim_id": "C-MECH-002",
-      "kind": "python",
-      "path": "verification/check_controller_vectors.py",
-      "fragment": "print(f\"CONTROLLER VECTOR CHECK: PASS — {len(doc.get('cases', []))} shared vectors\")",
-      "sha256": "520b95c6d0e42579b6b15bd6521a53415c8ec798153c119a113cc71e05f50896"
-    },
-    {
-      "claim_id": "C-MECH-002",
-      "kind": "lean",
-      "path": "formal/Basilisk/ControllerVectors.lean",
-      "fragment": "theorem controller_vectors_hold : controllerVectorsProp := by",
-      "sha256": "a8bc0561b2f9e1760edf1876fa42abdecfb4e2b97435d5dcc3827889891ccf05"
-    },
-    {
-      "claim_id": "C-MECH-002",
-      "kind": "mechanism",
-      "path": "verification/check_cross_witness.py",
-      "fragment": "print(\n        f\"CROSS-WITNESS TRANSCRIPTION CHECK: PASS — {len(cases)} JSON↔Lean vectors\"\n    )",
-      "sha256": "a144c74cb9ec7174762cc84eae9985d08ec7e5976e13b298f4b3f420a5d6cae4"
-    },
-    {
-      "claim_id": "C-MECH-003",
-      "kind": "mechanism",
-      "path": "verification/check_exterior_coverage.py",
-      "fragment": "A controller surface is a minimal pair: two states differing in exactly one",
-      "sha256": "01f4eef1664c2dfd7d2c830c232afe678fe393ff456132bd8d14ba1fe5f5165e"
-    },
-    {
-      "claim_id": "C-MECH-004",
-      "kind": "python",
-      "path": "verification/check_interaction_coverage.py",
-      "fragment": "return assess_action(intent_from_state(label, state), authority).gate.label()",
-      "sha256": "e23c681ee22e97bd03cdd2100e0d511932c24b9a73f0753770b759b5a953a480"
-    },
-    {
-      "claim_id": "C-MECH-004",
-      "kind": "mechanism",
-      "path": "verification/check_interaction_coverage.py",
-      "fragment": "print(\n        \"INTERACTION COVERAGE CHECK: PASS — \"\n        f\"{len(squares)} complete 2x2 seams across {len(required_classes)} seam classes\"\n    )",
-      "sha256": "0846d129cc42ba4a2409008633e492d92e92d1bf47868559834be14cec3796d5"
-    }
+    {"claim_id":"C-MATH-001","kind":"lean","path":"formal/Basilisk/ConstitutionalLipschitz.lean","fragment":"theorem lipschitz_alone_not_constitutional :\n    ∃ T : TwoPoint → TwoPoint,\n      IsLipschitzNat twoPointDist twoPointDist 0 T ∧\n      ¬ PreservesPredicate T\n        (fun _ => True)\n        (fun y => y = TwoPoint.good) := by","sha256":"07f8ccc35409cf47830ca1242551a28a4fb4db92a00d7f853cbf00b2c9314e7b"},
+    {"claim_id":"C-MATH-002","kind":"lean","path":"formal/Basilisk/DependencyCut.lean","fragment":"def DepGraph.inFamilyClosure {V : Type} (G : DepGraph V) (x v : V) : Prop :=\n  G.isParent x v ∨ G.isChild x v ∨ G.isCoParent x v","sha256":"08254231a845ce5427c7f20ed8c0b39a620bdc40756f3d9d90a660c051812f66"},
+    {"claim_id":"C-MATH-003","kind":"lean","path":"formal/Basilisk/ConstitutionalLipschitz.lean","fragment":"theorem PreservesPredicate.comp\n    {X Y Z : Type}\n    (T : X → Y)\n    (S : Y → Z)\n    (CX : X → Prop)\n    (CY : Y → Prop)\n    (CZ : Z → Prop)\n    (hT : PreservesPredicate T CX CY)\n    (hS : PreservesPredicate S CY CZ) :\n    PreservesPredicate (fun x => S (T x)) CX CZ := by","sha256":"81e5eb4d24d1299978531f5f51e961a6c7218916cebc337ef4537b852bf11163"},
+    {"claim_id":"C-MATH-004","kind":"prose","path":"docs/mathematical-foundations.md","fragment":"**Standard fact.** A nonnegative weighted sum of pseudometrics is a pseudometric. It is a metric only if zero total distance separates distinct actions—for example, if the positively weighted feature map is jointly injective (or another explicit separation condition holds).","sha256":"e7ab2b4cdc254980e88f1581f239396774daebc4d8e718e82839ebbe37a9fb74"},
+    {"claim_id":"C-MATH-005","kind":"prose","path":"docs/mathematical-foundations.md","fragment":"This inequality is currently a **target specification**, not a proved property of the reference controller.","sha256":"b575afb29d589a8595aa13fa1bb33aa6a1a90f571af1cc3d40a131aefe1c0fb2"},
+    {"claim_id":"C-MATH-006","kind":"prose","path":"docs/mathematical-foundations.md","fragment":"The substantive research program is to determine which preservation predicates \\(C\\) and which dependency cuts are natural for specific systems, and which sufficient conditions are mathematically provable.","sha256":"1cc90e111bc1de79f63e1caefbb2f1f5fe9bfa7f42d2e15ddff2476d28d739ed"},
+    {"claim_id":"C-MATH-007","kind":"lean","path":"formal/Basilisk/DependencyMutationWitness.lean","fragment":"theorem dependency_mutation_adds_coparent :\n    ¬ beforeGraph.inFamilyClosure DNode.x DNode.coparent ∧\n    afterGraph.inFamilyClosure DNode.x DNode.coparent := by","sha256":"5e1285cb2b28e76bd7a6b6d37da619a6c5472e574d1ad882cc7d9efbefa541e3"},
+    {"claim_id":"C-MATH-007","kind":"python","path":"verification/dependency_mutator.py","fragment":"print(\"DEPENDENCY MUTATION WITNESS: PASS\")","sha256":"41ca14ae8833517c8fe2c81fe629e1dfb4c538b03857421fd433e6ccf7b5c49b"},
+    {"claim_id":"C-MATH-007","kind":"mechanism","path":"verification/check_domain_witnesses.py","fragment":"print(\"DOMAIN WITNESS CHECK: PASS — Lipschitz and dependency instances agree across substrates\")","sha256":"c518034625952b0e88a055e307b55663a683f01e62c8ef19088fc4228d692b02"},
+    {"claim_id":"C-MECH-001","kind":"mechanism","path":"evals/mutation/README.md","fragment":"Mutation is treated as a **witnessed transformation**, not merely “generate a bad input.”","sha256":"4e536561c7255fb10ad08c2788441319ab67f925f5a8bf0dd52de6b51e6766da"},
+    {"claim_id":"C-MECH-002","kind":"python","path":"verification/check_controller_vectors.py","fragment":"print(f\"CONTROLLER VECTOR CHECK: PASS — {len(doc.get('cases', []))} shared vectors\")","sha256":"520b95c6d0e42579b6b15bd6521a53415c8ec798153c119a113cc71e05f50896"},
+    {"claim_id":"C-MECH-002","kind":"lean","path":"formal/Basilisk/ControllerVectors.lean","fragment":"theorem controller_vectors_hold : controllerVectorsProp := by","sha256":"a8bc0561b2f9e1760edf1876fa42abdecfb4e2b97435d5dcc3827889891ccf05"},
+    {"claim_id":"C-MECH-002","kind":"mechanism","path":"verification/check_cross_witness.py","fragment":"print(\n        f\"CROSS-WITNESS TRANSCRIPTION CHECK: PASS — {len(cases)} JSON↔Lean vectors\"\n    )","sha256":"a144c74cb9ec7174762cc84eae9985d08ec7e5976e13b298f4b3f420a5d6cae4"},
+    {"claim_id":"C-MECH-003","kind":"mechanism","path":"verification/check_exterior_coverage.py","fragment":"A controller surface is a minimal pair: two states differing in exactly one","sha256":"01f4eef1664c2dfd7d2c830c232afe678fe393ff456132bd8d14ba1fe5f5165e"},
+    {"claim_id":"C-MECH-004","kind":"python","path":"verification/check_interaction_coverage.py","fragment":"return assess_action(intent_from_state(label, state), authority).gate.label()","sha256":"e23c681ee22e97bd03cdd2100e0d511932c24b9a73f0753770b759b5a953a480"},
+    {"claim_id":"C-MECH-004","kind":"mechanism","path":"verification/check_interaction_coverage.py","fragment":"print(\n        \"INTERACTION COVERAGE CHECK: PASS — \"\n        f\"{len(squares)} complete 2x2 seams across {len(required_classes)} seam classes\"\n    )","sha256":"0846d129cc42ba4a2409008633e492d92e92d1bf47868559834be14cec3796d5"},
+    {"claim_id":"C-MECH-005","kind":"python","path":"verification/check_interaction_diagnostics.py","fragment":"return assess_action(intent, authority)","sha256":"a744c142f9c11dcf4d7b67882da20f2b0dc008e69ba8ceddb01f678c1a781db8"},
+    {"claim_id":"C-MECH-005","kind":"mechanism","path":"verification/check_interaction_diagnostics.py","fragment":"print(\n        \"INTERACTION DIAGNOSTIC CHECK: PASS — \"\n        f\"{len(assertions)} diagnostic assertions across {len(covered_squares)} interaction squares\"\n    )","sha256":"48fcefd6cc2bc0efbe0d0fe1c14057a9de965658a37f1c14f193aa4b7f554dc7"}
   ]
 }
