@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "claims": [
+    {
+      "id": "C-MATH-001",
+      "title": "Lipschitz boundedness does not imply constitutional preservation",
+      "status": "lean_theorem",
+      "statement": "There exists a 0-Lipschitz map on a two-point space that fails to preserve a designated constitutional predicate.",
+      "depends_on": [],
+      "witnesses": ["lean", "numpy"],
+      "interpretation": "Geometric smoothness alone cannot establish preservation of constitutional invariants."
+    },
+    {
+      "id": "C-MATH-002",
+      "title": "Parent-child-coparent family closure",
+      "status": "definition",
+      "statement": "The finite family closure of x is the union of parents, children, and co-parents (parents of children excluding x itself).",
+      "depends_on": [],
+      "witnesses": ["lean"],
+      "interpretation": "This is graph structure only; no conditional-independence claim is made."
+    },
+    {
+      "id": "C-MATH-003",
+      "title": "Constitutional preservation composes",
+      "status": "lean_theorem",
+      "statement": "If T preserves CX into CY and S preserves CY into CZ, then S composed with T preserves CX into CZ.",
+      "depends_on": [],
+      "witnesses": ["lean"],
+      "interpretation": "This is the constitutional half of a future bounded-and-preserving composition theorem."
+    },
+    {
+      "id": "C-MATH-004",
+      "title": "Weighted operational action distance is a pseudometric first",
+      "status": "standard_theorem",
+      "statement": "A nonnegative weighted sum of component pseudometrics is a pseudometric; metricity requires an additional separation condition.",
+      "depends_on": [],
+      "witnesses": ["numpy"],
+      "interpretation": "Operational feature distance must not be called a metric without a separation hypothesis."
+    },
+    {
+      "id": "C-MATH-005",
+      "title": "Boundary-aware Lipschitz control",
+      "status": "target_theorem",
+      "statement": "The action projection of the controller should satisfy a Lipschitz bound away from semantic-boundary changes, with an explicit jump term for boundary changes.",
+      "depends_on": ["C-MATH-004"],
+      "witnesses": [],
+      "interpretation": "This is currently a specification target, not a proved property of the reference controller."
+    },
+    {
+      "id": "C-MATH-006",
+      "title": "Constitutionally completed bounded composition",
+      "status": "target_theorem",
+      "statement": "Composition should carry both an explicit Lipschitz bound and preservation of the chosen constitutional predicate.",
+      "depends_on": ["C-MATH-001", "C-MATH-003", "C-MATH-005"],
+      "witnesses": [],
+      "interpretation": "This is the precise theorem program behind constitutional completion of integrability."
+    },
+    {
+      "id": "C-MECH-001",
+      "title": "Mutation runs are witnessed transformations",
+      "status": "engineering_mechanism",
+      "statement": "Each mutation run exposes source, changed dimensions, preserved dimensions, residual, loss class, and detection outcome.",
+      "depends_on": [],
+      "witnesses": ["python"],
+      "interpretation": "Executable provenance for symbolic mutations."
+    }
+  ],
+  "recursion_policy": {
+    "allowed_components": []
+  }
+}
