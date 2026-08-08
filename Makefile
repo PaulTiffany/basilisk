@@ -88,6 +88,7 @@ meta-mutation:
 	python3 verification/meta_mutation_materiality.py
 	python3 verification/meta_mutation_authority.py
 	python3 verification/meta_mutation_staging.py
+	python3 verification/meta_mutation_scope.py
 
 interpret: provenance recursivity numeric formal-closure frontier-closures scope-registry project-state controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation
 
