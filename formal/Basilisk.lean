@@ -14,6 +14,8 @@ mathlib dependency):
                             controller state and decision law
   * ControllerVectors.lean — shared Python/Lean observable gate vectors
                             proved by computation on the Lean side
+  * WitnessAlgebra.lean   — typed transports, explicit loss classes, and
+                            generic commuting-square witness laws
   * Blanket.lean          — direct-edge separator-property shape over a
                             dependency graph; not a probability theorem
   * DependencyCut.lean    — exact finite parent/child/co-parent family
@@ -38,6 +40,7 @@ import Basilisk.Port
 import Basilisk.Contract
 import Basilisk.Script
 import Basilisk.ControllerVectors
+import Basilisk.WitnessAlgebra
 import Basilisk.Blanket
 import Basilisk.DependencyCut
 import Basilisk.Ledger
@@ -52,6 +55,8 @@ namespace Basilisk
    reasoning, propext, and Classical.choice if invoked anywhere. -/
 #print axioms ActionGate.fromNat_toNat
 #print axioms controller_vectors_hold
+#print axioms CommutesSquare.identity
+#print axioms CommutesSquare.postcompose
 #print axioms Contract.traceAdmissible_tail
 #print axioms Blanket.isSeparator_of_no_edges
 #print axioms DepGraph.familyClosure_iff
