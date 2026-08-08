@@ -3,7 +3,7 @@
 
 The semantic claim Atlas is intentionally small. This checker separately requires
 that every local theorem/lemma declaration in formal/Basilisk/*.lean is registered
-in one of verification/formal_inventory*.json, has the same normalized statement
+in one of verification/formal_inventory_*.json, has the same normalized statement
 fingerprint, and is reachable from the root formal/Basilisk.lean import surface.
 
 Inventory shards are merged deterministically by filename. IDs and theorem symbols
@@ -13,16 +13,16 @@ remain globally unique across shards; sharding is organizational, not semantic.
 from __future__ import annotations
 
 import hashlib
-import json
 import os
 import re
 from pathlib import Path
+
+from registry_io import load_registry_list, strict_load_json
 
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 ROOT = Path(os.environ.get("BASILISK_ROOT", DEFAULT_ROOT)).resolve()
 FORMAL_DIR = ROOT / "formal" / "Basilisk"
 ROOT_KERNEL = ROOT / "formal" / "Basilisk.lean"
-INVENTORY_GLOB = "formal_inventory*.json"
 CLAIMS = ROOT / "verification" / "claims.json"
 
 DECL_START = re.compile(r"^(theorem|lemma)\s+([A-Za-z0-9_'.]+)")
@@ -83,31 +83,34 @@ def module_name(path: Path) -> str:
 
 
 def load_inventory_entries(errors: list[str]) -> tuple[list[dict], list[str]]:
-    paths = sorted((ROOT / "verification").glob(INVENTORY_GLOB))
-    if not paths:
-        errors.append("no formal inventory shards found")
-        return [], []
-    entries: list[dict] = []
-    names: list[str] = []
-    for path in paths:
-        names.append(path.name)
-        try:
-            doc = json.loads(path.read_text(encoding="utf-8"))
-        except json.JSONDecodeError as exc:
-            errors.append(f"{path.name}: malformed JSON: {exc}")
-            continue
-        if doc.get("schema_version") != 1:
-            errors.append(f"{path.name}: unsupported schema_version {doc.get('schema_version')!r}")
-        entries.extend(doc.get("formal_claims", []))
-    return entries, names
+    return load_registry_list(
+        ROOT / "verification",
+        base_name="formal_inventory.json",
+        shard_prefix="formal_inventory_",
+        payload_key="formal_claims",
+        errors=errors,
+    )
 
 
 def main() -> int:
     errors: list[str] = []
 
     entries, inventory_names = load_inventory_entries(errors)
-    claims_doc = json.loads(CLAIMS.read_text(encoding="utf-8"))
-    semantic_ids = {c["id"] for c in claims_doc.get("claims", [])}
+    try:
+        claims_doc = strict_load_json(CLAIMS)
+    except Exception as exc:
+        print("FORMAL CLOSURE CHECK: FAIL")
+        print(f"- claims.json: malformed strict JSON: {exc}")
+        return 1
+    if not isinstance(claims_doc, dict):
+        print("FORMAL CLOSURE CHECK: FAIL")
+        print("- claims.json root must be an object")
+        return 1
+    raw_claims = claims_doc.get("claims", [])
+    if not isinstance(raw_claims, list):
+        errors.append("claims.json: claims must be a list")
+        raw_claims = []
+    semantic_ids = {c["id"] for c in raw_claims if isinstance(c, dict) and "id" in c}
 
     ids = [e.get("id") for e in entries]
     if len(ids) != len(set(ids)):
@@ -129,6 +132,8 @@ def main() -> int:
             continue
         for declaration in declarations:
             key = (rel, declaration["symbol"])
+            if key in discovered:
+                errors.append(f"duplicate discovered Lean declaration: {declaration['symbol']} in {rel}")
             discovered[key] = declaration
             if key not in by_key:
                 errors.append(
@@ -137,11 +142,14 @@ def main() -> int:
 
     for key, entry in by_key.items():
         module, symbol = key
+        if not isinstance(module, str) or not isinstance(symbol, str):
+            errors.append(f"inventory entry missing string module/symbol: {entry!r}")
+            continue
         actual = discovered.get(key)
         if actual is None:
             errors.append(f"inventory entry has no live declaration: {symbol} in {module}")
             continue
-        registered_signature = normalize(entry.get("signature", ""))
+        registered_signature = normalize(str(entry.get("signature", "")))
         if registered_signature != actual["signature"]:
             errors.append(f"statement drift for {symbol}: registered signature no longer matches source")
         registered_sha = entry.get("statement_sha256", "")
@@ -153,7 +161,11 @@ def main() -> int:
         semantic = entry.get("semantic_claim_id")
         if semantic is not None and semantic not in semantic_ids:
             errors.append(f"{symbol}: unknown semantic_claim_id {semantic}")
-        for dep in entry.get("semantic_depends_on", []):
+        deps = entry.get("semantic_depends_on", [])
+        if not isinstance(deps, list):
+            errors.append(f"{symbol}: semantic_depends_on must be a list")
+            deps = []
+        for dep in deps:
             if dep not in semantic_ids:
                 errors.append(f"{symbol}: unknown semantic dependency {dep}")
 
@@ -171,9 +183,11 @@ def main() -> int:
             )
 
     linked_semantic = {e.get("semantic_claim_id") for e in entries if e.get("semantic_claim_id")}
-    for claim in claims_doc.get("claims", []):
-        if claim.get("status") == "lean_theorem" and claim["id"] not in linked_semantic:
-            errors.append(f"semantic Lean claim lacks formal-inventory linkage: {claim['id']}")
+    for claim in raw_claims:
+        if not isinstance(claim, dict):
+            continue
+        if claim.get("status") == "lean_theorem" and claim.get("id") not in linked_semantic:
+            errors.append(f"semantic Lean claim lacks formal-inventory linkage: {claim.get('id')}")
 
     if errors:
         print("FORMAL CLOSURE CHECK: FAIL")
