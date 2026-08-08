@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MATH-011","kind":"lean","path":"formal/Basilisk/ParameterizedTime.lean","fragment":"theorem reflectiveStep_no_historyMonotone_undo","sha256":"a5d9ed0dcfe2837a628e70a429cb5b5d602a9622232626f64d24edfa6549eb13"},
+    {"claim_id":"C-MATH-012","kind":"lean","path":"formal/Basilisk/ParameterizedTime.lean","fragment":"theorem amortized_parameter_compilation_fixture","sha256":"ec1a9a13d278038c85392200b44832e02ebf83a4447ccb7858da964c3994d98c"}
+  ]
+}
