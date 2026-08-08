@@ -7,33 +7,20 @@ axiomatized prematurely."
 
 Verified here (core Lean 4 + decidable/classical reasoning only, no
 mathlib dependency):
-  * Port.lean             — typed ports, Ω_p = I_p × O_p (not yet wired
-                            into Script.lean's concrete model)
+  * Port.lean             — typed ports, Ω_p = I_p × O_p
   * Contract.lean         — admissible-event predicate, trace lifting
-  * Script.lean           — finite mirror of the gate-relevant Python
-                            controller state and decision law
+  * Script.lean           — finite mirror of gate-relevant Python state/law
   * ControllerVectors.lean — shared Python/Lean observable gate vectors
-                            proved by computation on the Lean side
-  * WitnessAlgebra.lean   — typed transports, explicit loss classes, and
-                            generic commuting-square witness laws
-  * Blanket.lean          — direct-edge separator-property shape over a
-                            dependency graph; not a probability theorem
-  * DependencyCut.lean    — exact finite parent/child/co-parent family
-                            closure behind "parents, children, parents
-                            of children"; no conditional-independence claim
-  * Ledger.lean           — lossless encode/decode pair for a minimal
-                            Ledger entry, and chain-linking discipline
+  * WitnessAlgebra.lean   — typed transports, loss classes, commuting squares
+  * LipschitzWitness.lean — shared JSON/NumPy/Lean counterexample instance
+  * Blanket.lean          — direct-edge separator-property shape
+  * DependencyCut.lean    — parent/child/co-parent family closure
+  * DependencyMutationWitness.lean — shared topology-mutation instance
+  * Ledger.lean           — lossless encode/decode and chain discipline
   * Quartet.lean          — bundles the four as distinct fields
   * Counterexamples.lean  — Script/Ledger non-identifiability witness
   * Reachability.lean     — hypothesis-relative reachable-future monotonicity
-  * ConstitutionalLipschitz.lean — 0-Lipschitz counterexample showing
-                            geometric boundedness alone does not imply
-                            preservation of a designated invariant
-
-Not formalized (by design, this pass): a full real-valued boundary-aware
-pseudometric d_A, the authority lattice (`P(π_A(z)) ≤ P_current ∨
-P_standing`), Bayesian probability semantics / conditional independence,
-and natural-language classification. Those remain explicit next targets.
+  * ConstitutionalLipschitz.lean — geometric/constitutional separation
 -/
 
 import Basilisk.Port
@@ -41,25 +28,27 @@ import Basilisk.Contract
 import Basilisk.Script
 import Basilisk.ControllerVectors
 import Basilisk.WitnessAlgebra
+import Basilisk.ConstitutionalLipschitz
+import Basilisk.LipschitzWitness
 import Basilisk.Blanket
 import Basilisk.DependencyCut
+import Basilisk.DependencyMutationWitness
 import Basilisk.Ledger
 import Basilisk.Quartet
 import Basilisk.Counterexamples
 import Basilisk.Reachability
-import Basilisk.ConstitutionalLipschitz
 
 namespace Basilisk
 
-/- Axiom audit: the core should use only decidable/computational
-   reasoning, propext, and Classical.choice if invoked anywhere. -/
 #print axioms ActionGate.fromNat_toNat
 #print axioms controller_vectors_hold
 #print axioms CommutesSquare.identity
 #print axioms CommutesSquare.postcompose
+#print axioms shared_lipschitz_counterexample
 #print axioms Contract.traceAdmissible_tail
 #print axioms Blanket.isSeparator_of_no_edges
 #print axioms DepGraph.familyClosure_iff
+#print axioms dependency_mutation_adds_coparent
 #print axioms LedgerEntry.decode_encode
 #print axioms scriptHonest_ne_scriptSneaky
 #print axioms ledger_does_not_identify_script
