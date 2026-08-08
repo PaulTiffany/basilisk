@@ -23,6 +23,7 @@ mathlib dependency):
   * JunctionTopology.lean — three-way interaction signatures and controls
   * Promotion.lean        — imagination/verification/authority promotion boundaries
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
+  * Evitability.lean      — nominal choice versus materially viable alternatives
   * Blanket.lean          — direct-edge separator-property shape
   * DependencyCut.lean    — parent/child/co-parent family closure
   * DependencyMutationWitness.lean — shared topology-mutation instance
@@ -51,6 +52,7 @@ import Basilisk.AssumptionNecessity
 import Basilisk.JunctionTopology
 import Basilisk.Promotion
 import Basilisk.Materiality
+import Basilisk.Evitability
 import Basilisk.Blanket
 import Basilisk.DependencyCut
 import Basilisk.DependencyMutationWitness
@@ -120,6 +122,8 @@ namespace Basilisk
 #print axioms wall_shared_obstruction
 #print axioms shared_belief_not_obstruction
 #print axioms bridge_recursive_materialization
+#print axioms nominal_choice_does_not_imply_evitability
+#print axioms plural_identity_preserves_evitability
 #print axioms Contract.traceAdmissible_tail
 #print axioms Blanket.isSeparator_of_no_edges
 #print axioms DepGraph.familyClosure_iff
