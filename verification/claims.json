@@ -61,7 +61,7 @@
       "status": "engineering_mechanism",
       "statement": "Each mutation run exposes source, changed dimensions, preserved dimensions, residual, loss class, and detection outcome.",
       "depends_on": [],
-      "witnesses": ["python"],
+      "witnesses": ["mechanism"],
       "interpretation": "Executable provenance for symbolic mutations."
     }
   ],
