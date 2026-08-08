@@ -91,6 +91,13 @@
       "path": "verification/check_cross_witness.py",
       "fragment": "print(\n        f\"CROSS-WITNESS TRANSCRIPTION CHECK: PASS — {len(cases)} JSON↔Lean vectors\"\n    )",
       "sha256": "a144c74cb9ec7174762cc84eae9985d08ec7e5976e13b298f4b3f420a5d6cae4"
+    },
+    {
+      "claim_id": "C-MECH-003",
+      "kind": "mechanism",
+      "path": "verification/check_exterior_coverage.py",
+      "fragment": "A controller surface is a minimal pair: two states differing in exactly one",
+      "sha256": "01f4eef1664c2dfd7d2c830c232afe678fe393ff456132bd8d14ba1fe5f5165e"
     }
   ]
 }
