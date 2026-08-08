@@ -62,8 +62,15 @@ class StandingAuthority:
     expires_at: str | None = None
     notes: str = ""
 
-    def covers(self, intent: "ActionIntent") -> bool:
-        if not self.active or self.is_expired():
+    def covers(self, intent: "ActionIntent", *, now: datetime | None = None) -> bool:
+        """Return whether this standing authority covers ``intent`` at ``now``.
+
+        Runtime callers normally omit ``now`` and receive wall-clock behavior.
+        Verification fixtures may pass an explicit instant so the transport from
+        timestamp-bearing Python authority to Lean's evaluated ``expired : Bool``
+        is reproducible rather than dependent on test execution time.
+        """
+        if not self.active or self.is_expired(now):
             return False
         if intent.action_class not in self.allowed_actions:
             return False
@@ -78,7 +85,6 @@ class StandingAuthority:
         if intent.authority_expansion and not self.allow_authority_expansion:
             return False
         return True
-
 
     def is_expired(self, now: datetime | None = None) -> bool:
         if self.expires_at is None:
