@@ -3,7 +3,14 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 
-from .types import ActionGate, ActionIntent, JudgmentMode, RiskLevel, StandingAuthority
+from .gate_projection import (
+    boundary_crossing,
+    gate_from_projection,
+    project_gate,
+    risk_score,
+    unrequested_model_judgment,
+)
+from .types import ActionGate, ActionIntent, RiskLevel, StandingAuthority
 
 
 @dataclass(frozen=True)
@@ -32,9 +39,9 @@ def assess_action(
 ) -> Assessment:
     """Assess an explicitly described action intent.
 
-    Hard predicates are evaluated before the scalar score. The controller
-    assumes the supplied features are accurate; natural-language inference is
-    outside this trusted core.
+    Gate selection factors through ``GateProjection``. Rich runtime fields and
+    standing-authority structure determine the projection and diagnostics, but
+    once projected the gate itself is selected by one finite pure function.
 
     ``now`` is optional and exists so timestamp-bearing standing authority can
     be evaluated reproducibly by verification fixtures. Runtime callers normally
@@ -42,33 +49,6 @@ def assess_action(
     """
 
     reasons: list[str] = []
-
-    if intent.hard_boundary_violation:
-        return _assessment(
-            ActionGate.STOP,
-            ["hard boundary violation"],
-            intent,
-            "none",
-        )
-
-    if not intent.within_contract:
-        return _assessment(
-            ActionGate.STOP,
-            ["action lies outside the declared Contract"],
-            intent,
-            "none",
-        )
-
-    if _is_unrequested_model_judgment(intent):
-        return _assessment(
-            ActionGate.STOP,
-            [
-                "unrequested novel model judgment",
-                "reframe as analysis, sourced outside judgment, or an explicit request",
-            ],
-            intent,
-            "none",
-        )
 
     standing_covers = bool(
         standing_authority and standing_authority.covers(intent, now=now)
@@ -81,37 +61,59 @@ def assess_action(
         if standing_covers
         else "none"
     )
+    projection = project_gate(intent, authorized=authorized)
+    gate = gate_from_projection(projection)
 
-    if intent.is_critical_destructive and not intent.current_turn_explicit_authorization:
+    if projection.hard_boundary_violation:
+        return _assessment(gate, ["hard boundary violation"], intent, authority_basis)
+
+    if not projection.within_contract:
         return _assessment(
-            ActionGate.CHECKPOINT,
+            gate,
+            ["action lies outside the declared Contract"],
+            intent,
+            authority_basis,
+        )
+
+    if projection.unrequested_model_judgment:
+        return _assessment(
+            gate,
+            [
+                "unrequested novel model judgment",
+                "reframe as analysis, sourced outside judgment, or an explicit request",
+            ],
+            intent,
+            authority_basis,
+        )
+
+    if projection.critical_destructive and not projection.current_turn_explicit_authorization:
+        return _assessment(
+            gate,
             ["critical destructive action requires fresh explicit authorization"],
             intent,
             authority_basis,
         )
 
     boundary_reasons = _boundary_reasons(intent)
-    if boundary_reasons and not authorized:
+    if projection.boundary_crossing and not projection.authorized:
         return _assessment(
-            ActionGate.CHECKPOINT,
+            gate,
             ["unfulfilled semantic boundary crossing", *boundary_reasons],
             intent,
             authority_basis,
         )
 
-    if intent.scope >= RiskLevel.HIGH and not intent.current_turn_explicit_authorization:
+    if projection.high_scope and not projection.current_turn_explicit_authorization:
         return _assessment(
-            ActionGate.CHECKPOINT,
+            gate,
             ["high consequence scope requires fresh explicit authorization"],
             intent,
             authority_basis,
         )
 
-    score = risk_score(intent, authorized=authorized)
-
-    if intent.uncertainty == RiskLevel.CRITICAL:
+    if projection.critical_uncertainty:
         return _assessment(
-            ActionGate.CHECKPOINT,
+            gate,
             ["critical uncertainty changes the proper action gate"],
             intent,
             authority_basis,
@@ -121,10 +123,11 @@ def assess_action(
         reasons.extend(boundary_reasons)
         reasons.append("boundary was explicitly authorized")
 
-    if intent.material_change or score >= 3 or boundary_reasons:
+    score = risk_score(intent, authorized=authorized)
+    if gate == ActionGate.PROCEED_AND_REPORT:
         reasons.append("material or nontrivial authorized action requires report")
         return Assessment(
-            gate=ActionGate.PROCEED_AND_REPORT,
+            gate=gate,
             reasons=tuple(_dedupe(reasons)),
             risk_score=score,
             authority_basis=authority_basis,
@@ -133,42 +136,12 @@ def assess_action(
 
     reasons.append("low-stakes reversible action inside authority")
     return Assessment(
-        gate=ActionGate.PROCEED,
+        gate=gate,
         reasons=tuple(reasons),
         risk_score=score,
         authority_basis=authority_basis,
         report_required=False,
     )
-
-
-def risk_score(intent: ActionIntent, *, authorized: bool) -> int:
-    score = 0
-    score += 0 if intent.reversible else 2
-    score += 0 if intent.rollback_available else 2
-    score += 0 if intent.inspectable else 1
-    score += 2 if intent.affects_external_system else 0
-    score += 1 if intent.audience_change else 0
-    score += 1 if intent.privacy_change else 0
-    score += 2 if intent.authority_expansion else 0
-    score += int(intent.scope)
-    score += int(intent.uncertainty)
-    score += 1 if intent.destructive else 0
-    score -= 2 if authorized else 0
-    return max(score, 0)
-
-
-def _is_unrequested_model_judgment(intent: ActionIntent) -> bool:
-    if intent.judgment_mode in {
-        JudgmentMode.NONE,
-        JudgmentMode.USER_SUPPLIED,
-        JudgmentMode.SOURCED_EXTERNAL,
-    }:
-        return False
-    if intent.judgment_mode == JudgmentMode.EXPLICIT_MODEL_RECOMMENDATION:
-        return not intent.judgment_requested
-    if intent.judgment_mode == JudgmentMode.NARROW_SAFETY:
-        return not intent.concrete_immediate_safety_risk
-    return True
 
 
 def _boundary_reasons(intent: ActionIntent) -> list[str]:
@@ -203,3 +176,8 @@ def _assessment(
 
 def _dedupe(values: list[str]) -> list[str]:
     return list(dict.fromkeys(values))
+
+
+# Compatibility imports for callers that reached into controller internals.
+_is_unrequested_model_judgment = unrequested_model_judgment
+_boundary_crossing = boundary_crossing
