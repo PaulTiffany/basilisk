@@ -1,116 +1,19 @@
 {
   "schema_version": 1,
   "claims": [
-    {
-      "id": "C-MATH-001",
-      "title": "Lipschitz boundedness does not imply constitutional preservation",
-      "status": "lean_theorem",
-      "statement": "There exists a 0-Lipschitz map on a two-point space that fails to preserve a designated constitutional predicate.",
-      "depends_on": [],
-      "witnesses": ["lean", "numpy"],
-      "interpretation": "Geometric smoothness alone cannot establish preservation of constitutional invariants."
-    },
-    {
-      "id": "C-MATH-002",
-      "title": "Parent-child-coparent family closure",
-      "status": "definition",
-      "statement": "The finite family closure of x is the union of parents, children, and co-parents (parents of children excluding x itself).",
-      "depends_on": [],
-      "witnesses": ["lean"],
-      "interpretation": "This is graph structure only; no conditional-independence claim is made."
-    },
-    {
-      "id": "C-MATH-003",
-      "title": "Constitutional preservation composes",
-      "status": "lean_theorem",
-      "statement": "If T preserves CX into CY and S preserves CY into CZ, then S composed with T preserves CX into CZ.",
-      "depends_on": [],
-      "witnesses": ["lean"],
-      "interpretation": "This is the constitutional half of a future bounded-and-preserving composition theorem."
-    },
-    {
-      "id": "C-MATH-004",
-      "title": "Weighted operational action distance is a pseudometric first",
-      "status": "standard_theorem",
-      "statement": "A nonnegative weighted sum of component pseudometrics is a pseudometric; metricity requires an additional separation condition.",
-      "depends_on": [],
-      "witnesses": ["numpy"],
-      "interpretation": "Operational feature distance must not be called a metric without a separation hypothesis."
-    },
-    {
-      "id": "C-MATH-005",
-      "title": "Boundary-aware Lipschitz control",
-      "status": "target_theorem",
-      "statement": "The action projection of the controller should satisfy a Lipschitz bound away from semantic-boundary changes, with an explicit jump term for boundary changes.",
-      "depends_on": ["C-MATH-004"],
-      "witnesses": [],
-      "interpretation": "This is currently a specification target, not a proved property of the reference controller."
-    },
-    {
-      "id": "C-MATH-006",
-      "title": "Constitutionally completed bounded composition",
-      "status": "target_theorem",
-      "statement": "Composition should carry both an explicit Lipschitz bound and preservation of the chosen constitutional predicate.",
-      "depends_on": ["C-MATH-001", "C-MATH-003", "C-MATH-005"],
-      "witnesses": [],
-      "interpretation": "This is the precise theorem program behind constitutional completion of integrability."
-    },
-    {
-      "id": "C-MATH-007",
-      "title": "A co-parent edge mutation changes the registered family closure",
-      "status": "lean_theorem",
-      "statement": "In the registered four-node dependency witness, adding the edge coparent→child causes coparent to enter the family closure of x.",
-      "depends_on": ["C-MATH-002"],
-      "witnesses": ["lean", "python", "mechanism"],
-      "interpretation": "This is a finite topology-change witness. It does not establish conditional independence or determine a constitutional gate by itself."
-    },
-    {
-      "id": "C-MECH-001",
-      "title": "Mutation runs are witnessed transformations",
-      "status": "engineering_mechanism",
-      "statement": "Each mutation run exposes source, changed dimensions, preserved dimensions, residual, loss class, and detection outcome.",
-      "depends_on": [],
-      "witnesses": ["mechanism"],
-      "interpretation": "Executable provenance for symbolic mutations."
-    },
-    {
-      "id": "C-MECH-002",
-      "title": "Python and Lean controller correspondence on shared vectors",
-      "status": "engineering_mechanism",
-      "statement": "The Python reference controller and the Lean finite Script agree on every case in the registered shared controller vector corpus.",
-      "depends_on": [],
-      "witnesses": ["python", "lean", "mechanism"],
-      "interpretation": "Cross-substrate agreement is mechanically checked on a finite observable corpus; this is not yet a universal equivalence theorem."
-    },
-    {
-      "id": "C-MECH-003",
-      "title": "Declared semantic exteriors are mechanically lined",
-      "status": "engineering_mechanism",
-      "statement": "Every semantic surface currently declared in exterior_coverage.json has a mechanical witness: minimal controller pairs, dependency role add/remove mutations, transport loss classes, and selected theorem-assumption countermodels.",
-      "depends_on": ["C-MECH-002", "C-MATH-002", "C-MATH-003"],
-      "witnesses": ["mechanism"],
-      "interpretation": "This is completeness relative to the declared exterior registry, not a claim that the registry already contains every important future surface."
-    },
-    {
-      "id": "C-MECH-004",
-      "title": "Selected pairwise exterior seams are mechanically lined",
-      "status": "engineering_mechanism",
-      "statement": "Every interaction seam declared in interaction_coverage.json is witnessed as a complete 2x2 square against the live Python controller, with all required seam classes represented.",
-      "depends_on": ["C-MECH-003"],
-      "witnesses": ["mechanism", "python"],
-      "interpretation": "This establishes pairwise coverage for the selected seam registry only; it does not claim three-way, higher-order, or exhaustive controller closure."
-    },
-    {
-      "id": "C-MECH-005",
-      "title": "Selected interaction seams preserve diagnostic distinctions",
-      "status": "engineering_mechanism",
-      "statement": "Registered interaction diagnostics check reasons, authority basis, report requirement, and selected risk scores so equal action gates cannot silently erase distinct boundary semantics.",
-      "depends_on": ["C-MECH-004"],
-      "witnesses": ["mechanism", "python"],
-      "interpretation": "This is diagnostic coverage for selected seams, not a proof that every explanatory field is complete or semantically sufficient."
-    }
+    {"id":"C-MATH-001","title":"Lipschitz boundedness does not imply constitutional preservation","status":"lean_theorem","statement":"There exists a 0-Lipschitz map on a two-point space that fails to preserve a designated constitutional predicate.","depends_on":[],"witnesses":["lean","numpy"],"interpretation":"Geometric smoothness alone cannot establish preservation of constitutional invariants."},
+    {"id":"C-MATH-002","title":"Parent-child-coparent family closure","status":"definition","statement":"The finite family closure of x is the union of parents, children, and co-parents (parents of children excluding x itself).","depends_on":[],"witnesses":["lean"],"interpretation":"This is graph structure only; no conditional-independence claim is made."},
+    {"id":"C-MATH-003","title":"Constitutional preservation composes","status":"lean_theorem","statement":"If T preserves CX into CY and S preserves CY into CZ, then S composed with T preserves CX into CZ.","depends_on":[],"witnesses":["lean"],"interpretation":"This is the constitutional half of a future bounded-and-preserving composition theorem."},
+    {"id":"C-MATH-004","title":"Weighted operational action distance is a pseudometric first","status":"standard_theorem","statement":"A nonnegative weighted sum of component pseudometrics is a pseudometric; metricity requires an additional separation condition.","depends_on":[],"witnesses":["numpy"],"interpretation":"Operational feature distance must not be called a metric without a separation hypothesis."},
+    {"id":"C-MATH-005","title":"Boundary-aware Lipschitz control","status":"target_theorem","statement":"The action projection of the controller should satisfy a Lipschitz bound away from semantic-boundary changes, with an explicit jump term for boundary changes.","depends_on":["C-MATH-004"],"witnesses":[],"interpretation":"This is currently a specification target, not a proved property of the reference controller."},
+    {"id":"C-MATH-006","title":"Constitutionally completed bounded composition","status":"target_theorem","statement":"Composition should carry both an explicit Lipschitz bound and preservation of the chosen constitutional predicate.","depends_on":["C-MATH-001","C-MATH-003","C-MATH-005"],"witnesses":[],"interpretation":"This is the precise theorem program behind constitutional completion of integrability."},
+    {"id":"C-MATH-007","title":"A co-parent edge mutation changes the registered family closure","status":"lean_theorem","statement":"In the registered four-node dependency witness, adding the edge coparent→child causes coparent to enter the family closure of x.","depends_on":["C-MATH-002"],"witnesses":["lean","python","mechanism"],"interpretation":"This is a finite topology-change witness. It does not establish conditional independence or determine a constitutional gate by itself."},
+    {"id":"C-MECH-001","title":"Mutation runs are witnessed transformations","status":"engineering_mechanism","statement":"Each mutation run exposes source, changed dimensions, preserved dimensions, residual, loss class, and detection outcome.","depends_on":[],"witnesses":["mechanism"],"interpretation":"Executable provenance for symbolic mutations."},
+    {"id":"C-MECH-002","title":"Python and Lean controller correspondence on shared vectors","status":"engineering_mechanism","statement":"The Python reference controller and the Lean finite Script agree on every case in the registered shared controller vector corpus.","depends_on":[],"witnesses":["python","lean","mechanism"],"interpretation":"Cross-substrate agreement is mechanically checked on a finite observable corpus; this is not yet a universal equivalence theorem."},
+    {"id":"C-MECH-003","title":"Declared semantic exteriors are mechanically lined","status":"engineering_mechanism","statement":"Every semantic surface currently declared in exterior_coverage.json has a mechanical witness: minimal controller pairs, dependency role add/remove mutations, transport loss classes, and selected theorem-assumption countermodels.","depends_on":["C-MECH-002","C-MATH-002","C-MATH-003"],"witnesses":["mechanism"],"interpretation":"This is completeness relative to the declared exterior registry, not a claim that the registry already contains every important future surface."},
+    {"id":"C-MECH-004","title":"Selected pairwise exterior seams are mechanically lined","status":"engineering_mechanism","statement":"Every interaction seam declared in interaction_coverage.json is witnessed as a complete 2x2 square against the live Python controller, with all required seam classes represented.","depends_on":["C-MECH-003"],"witnesses":["mechanism","python"],"interpretation":"This establishes pairwise coverage for the selected seam registry only; it does not claim three-way, higher-order, or exhaustive controller closure."},
+    {"id":"C-MECH-005","title":"Selected interaction seams preserve diagnostic distinctions","status":"engineering_mechanism","statement":"Registered interaction diagnostics check reasons, authority basis, report requirement, and selected risk scores so equal action gates cannot silently erase distinct boundary semantics.","depends_on":["C-MECH-004"],"witnesses":["mechanism","python"],"interpretation":"This is diagnostic coverage for selected seams, not a proof that every explanatory field is complete or semantically sufficient."},
+    {"id":"C-MECH-006","title":"Selected three-way junctions expose trefoil-like interaction and explicit stop conditions","status":"engineering_mechanism","statement":"Every junction declared in trefoil_junctions.json is witnessed as a complete 2x2x2 cube against the live Python controller; the checker computes pairwise links, a third-order gate residual, topology-control class, halt corners, and declared release/nonrelease edges.","depends_on":["C-MECH-004","C-MECH-005"],"witnesses":["python","mechanism"],"interpretation":"Trefoil-like is a falsifiable engineering interaction signature, not a topological knot theorem. Stop conditions are local junction properties: verification or authorization may release some halt surfaces while hard boundaries and critical uncertainty remain non-overridable in their declared contexts."}
   ],
-  "recursion_policy": {
-    "allowed_components": []
-  }
+  "recursion_policy": {"allowed_components": []}
 }
