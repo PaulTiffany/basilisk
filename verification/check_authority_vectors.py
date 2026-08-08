@@ -3,11 +3,11 @@
 
 from __future__ import annotations
 
-import json
 from pathlib import Path
 
 from map_lb.controller import assess_action
 from map_lb.types import ActionIntent, RiskLevel, StandingAuthority
+from registry_io import strict_load_json
 
 ROOT = Path(__file__).resolve().parents[1]
 VECTORS = ROOT / "verification" / "authority_vectors.json"
@@ -46,15 +46,21 @@ def _authority(raw: dict) -> StandingAuthority:
 
 
 def main() -> int:
-    doc = json.loads(VECTORS.read_text(encoding="utf-8"))
+    doc = strict_load_json(VECTORS)
     cases = doc.get("cases", [])
     errors: list[str] = []
     seen: set[str] = set()
 
     if doc.get("schema_version") != 1:
         errors.append(f"unsupported schema_version {doc.get('schema_version')!r}")
+    if not isinstance(cases, list):
+        errors.append("cases must be a list")
+        cases = []
 
-    for case in cases:
+    for index, case in enumerate(cases):
+        if not isinstance(case, dict):
+            errors.append(f"cases[{index}] must be an object")
+            continue
         cid = case.get("id", "<missing>")
         if cid in seen:
             errors.append(f"duplicate case id: {cid}")
