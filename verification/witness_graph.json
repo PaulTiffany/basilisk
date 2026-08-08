@@ -1,28 +1,28 @@
 {
   "schema_version": 1,
   "nodes": [
-    {"id":"R-VECTORS","kind":"shared_corpus","artifact":"verification/controller_vectors.json"},
-    {"id":"R-PYTHON","kind":"implementation","artifact":"src/map_lb/controller.py"},
-    {"id":"R-LEAN","kind":"formal_model","artifact":"formal/Basilisk/Script.lean"},
-    {"id":"R-LEAN-VECTORS","kind":"formal_witness","artifact":"formal/Basilisk/ControllerVectors.lean"},
-    {"id":"R-GATE","kind":"observable","artifact":"ActionGate"},
+    {"id":"R-VECTORS","kind":"shared_corpus","substrate":"json","artifact":"verification/controller_vectors.json"},
+    {"id":"R-PYTHON","kind":"implementation","substrate":"python","artifact":"src/map_lb/controller.py"},
+    {"id":"R-LEAN","kind":"formal_model","substrate":"lean","artifact":"formal/Basilisk/Script.lean"},
+    {"id":"R-LEAN-VECTORS","kind":"formal_witness","substrate":"lean","artifact":"formal/Basilisk/ControllerVectors.lean"},
+    {"id":"R-GATE","kind":"observable","substrate":"abstract","artifact":"ActionGate"},
 
-    {"id":"R-LIP-SPEC","kind":"shared_witness","artifact":"verification/lipschitz_counterexample.json"},
-    {"id":"R-LIP-NUMPY","kind":"numeric_witness","artifact":"verification/check_domain_witnesses.py"},
-    {"id":"R-LIP-LEAN","kind":"formal_witness","artifact":"formal/Basilisk/LipschitzWitness.lean"},
-    {"id":"R-LIP-OBS","kind":"observable","artifact":"verification/lipschitz_counterexample.json"},
+    {"id":"R-LIP-SPEC","kind":"shared_witness","substrate":"json","artifact":"verification/lipschitz_counterexample.json"},
+    {"id":"R-LIP-NUMPY","kind":"numeric_witness","substrate":"numpy","artifact":"verification/check_domain_witnesses.py"},
+    {"id":"R-LIP-LEAN","kind":"formal_witness","substrate":"lean","artifact":"formal/Basilisk/LipschitzWitness.lean"},
+    {"id":"R-LIP-OBS","kind":"observable","substrate":"abstract","artifact":"verification/lipschitz_counterexample.json"},
 
-    {"id":"R-DEP-SPEC","kind":"shared_witness","artifact":"verification/dependency_mutation.json"},
-    {"id":"R-DEP-MUTATOR","kind":"mutation_witness","artifact":"verification/dependency_mutator.py"},
-    {"id":"R-DEP-LEAN","kind":"formal_witness","artifact":"formal/Basilisk/DependencyMutationWitness.lean"},
-    {"id":"R-DEP-OBS","kind":"observable","artifact":"verification/dependency_mutation.json"}
+    {"id":"R-DEP-SPEC","kind":"shared_witness","substrate":"json","artifact":"verification/dependency_mutation.json"},
+    {"id":"R-DEP-MUTATOR","kind":"mutation_witness","substrate":"python","artifact":"verification/dependency_mutator.py"},
+    {"id":"R-DEP-LEAN","kind":"formal_witness","substrate":"lean","artifact":"formal/Basilisk/DependencyMutationWitness.lean"},
+    {"id":"R-DEP-OBS","kind":"observable","substrate":"abstract","artifact":"verification/dependency_mutation.json"}
   ],
   "edges": [
     {"id":"T-VECTORS-PYTHON","source":"R-VECTORS","target":"R-PYTHON","claim_id":"C-MECH-002","loss_class":"projective","residual":"The shared corpus fixes only gate-relevant finite fields and a Boolean standing-authorized witness; it does not encode the full StandingAuthority object or free-text metadata.","checker":"verification/check_controller_vectors.py"},
     {"id":"T-VECTORS-LEAN-VECTORS","source":"R-VECTORS","target":"R-LEAN-VECTORS","claim_id":"C-MECH-002","loss_class":"projective","residual":"JSON field names and enum strings are lowered into Lean constructors; action identity and descriptive metadata are intentionally absent.","checker":"verification/check_cross_witness.py"},
-    {"id":"T-LEAN-VECTORS-LEAN","source":"R-LEAN-VECTORS","target":"R-LEAN","claim_id":"C-MECH-002","loss_class":"exact","residual":"","checker":"formal/Basilisk/ControllerVectors.lean"},
+    {"id":"T-LEAN-VECTORS-LEAN","source":"R-LEAN-VECTORS","target":"R-LEAN","claim_id":"C-MECH-002","loss_class":"exact","residual":"","exactness_scope":"Within the registered finite vector propositions, the Lean witness invokes the same ActionIntent.assess function imported from Script.lean; no additional representation transform occurs on this edge.","checker":"formal/Basilisk/ControllerVectors.lean"},
     {"id":"O-PYTHON-GATE","source":"R-PYTHON","target":"R-GATE","claim_id":"C-MECH-002","loss_class":"projective","residual":"Assessment reasons, score, authority basis, and report flag are projected away; only the gate is compared.","checker":"verification/check_controller_vectors.py"},
-    {"id":"O-LEAN-GATE","source":"R-LEAN","target":"R-GATE","claim_id":"C-MECH-002","loss_class":"exact","residual":"","checker":"formal/Basilisk/ControllerVectors.lean"},
+    {"id":"O-LEAN-GATE","source":"R-LEAN","target":"R-GATE","claim_id":"C-MECH-002","loss_class":"exact","residual":"","exactness_scope":"The Lean Script already returns ActionGate; the observable is the returned gate itself.","checker":"formal/Basilisk/ControllerVectors.lean"},
 
     {"id":"T-LIP-SPEC-NUMPY","source":"R-LIP-SPEC","target":"R-LIP-NUMPY","claim_id":"C-MATH-001","loss_class":"projective","residual":"The NumPy path evaluates the registered finite carrier, map, distance, and predicates but does not carry a proof object or generalize beyond the finite witness.","checker":"verification/check_domain_witnesses.py"},
     {"id":"O-LIP-NUMPY","source":"R-LIP-NUMPY","target":"R-LIP-OBS","claim_id":"C-MATH-001","loss_class":"projective","residual":"Only the observed Lipschitz constant and predicate-preservation result are compared.","checker":"verification/check_domain_witnesses.py"},
@@ -35,8 +35,8 @@
     {"id":"O-DEP-LEAN","source":"R-DEP-LEAN","target":"R-DEP-OBS","claim_id":"C-MATH-007","loss_class":"projective","residual":"The Lean theorem observes only that the target co-parent is absent before and present after; it does not claim Bayesian conditional independence or constitutional significance.","checker":"formal/Basilisk/DependencyMutationWitness.lean"}
   ],
   "agreements": [
-    {"id":"A-CONTROLLER-GATE","claim_id":"C-MECH-002","source":"R-VECTORS","observable":"R-GATE","paths":[["T-VECTORS-PYTHON","O-PYTHON-GATE"],["T-VECTORS-LEAN-VECTORS","T-LEAN-VECTORS-LEAN","O-LEAN-GATE"]],"scope":"The 16 registered finite controller vectors only; this is not universal Python/Lean functional equivalence."},
-    {"id":"A-LIPSCHITZ-COUNTEREXAMPLE","claim_id":"C-MATH-001","source":"R-LIP-SPEC","observable":"R-LIP-OBS","paths":[["T-LIP-SPEC-NUMPY","O-LIP-NUMPY"],["T-LIP-SPEC-LEAN","O-LIP-LEAN"]],"scope":"The registered two-point counterexample only. NumPy supplies a finite numerical witness; Lean supplies the proof. Agreement does not promote NumPy to a proof engine."},
-    {"id":"A-DEPENDENCY-MUTATION","claim_id":"C-MATH-007","source":"R-DEP-SPEC","observable":"R-DEP-OBS","paths":[["T-DEP-SPEC-MUTATOR","O-DEP-MUTATOR"],["T-DEP-SPEC-LEAN","O-DEP-LEAN"]],"scope":"The registered four-node edge-addition witness only. It establishes a family-closure topology change, not a probabilistic Markov-blanket theorem or a constitutional gate."}
+    {"id":"A-CONTROLLER-GATE","claim_id":"C-MECH-002","source":"R-VECTORS","observable":"R-GATE","require_independent_substrates":true,"paths":[["T-VECTORS-PYTHON","O-PYTHON-GATE"],["T-VECTORS-LEAN-VECTORS","T-LEAN-VECTORS-LEAN","O-LEAN-GATE"]],"scope":"The 16 registered finite controller vectors only; this is not universal Python/Lean functional equivalence."},
+    {"id":"A-LIPSCHITZ-COUNTEREXAMPLE","claim_id":"C-MATH-001","source":"R-LIP-SPEC","observable":"R-LIP-OBS","require_independent_substrates":true,"paths":[["T-LIP-SPEC-NUMPY","O-LIP-NUMPY"],["T-LIP-SPEC-LEAN","O-LIP-LEAN"]],"scope":"The registered two-point counterexample only. NumPy supplies a finite numerical witness; Lean supplies the proof. Agreement does not promote NumPy to a proof engine."},
+    {"id":"A-DEPENDENCY-MUTATION","claim_id":"C-MATH-007","source":"R-DEP-SPEC","observable":"R-DEP-OBS","require_independent_substrates":true,"paths":[["T-DEP-SPEC-MUTATOR","O-DEP-MUTATOR"],["T-DEP-SPEC-LEAN","O-DEP-LEAN"]],"scope":"The registered four-node edge-addition witness only. It establishes a family-closure topology change, not a probabilistic Markov-blanket theorem or a constitutional gate."}
   ]
 }
