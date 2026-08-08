@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "claims": {
+    "C-MATH-001": {
+      "source_pair_distance": 1.0,
+      "collapsed_pair_distance": 0.0,
+      "observed_lipschitz_ratio": 0.0,
+      "constitutional_predicate_preserved": false
+    },
+    "C-MATH-004": {
+      "weights": [1.0, 2.0, 0.5],
+      "distance_matrix": [
+        [0.0, 1.5, 3.5],
+        [1.5, 0.0, 2.0],
+        [3.5, 2.0, 0.0]
+      ],
+      "symmetric": true,
+      "zero_diagonal": true,
+      "triangle_inequality_on_fixture": true,
+      "alias_witness": {
+        "distinct_action_ids": true,
+        "identical_feature_distance": 0.0
+      }
+    }
+  }
+}
