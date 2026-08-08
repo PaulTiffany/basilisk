@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "witnesses": [
+    {
+      "id": "OBS-01",
+      "description": "External output is observable while the constitutionally relevant interior transition is not.",
+      "frame": {
+        "external_observable": true,
+        "relevant_interior_observable": false,
+        "authority_trace_observable": true,
+        "provenance_observable": true
+      },
+      "authorized": true,
+      "expected_explanatory_accountability_needed": true
+    },
+    {
+      "id": "OBS-02",
+      "description": "Relevant interior transition and external effect are both observable.",
+      "frame": {
+        "external_observable": true,
+        "relevant_interior_observable": true,
+        "authority_trace_observable": true,
+        "provenance_observable": true
+      },
+      "authorized": true,
+      "expected_explanatory_accountability_needed": false
+    },
+    {
+      "id": "OBS-03",
+      "description": "Full relevant observability does not create authorization.",
+      "frame": {
+        "external_observable": true,
+        "relevant_interior_observable": true,
+        "authority_trace_observable": true,
+        "provenance_observable": true
+      },
+      "authorized": false,
+      "expected_explanatory_accountability_needed": false
+    }
+  ],
+  "non_claim": "These finite witnesses define constitutional distinctions only. They do not claim that any contemporary model's full internal reasoning is available, unavailable, or reconstructed by this project."
+}
