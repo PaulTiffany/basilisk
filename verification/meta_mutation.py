@@ -1,9 +1,5 @@
 #!/usr/bin/env python3
-"""Deliberately damage temporary copies and require verifier detection.
-
-This is a mutation test of the interpretability machinery itself. The live
-repository is never modified: each mutation is applied to an isolated temp copy.
-"""
+"""Deliberately damage temporary copies and require verifier detection."""
 
 from __future__ import annotations
 
@@ -24,6 +20,7 @@ CHECKS = {
     "formal": ROOT / "verification" / "check_formal_closure.py",
     "controller": ROOT / "verification" / "check_controller_vectors.py",
     "cross": ROOT / "verification" / "check_cross_witness.py",
+    "domain": ROOT / "verification" / "check_domain_witnesses.py",
     "witness": ROOT / "verification" / "check_witness_graph.py",
 }
 
@@ -39,12 +36,8 @@ def run_check(name: str, temp_root: Path) -> subprocess.CompletedProcess[str]:
     env = os.environ.copy()
     env["BASILISK_ROOT"] = str(temp_root)
     return subprocess.run(
-        [sys.executable, str(CHECKS[name])],
-        env=env,
-        text=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        check=False,
+        [sys.executable, str(CHECKS[name])], env=env, text=True,
+        stdout=subprocess.PIPE, stderr=subprocess.STDOUT, check=False,
     )
 
 
@@ -74,16 +67,13 @@ def mutate_numeric_expected(root: Path) -> None:
 def mutate_remove_inventory_entry(root: Path) -> None:
     path = root / "verification" / "formal_inventory.json"
     doc = json.loads(path.read_text(encoding="utf-8"))
-    doc["formal_claims"] = [
-        e for e in doc["formal_claims"] if e["symbol"] != "lipschitz_alone_not_constitutional"
-    ]
+    doc["formal_claims"] = [e for e in doc["formal_claims"] if e["symbol"] != "lipschitz_alone_not_constitutional"]
     path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 
 
 def mutate_remove_root_import(root: Path) -> None:
     path = root / "formal" / "Basilisk.lean"
-    text = path.read_text(encoding="utf-8")
-    text = text.replace("import Basilisk.ConstitutionalLipschitz\n", "")
+    text = path.read_text(encoding="utf-8").replace("import Basilisk.ConstitutionalLipschitz\n", "")
     path.write_text(text, encoding="utf-8")
 
 
@@ -97,28 +87,45 @@ def mutate_vector_expected_gate(root: Path) -> None:
 def mutate_lean_vector_transcription(root: Path) -> None:
     path = root / "formal" / "Basilisk" / "ControllerVectors.lean"
     text = path.read_text(encoding="utf-8")
-    old = ".assess false = .proceed ∧"
-    new = ".assess false = .stop ∧"
+    old, new = ".assess false = .proceed ∧", ".assess false = .stop ∧"
     if old not in text:
         raise RuntimeError("expected V01 Lean vector expression not found")
-    text = text.replace(old, new, 1)
-    path.write_text(text, encoding="utf-8")
+    path.write_text(text.replace(old, new, 1), encoding="utf-8")
 
 
 def mutate_erase_loss_residual(root: Path) -> None:
     path = root / "verification" / "witness_graph.json"
     doc = json.loads(path.read_text(encoding="utf-8"))
-    edge = next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")
-    edge["residual"] = ""
+    next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")["residual"] = ""
     path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 
 
 def mutate_false_exact_transport(root: Path) -> None:
     path = root / "verification" / "witness_graph.json"
     doc = json.loads(path.read_text(encoding="utf-8"))
-    edge = next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")
-    edge["loss_class"] = "exact"
-    # Keep the disclosed residual: an exact edge is not allowed to carry one.
+    next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")["loss_class"] = "exact"
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_lipschitz_source_but_keep_numeric_consistent(root: Path) -> None:
+    path = root / "verification" / "lipschitz_counterexample.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["map"] = {"good": "good", "bad": "bad"}
+    doc["expected"] = {"lipschitz_constant": 1.0, "preserves_predicate": False}
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_dependency_source_but_keep_execution_consistent(root: Path) -> None:
+    path = root / "verification" / "dependency_mutation.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["mutation"]["edge"] = ["other", "child"]
+    doc["target_vertex"] = "other"
+    doc["expected"] = {
+        "before_family_closure": ["child"],
+        "after_family_closure": ["child", "other"],
+        "target_before": False,
+        "target_after": True,
+    }
     path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 
 
@@ -132,6 +139,8 @@ CASES = [
     ("corrupted Lean vector transcription", "cross", mutate_lean_vector_transcription),
     ("erased transport residual", "witness", mutate_erase_loss_residual),
     ("falsely exact transport", "witness", mutate_false_exact_transport),
+    ("Lipschitz source changed behind Lean witness", "domain", mutate_lipschitz_source_but_keep_numeric_consistent),
+    ("dependency source changed behind Lean witness", "domain", mutate_dependency_source_but_keep_execution_consistent),
 ]
 
 
