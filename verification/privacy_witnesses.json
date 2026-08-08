@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "witnesses": [
+    {
+      "id": "PRIV-01",
+      "kind": "selective_disclosure",
+      "external_event_observable": true,
+      "authority_trace_observable": true,
+      "provenance_observable": true,
+      "compliance_witness_observable": true,
+      "private_interior_exposed": false,
+      "expected_sufficient_for_accountability": true
+    },
+    {
+      "id": "PRIV-02",
+      "kind": "total_exposure",
+      "external_event_observable": true,
+      "authority_trace_observable": true,
+      "provenance_observable": true,
+      "compliance_witness_observable": true,
+      "private_interior_exposed": true,
+      "expected_sufficient_for_accountability": true
+    }
+  ],
+  "expected_relation": {
+    "same_accountability_view": true,
+    "different_private_exposure": true,
+    "principle": "minimum sufficient disclosure"
+  },
+  "non_claim": "This finite witness does not prove a universal privacy theorem or specify all evidence required in every domain. It only witnesses that total interior exposure is not necessary in a frame where selective disclosure already provides the same declared accountability-relevant evidence."
+}
