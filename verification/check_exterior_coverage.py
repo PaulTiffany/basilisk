@@ -146,7 +146,8 @@ def main() -> int:
             f"dependency exterior role mismatch: expected {sorted(required_roles)}, got {sorted(dep_ids)}"
         )
     for case in dep_cases:
-        observed = evaluate_dependency(case)
+        executable_case = {"schema_version": dep_doc.get("schema_version"), **case}
+        observed = evaluate_dependency(executable_case)
         for key, expected in case["expected"].items():
             if observed.get(key) != expected:
                 errors.append(
