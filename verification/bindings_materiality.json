@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MECH-008","kind":"python","path":"src/map_lb/materiality.py","fragment":"def assess_shared_obstruction(\n    encounters: tuple[MaterialEncounter, ...],\n    *,\n    min_observers: int = 2,\n    min_frames: int = 2,\n) -> SharedConstraintAssessment:","sha256":"a61ccbc1afcf7800499d4ffefe79757f44931c105cfce9da44d775ff49fa5d83"},
+    {"claim_id":"C-MECH-008","kind":"mechanism","path":"verification/check_materiality.py","fragment":"print(\n        \"MATERIALITY CHECK: PASS — \"\n        f\"{len(cases)} finite witnesses distinguish shared obstruction, belief-only agreement, and recursive materialization\"\n    )","sha256":"eeaec03d6f172b8173274d9cfb39b9c9ccaa4213262417083340d002149b82fa"},
+    {"claim_id":"C-MECH-008","kind":"lean","path":"formal/Basilisk/Materiality.lean","fragment":"theorem bridge_recursive_materialization :\n    RecursiveMaterialization2 bridgeTransition bridgeA bridgeB := by","sha256":"3d0b71a33ed30014a0ac95d22e56ff892ebb0e31e183a9861e3a22e4ffb4985a"}
+  ]
+}
