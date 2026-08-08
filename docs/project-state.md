@@ -4,10 +4,10 @@
 
 ## Claim surface
 
-- **Core:** 19 claims
+- **Core:** 20 claims
 - **Parameterized Transformation Theory:** 3 claims
 - **Research Bridges:** 1 claims
-- **Total:** 23 claims
+- **Total:** 24 claims
 
 ### Core claims
 
@@ -30,6 +30,7 @@
 - `C-MECH-009` — Structured standing authority is evaluated before Boolean gate projection
 - `C-MECH-010` — Serialized Ledger entries have strict schema and cryptographic integrity checks
 - `C-MECH-011` — Every inventoried Lean proof premise is explicitly classified
+- `C-MECH-012` — Canonical project registries have a mechanically total machine join
 
 ### Theory claims
 
