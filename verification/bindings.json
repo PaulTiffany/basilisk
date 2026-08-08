@@ -98,6 +98,20 @@
       "path": "verification/check_exterior_coverage.py",
       "fragment": "A controller surface is a minimal pair: two states differing in exactly one",
       "sha256": "01f4eef1664c2dfd7d2c830c232afe678fe393ff456132bd8d14ba1fe5f5165e"
+    },
+    {
+      "claim_id": "C-MECH-004",
+      "kind": "python",
+      "path": "verification/check_interaction_coverage.py",
+      "fragment": "return assess_action(intent_from_state(label, state), authority).gate.label()",
+      "sha256": "e23c681ee22e97bd03cdd2100e0d511932c24b9a73f0753770b759b5a953a480"
+    },
+    {
+      "claim_id": "C-MECH-004",
+      "kind": "mechanism",
+      "path": "verification/check_interaction_coverage.py",
+      "fragment": "print(\n        \"INTERACTION COVERAGE CHECK: PASS — \"\n        f\"{len(squares)} complete 2x2 seams across {len(required_classes)} seam classes\"\n    )",
+      "sha256": "0846d129cc42ba4a2409008633e492d92e92d1bf47868559834be14cec3796d5"
     }
   ]
 }
