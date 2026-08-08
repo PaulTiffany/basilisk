@@ -1,4 +1,4 @@
-.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation interpret paper clean package-check
+.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation interpret certification-status certification-fresh paper clean package-check
 
 compile:
 	python3 -m compileall -q src scripts verification tests examples
@@ -99,6 +99,12 @@ meta-mutation:
 	python3 verification/meta_mutation_machine_interpretability.py
 
 interpret: provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation
+
+certification-status:
+	python3 verification/certification_status.py
+
+certification-fresh:
+	python3 verification/certification_status.py --require-fresh
 
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
