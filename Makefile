@@ -1,4 +1,4 @@
-.PHONY: compile test eval validate example provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions meta-mutation interpret paper clean package-check
+.PHONY: compile test eval validate example provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors meta-mutation interpret paper clean package-check
 
 compile:
 	python3 -m compileall -q src scripts verification tests examples
@@ -52,13 +52,17 @@ interaction-diagnostics:
 trefoil-junctions:
 	python3 verification/check_trefoil_junctions.py
 
+promotion-vectors:
+	python3 verification/check_promotion_vectors.py
+
 meta-mutation:
 	python3 verification/meta_mutation.py
 	python3 verification/meta_mutation_frontier.py
 	python3 verification/meta_mutation_interactions.py
 	python3 verification/meta_mutation_trefoil.py
+	python3 verification/meta_mutation_promotion.py
 
-interpret: provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions meta-mutation
+interpret: provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors meta-mutation
 
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
