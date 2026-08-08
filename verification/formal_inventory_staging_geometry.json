@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FSG-001","module":"formal/Basilisk/StagingGeometry.lean","symbol":"zeroKernel_refines_of_pointwise_le","signature":"theorem zeroKernel_refines_of_pointwise_le {α : Type} {dₖ dₖ₁ : α → α → Nat} (hmono : ∀ x y, dₖ x y ≤ dₖ₁ x y) {x y : α} (hzero : ZeroKernel dₖ₁ x y) : ZeroKernel dₖ x y","statement_sha256":"8acd2303044b8b43a4f30be18cdcaba5bbc715ff2bd04f2caf8d6a3e3a4244f3","semantic_claim_id":"C-MATH-010","semantic_depends_on":["C-MATH-004"]},
+    {"id":"FSG-002","module":"formal/Basilisk/StagingGeometry.lean","symbol":"positive_scale_preserves_zeroKernel","signature":"theorem positive_scale_preserves_zeroKernel {α : Type} (d : α → α → Nat) (c : Nat) (hc : 0 < c) (x y : α) : ZeroKernel (fun a b => c * d a b) x y ↔ ZeroKernel d x y","statement_sha256":"f69f535da04c80dc3e2b1a37edf5a60ef6e456dd7e4687828b3bafc37533eca0","semantic_claim_id":"C-MATH-010","semantic_depends_on":["C-MATH-004"]},
+    {"id":"FSG-003","module":"formal/Basilisk/StagingGeometry.lean","symbol":"added_component_refines_zeroKernel","signature":"theorem added_component_refines_zeroKernel {α : Type} (d component : α → α → Nat) {x y : α} (hzero : ZeroKernel (fun a b => d a b + component a b) x y) : ZeroKernel d x y","statement_sha256":"4ff78728081e96ae921643b9d46235255156000cd799775651a8da1d9653ff46","semantic_claim_id":"C-MATH-010","semantic_depends_on":["C-MATH-004"]},
+    {"id":"FSG-004","module":"formal/Basilisk/StagingGeometry.lean","symbol":"fixture_strict_refinement","signature":"theorem fixture_strict_refinement : ZeroKernel stageOne 0 1 ∧ ¬ ZeroKernel stageTwo 0 1 ∧ ZeroKernel stageTwo 2 3","statement_sha256":"12486cd74718d7e4a44b4c003d795dd5022430d4b5a53f9d37bcf8a18a07476f","semantic_claim_id":"C-MATH-010","semantic_depends_on":["C-MATH-004"]}
+  ]
+}
