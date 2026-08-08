@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "principle": "Pairwise completeness lines intersections of the exterior with full 2x2 squares, not isolated co-occurrence examples.",
+  "defaults": {
+    "within_contract": true,
+    "hard_boundary_violation": false,
+    "current_turn_explicit_authorization": false,
+    "reversible": true,
+    "rollback_available": true,
+    "inspectable": true,
+    "material_change": false,
+    "affects_external_system": false,
+    "audience_change": false,
+    "privacy_change": false,
+    "authority_expansion": false,
+    "scope": "low",
+    "uncertainty": "low",
+    "judgment_mode": "none",
+    "judgment_requested": false,
+    "concrete_immediate_safety_risk": false,
+    "destructive": false,
+    "standing_authorized": false
+  },
+  "required_seam_classes": [
+    "boundary_union",
+    "standing_authority",
+    "fresh_authority",
+    "nonoverridable_stop",
+    "critical_uncertainty",
+    "risk_synergy",
+    "critical_destructive"
+  ],
+  "squares": [
+    {
+      "id": "IX01-audience-privacy",
+      "class": "boundary_union",
+      "factors": [
+        {"field": "audience_change", "off": false, "on": true},
+        {"field": "privacy_change", "off": false, "on": true}
+      ],
+      "base": {},
+      "expected": {"00":"proceed","10":"checkpoint","01":"checkpoint","11":"checkpoint"},
+      "interpretation": "Either unfulfilled audience or privacy crossing is sufficient to require a checkpoint; their union does not soften the gate."
+    },
+    {
+      "id": "IX02-external-standing",
+      "class": "standing_authority",
+      "factors": [
+        {"field": "affects_external_system", "off": false, "on": true},
+        {"field": "standing_authorized", "off": false, "on": true}
+      ],
+      "base": {},
+      "expected": {"00":"proceed","10":"checkpoint","01":"proceed","11":"proceed_and_report"},
+      "interpretation": "Standing authority changes an otherwise unfulfilled external boundary from checkpoint to proceed-and-report."
+    },
+    {
+      "id": "IX03-authority-fresh",
+      "class": "fresh_authority",
+      "factors": [
+        {"field": "authority_expansion", "off": false, "on": true},
+        {"field": "current_turn_explicit_authorization", "off": false, "on": true}
+      ],
+      "base": {},
+      "expected": {"00":"proceed","10":"checkpoint","01":"proceed","11":"proceed_and_report"},
+      "interpretation": "Fresh authorization changes an authority-expansion boundary from checkpoint to proceed-and-report."
+    },
+    {
+      "id": "IX04-high-scope-fresh",
+      "class": "fresh_authority",
+      "factors": [
+        {"field": "scope", "off": "low", "on": "high"},
+        {"field": "current_turn_explicit_authorization", "off": false, "on": true}
+      ],
+      "base": {},
+      "expected": {"00":"proceed","10":"checkpoint","01":"proceed","11":"proceed"},
+      "interpretation": "High consequence scope specifically requires fresh authorization; with it, the score remains below the reporting threshold."
+    },
+    {
+      "id": "IX05-hard-boundary-fresh",
+      "class": "nonoverridable_stop",
+      "factors": [
+        {"field": "hard_boundary_violation", "off": false, "on": true},
+        {"field": "current_turn_explicit_authorization", "off": false, "on": true}
+      ],
+      "base": {},
+      "expected": {"00":"proceed","10":"stop","01":"proceed","11":"stop"},
+      "interpretation": "Fresh authorization cannot override a hard boundary violation."
+    },
+    {
+      "id": "IX06-contract-fresh",
+      "class": "nonoverridable_stop",
+      "factors": [
+        {"field": "within_contract", "off": true, "on": false},
+        {"field": "current_turn_explicit_authorization", "off": false, "on": true}
+      ],
+      "base": {},
+      "expected": {"00":"proceed","10":"stop","01":"proceed","11":"stop"},
+      "interpretation": "Fresh authorization cannot convert an out-of-contract action into an admissible one."
+    },
+    {
+      "id": "IX07-judgment-fresh",
+      "class": "nonoverridable_stop",
+      "factors": [
+        {"field": "judgment_mode", "off": "none", "on": "explicit_model_recommendation"},
+        {"field": "current_turn_explicit_authorization", "off": false, "on": true}
+      ],
+      "base": {"judgment_requested": false},
+      "expected": {"00":"proceed","10":"stop","01":"proceed","11":"stop"},
+      "interpretation": "Current-turn action authorization does not authorize an unrequested normative model judgment."
+    },
+    {
+      "id": "IX08-critical-uncertainty-fresh",
+      "class": "critical_uncertainty",
+      "factors": [
+        {"field": "uncertainty", "off": "low", "on": "critical"},
+        {"field": "current_turn_explicit_authorization", "off": false, "on": true}
+      ],
+      "base": {},
+      "expected": {"00":"proceed","10":"checkpoint","01":"proceed","11":"checkpoint"},
+      "interpretation": "Fresh authorization does not suppress the checkpoint induced by critical uncertainty."
+    },
+    {
+      "id": "IX09-rollback-inspectability",
+      "class": "risk_synergy",
+      "factors": [
+        {"field": "rollback_available", "off": true, "on": false},
+        {"field": "inspectable", "off": true, "on": false}
+      ],
+      "base": {},
+      "expected": {"00":"proceed","10":"proceed","01":"proceed","11":"proceed_and_report"},
+      "interpretation": "Neither loss of rollback nor loss of inspectability crosses the report threshold alone; together they do."
+    },
+    {
+      "id": "IX10-destructive-external-standing",
+      "class": "critical_destructive",
+      "factors": [
+        {"field": "destructive", "off": false, "on": true},
+        {"field": "affects_external_system", "off": false, "on": true}
+      ],
+      "base": {"standing_authorized": true},
+      "expected": {"00":"proceed","10":"proceed","01":"proceed_and_report","11":"checkpoint"},
+      "interpretation": "Standing authority can cover the external boundary, but destructive plus external becomes critical-destructive and still requires fresh authorization."
+    },
+    {
+      "id": "IX11-destructive-irreversible-fresh",
+      "class": "critical_destructive",
+      "factors": [
+        {"field": "destructive", "off": false, "on": true},
+        {"field": "reversible", "off": true, "on": false}
+      ],
+      "base": {"current_turn_explicit_authorization": true},
+      "expected": {"00":"proceed","10":"proceed","01":"proceed_and_report","11":"proceed_and_report"},
+      "interpretation": "Fresh authorization satisfies the critical-destructive freshness condition, while irreversibility still forces reporting."
+    },
+    {
+      "id": "IX12-external-authority-standing",
+      "class": "boundary_union",
+      "factors": [
+        {"field": "affects_external_system", "off": false, "on": true},
+        {"field": "authority_expansion", "off": false, "on": true}
+      ],
+      "base": {"standing_authorized": true},
+      "expected": {"00":"proceed","10":"proceed_and_report","01":"proceed_and_report","11":"proceed_and_report"},
+      "interpretation": "Standing authority can cover either or both declared semantic boundaries; every authorized boundary crossing remains reportable."
+    }
+  ]
+}
