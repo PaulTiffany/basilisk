@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 
 from map_lb.controller import assess_action
@@ -15,6 +16,13 @@ VECTORS = ROOT / "verification" / "authority_vectors.json"
 
 def _risk(value: str) -> RiskLevel:
     return RiskLevel[value.upper()]
+
+
+def _parse_instant(value: str) -> datetime:
+    parsed = datetime.fromisoformat(value.replace("Z", "+00:00"))
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(timezone.utc)
 
 
 def _intent(case: dict) -> ActionIntent:
@@ -57,6 +65,12 @@ def main() -> int:
         errors.append("cases must be a list")
         cases = []
 
+    try:
+        evaluation_time = _parse_instant(doc["evaluation_time"])
+    except (KeyError, TypeError, ValueError) as exc:
+        errors.append(f"invalid evaluation_time: {exc}")
+        evaluation_time = datetime(1970, 1, 1, tzinfo=timezone.utc)
+
     for index, case in enumerate(cases):
         if not isinstance(case, dict):
             errors.append(f"cases[{index}] must be an object")
@@ -73,9 +87,9 @@ def main() -> int:
             errors.append(f"{cid}: malformed vector: {exc}")
             continue
 
-        covers = authority.covers(intent)
+        covers = authority.covers(intent, now=evaluation_time)
         authorized = intent.current_turn_explicit_authorization or covers
-        assessment = assess_action(intent, authority)
+        assessment = assess_action(intent, authority, now=evaluation_time)
 
         if covers != case.get("expected_covers"):
             errors.append(
@@ -112,7 +126,10 @@ def main() -> int:
             print(f"- {error}")
         return 1
 
-    print(f"AUTHORITY VECTOR CHECK: PASS — {len(cases)} structured authority vectors")
+    print(
+        f"AUTHORITY VECTOR CHECK: PASS — {len(cases)} structured authority vectors "
+        f"at {evaluation_time.isoformat()}"
+    )
     return 0
 
 
