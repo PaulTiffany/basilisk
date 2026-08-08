@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FAV-001","module":"formal/Basilisk/AuthorityVectors.lean","symbol":"authority_vectors_hold","signature":"theorem authority_vectors_hold : authorityVectors.all AuthorityVector.holds = true","statement_sha256":"811b38cf47b2f0c2f015d4caa664f3f0153552f270396bac44e058bd496733c6","semantic_claim_id":"C-MECH-009","semantic_depends_on":[]}
+  ]
+}
