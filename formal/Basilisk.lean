@@ -16,6 +16,7 @@ mathlib dependency):
   * ControllerVectors.lean — shared Python/Lean observable gate vectors
   * WitnessAlgebra.lean   — typed transports, loss classes, commuting squares
   * LipschitzWitness.lean — shared JSON/NumPy/Lean counterexample instance
+  * StagingGeometry.lean  — frame-indexed refinement and scale-invariant zero kernels
   * AssumptionSurfaces.lean — countermodels for dropped composition hypotheses
   * JunctionTopology.lean — three-way interaction signatures and controls
   * Promotion.lean        — imagination/verification/authority promotion boundaries
@@ -41,6 +42,7 @@ import Basilisk.ControllerVectors
 import Basilisk.WitnessAlgebra
 import Basilisk.ConstitutionalLipschitz
 import Basilisk.LipschitzWitness
+import Basilisk.StagingGeometry
 import Basilisk.AssumptionSurfaces
 import Basilisk.JunctionTopology
 import Basilisk.Promotion
@@ -81,6 +83,10 @@ namespace Basilisk
 #print axioms CommutesSquare.identity
 #print axioms CommutesSquare.postcompose
 #print axioms shared_lipschitz_counterexample
+#print axioms zeroKernel_refines_of_pointwise_le
+#print axioms positive_scale_preserves_zeroKernel
+#print axioms added_component_refines_zeroKernel
+#print axioms fixture_strict_refinement
 #print axioms preserves_comp_needs_hT
 #print axioms preserves_comp_needs_hS
 #print axioms tj01TrefoilWitness
