@@ -4,10 +4,10 @@
 
 ## Claim surface
 
-- **Core:** 18 claims
+- **Core:** 19 claims
 - **Parameterized Transformation Theory:** 3 claims
 - **Research Bridges:** 1 claims
-- **Total:** 22 claims
+- **Total:** 23 claims
 
 ### Core claims
 
@@ -29,6 +29,7 @@
 - `C-MECH-007` — Imaginal possibility does not self-promote into shared truth or operative authority
 - `C-MECH-009` — Structured standing authority is evaluated before Boolean gate projection
 - `C-MECH-010` — Serialized Ledger entries have strict schema and cryptographic integrity checks
+- `C-MECH-011` — Every inventoried Lean proof premise is explicitly classified
 
 ### Theory claims
 
@@ -42,7 +43,7 @@
 
 ## Open frontier scheduling
 
-- **Active Core debt:** 5
+- **Active Core debt:** 4
 - **Deferred Core debt:** 1
 - **Parked Bridge debt:** 3
 
@@ -51,7 +52,6 @@
 - `CF-003` — **Boundary-aware Lipschitz theorem** — Boundary-aware Lipschitz control is part of the declared MAP-LB core objective.
 - `CF-006` — **Constitutional significance of dependency topology change** — The Core must eventually say what a declared dependency-topology change means constitutionally, not merely detect it.
 - `CF-007` — **Controller interactions beyond selected trefoil junctions** — Interaction-order sufficiency is an assurance question about the present controller surface.
-- `CF-008` — **Complete theorem-assumption exterior** — The theorem-assumption exterior is part of the formal assurance surface.
 - `CF-009` — **Natural-language classification boundary** — Natural-language extraction is the boundary between the typed trusted core and real user requests.
 
 ### Deferred
@@ -68,6 +68,7 @@
 
 - `CF-002` — **Standing-authority structure** — closed by `C-MECH-009`
 - `CF-004` — **Authority lattice** — closed by `C-MATH-008`, `C-MECH-009`
+- `CF-008` — **Complete theorem-assumption exterior** — closed by `C-MECH-011`
 - `CF-010` — **Ledger cryptographic and semantic completeness** — closed by `C-MATH-009`, `C-MECH-010`
 
 ## Consolidation rule
