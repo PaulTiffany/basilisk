@@ -32,7 +32,10 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Run existing package checks
+      - name: Install verification dependencies
+        run: python3 -m pip install --disable-pip-version-check '.[verification]'
+
+      - name: Run package and interpretability checks
         run: make package-check
 
   formal:
