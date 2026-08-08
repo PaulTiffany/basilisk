@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "principle": "Resonance comes from lining the exterior: completeness is measured at semantic boundaries, not by dense interior examples.",
+  "controller": {
+    "defaults": {
+      "within_contract": true,
+      "hard_boundary_violation": false,
+      "current_turn_explicit_authorization": false,
+      "reversible": true,
+      "rollback_available": true,
+      "inspectable": true,
+      "material_change": false,
+      "affects_external_system": false,
+      "audience_change": false,
+      "privacy_change": false,
+      "authority_expansion": false,
+      "scope": "low",
+      "uncertainty": "low",
+      "judgment_mode": "none",
+      "judgment_requested": false,
+      "concrete_immediate_safety_risk": false,
+      "destructive": false,
+      "standing_authorized": false
+    },
+    "required_surface_fields": [
+      "within_contract",
+      "hard_boundary_violation",
+      "current_turn_explicit_authorization",
+      "reversible",
+      "rollback_available",
+      "inspectable",
+      "material_change",
+      "affects_external_system",
+      "audience_change",
+      "privacy_change",
+      "authority_expansion",
+      "scope",
+      "uncertainty",
+      "judgment_mode",
+      "judgment_requested",
+      "concrete_immediate_safety_risk",
+      "destructive",
+      "standing_authorized"
+    ],
+    "surfaces": [
+      {"id":"EC01-hard-boundary","changed_fields":["hard_boundary_violation"],"before":{},"after":{"hard_boundary_violation":true},"expected_before":"proceed","expected_after":"stop"},
+      {"id":"EC02-contract-membership","changed_fields":["within_contract"],"before":{},"after":{"within_contract":false},"expected_before":"proceed","expected_after":"stop"},
+      {"id":"EC03-judgment-mode","changed_fields":["judgment_mode"],"before":{},"after":{"judgment_mode":"explicit_model_recommendation"},"expected_before":"proceed","expected_after":"stop"},
+      {"id":"EC04-judgment-request","changed_fields":["judgment_requested"],"before":{"judgment_mode":"explicit_model_recommendation"},"after":{"judgment_mode":"explicit_model_recommendation","judgment_requested":true},"expected_before":"stop","expected_after":"proceed"},
+      {"id":"EC05-safety-evidence","changed_fields":["concrete_immediate_safety_risk"],"before":{"judgment_mode":"narrow_safety"},"after":{"judgment_mode":"narrow_safety","concrete_immediate_safety_risk":true},"expected_before":"stop","expected_after":"proceed"},
+      {"id":"EC06-external-boundary","changed_fields":["affects_external_system"],"before":{},"after":{"affects_external_system":true},"expected_before":"proceed","expected_after":"checkpoint"},
+      {"id":"EC07-audience-boundary","changed_fields":["audience_change"],"before":{},"after":{"audience_change":true},"expected_before":"proceed","expected_after":"checkpoint"},
+      {"id":"EC08-privacy-boundary","changed_fields":["privacy_change"],"before":{},"after":{"privacy_change":true},"expected_before":"proceed","expected_after":"checkpoint"},
+      {"id":"EC09-authority-boundary","changed_fields":["authority_expansion"],"before":{},"after":{"authority_expansion":true},"expected_before":"proceed","expected_after":"checkpoint"},
+      {"id":"EC10-reversibility-boundary","changed_fields":["reversible"],"before":{},"after":{"reversible":false},"expected_before":"proceed","expected_after":"checkpoint"},
+      {"id":"EC11-materiality-boundary","changed_fields":["material_change"],"before":{},"after":{"material_change":true},"expected_before":"proceed","expected_after":"proceed_and_report"},
+      {"id":"EC12-standing-authorization","changed_fields":["standing_authorized"],"before":{"affects_external_system":true},"after":{"affects_external_system":true,"standing_authorized":true},"expected_before":"checkpoint","expected_after":"proceed_and_report"},
+      {"id":"EC13-fresh-authorization","changed_fields":["current_turn_explicit_authorization"],"before":{"affects_external_system":true},"after":{"affects_external_system":true,"current_turn_explicit_authorization":true},"expected_before":"checkpoint","expected_after":"proceed_and_report"},
+      {"id":"EC14-inspectability-score-threshold","changed_fields":["inspectable"],"before":{"rollback_available":false},"after":{"rollback_available":false,"inspectable":false},"expected_before":"proceed","expected_after":"proceed_and_report"},
+      {"id":"EC15-rollback-score-threshold","changed_fields":["rollback_available"],"before":{"inspectable":false},"after":{"inspectable":false,"rollback_available":false},"expected_before":"proceed","expected_after":"proceed_and_report"},
+      {"id":"EC16-scope-high-boundary","changed_fields":["scope"],"before":{"scope":"moderate","standing_authorized":true},"after":{"scope":"high","standing_authorized":true},"expected_before":"proceed","expected_after":"checkpoint"},
+      {"id":"EC17-critical-uncertainty","changed_fields":["uncertainty"],"before":{"current_turn_explicit_authorization":true},"after":{"current_turn_explicit_authorization":true,"uncertainty":"critical"},"expected_before":"proceed","expected_after":"checkpoint"},
+      {"id":"EC18-destructive-score-threshold","changed_fields":["destructive"],"before":{"rollback_available":false},"after":{"rollback_available":false,"destructive":true},"expected_before":"proceed","expected_after":"proceed_and_report"}
+    ],
+    "probes": [
+      {"id":"EP01-user-supplied-judgment","overrides":{"judgment_mode":"user_supplied"},"expected_gate":"proceed"},
+      {"id":"EP02-sourced-external-judgment","overrides":{"judgment_mode":"sourced_external"},"expected_gate":"proceed"},
+      {"id":"EP03-uncertainty-moderate","overrides":{"uncertainty":"moderate"},"expected_gate":"proceed"},
+      {"id":"EP04-uncertainty-high","overrides":{"uncertainty":"high"},"expected_gate":"proceed"},
+      {"id":"EP05-scope-critical-fresh","overrides":{"scope":"critical","current_turn_explicit_authorization":true},"expected_gate":"proceed"}
+    ],
+    "required_values": {
+      "scope":["low","moderate","high","critical"],
+      "uncertainty":["low","moderate","high","critical"],
+      "judgment_mode":["none","user_supplied","sourced_external","explicit_model_recommendation","narrow_safety"],
+      "gate":["proceed","proceed_and_report","checkpoint","stop"]
+    }
+  },
+  "dependency": {
+    "required_role_mutations":["add_parent","remove_parent","add_child","remove_child","add_coparent","remove_coparent"],
+    "artifact":"verification/dependency_exterior.json"
+  },
+  "loss_classes": {
+    "required":["exact","quotient","projective","interpretive"],
+    "artifact":"verification/witness_graph.json"
+  },
+  "assumption_surfaces": {
+    "required":["PreservesPredicate.comp:hT","PreservesPredicate.comp:hS"],
+    "artifact":"formal/Basilisk/AssumptionSurfaces.lean"
+  }
+}
