@@ -46,9 +46,9 @@
     {
       "id": "CF-007",
       "status": "open",
-      "surface": "Higher-order controller interactions",
-      "gap": "Exterior coverage currently emphasizes one-coordinate minimal pairs plus enum probes; interactions among multiple simultaneous boundary changes are not exhaustively covered.",
-      "closure_condition": "Define an interaction-coverage criterion (pairwise, combinatorial, or exhaustive finite carrier) and satisfy it mechanically."
+      "surface": "Controller interactions beyond pairwise seams",
+      "gap": "Twelve complete 2x2 interaction squares now line selected pairwise seams, including boundary union, authorization, non-overridable stops, critical uncertainty, risk synergy, and critical-destructive behavior. Three-way and higher interactions remain intentionally outside the covered surface.",
+      "closure_condition": "Define a justified higher-order interaction criterion (for example selected 3-way seams, covering arrays, or exhaustive finite equivalence) and satisfy it mechanically without confusing pairwise coverage with full combinatorial closure."
     },
     {
       "id": "CF-008",
