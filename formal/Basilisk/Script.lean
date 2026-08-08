@@ -1,13 +1,14 @@
 /-
 Script.lean — a faithful finite mirror of `src/map_lb/types.py` and
-`src/map_lb/controller.py`'s `assess_action`. This is the executable
-policy/transducer half of the Quartet (Script/TTIE); it is deliberately
-restricted to the decision-relevant fields (`action_id`, `description`,
-`tags` are identifying metadata in the Python model, not decision
-inputs, and are omitted here).
+`src/map_lb/controller.py`'s `assess_action` gate decision.
 
-Kept entirely `Bool`-valued and computable (no `Prop`/`Decidable`
-machinery beyond `decide`), matching the Python reference's plain
+The Lean carrier includes every field that can affect the Python gate,
+including rollback quality and inspectability through `risk_score`.
+Identifying metadata (`action_id`, `action_class`, `description`, `tags`)
+remain outside the finite mirror because the trusted controller does not
+read them when selecting the gate.
+
+Kept entirely finite and computable, matching the Python reference's
 boolean/enum logic and keeping later proofs by `decide` tractable.
 -/
 
@@ -22,18 +23,14 @@ inductive ActionGate where
   | stop
   deriving DecidableEq, Repr
 
-/-- Gate ordering as a natural number, matching the Python `IntEnum`
-    values used by the gate-distance term of the Lipschitz metric. -/
+/-- Gate ordering as a natural number, matching the Python `IntEnum`. -/
 def ActionGate.toNat : ActionGate → Nat
   | .proceed          => 0
   | .proceedAndReport => 1
   | .checkpoint       => 2
   | .stop             => 3
 
-/-- Decoding used by `Ledger.lean`'s lossless encode/decode pair. Named
-    `fromNat`, not `ofNat` — Lean 4 already auto-declares
-    `ActionGate.ofNat` (the `OfNat`-derived numeral-literal support for
-    this inductive type), so `ofNat` is a reserved name here. -/
+/-- Decoding used by `Ledger.lean`'s lossless encode/decode pair. -/
 def ActionGate.fromNat : Nat → Option ActionGate
   | 0 => some .proceed
   | 1 => some .proceedAndReport
@@ -62,13 +59,15 @@ inductive JudgmentMode where
   | narrowSafety
   deriving DecidableEq, Repr
 
-/-- A finite-field mirror of `ActionIntent` (`types.py`), restricted to
-    the fields `assess_action` (`controller.py`) actually reads. -/
+/-- A finite-field mirror of `ActionIntent`, restricted to fields that
+    can affect `assess_action`'s gate. -/
 structure ActionIntent where
   withinContract : Bool
   hardBoundaryViolation : Bool
   currentTurnExplicitAuthorization : Bool
   reversible : Bool
+  rollbackAvailable : Bool
+  inspectable : Bool
   materialChange : Bool
   affectsExternalSystem : Bool
   audienceChange : Bool
@@ -89,8 +88,7 @@ def ActionIntent.isUnrequestedModelJudgment (a : ActionIntent) : Bool :=
   | .explicitModelRecommendation => !a.judgmentRequested
   | .narrowSafety => !a.concreteImmediateSafetyRisk
 
-/-- Mirrors `_boundary_reasons` in `controller.py`: whether any semantic
-    boundary crossing is present. -/
+/-- Mirrors `_boundary_reasons`: whether any semantic boundary crossing exists. -/
 def ActionIntent.hasBoundaryCrossing (a : ActionIntent) : Bool :=
   a.affectsExternalSystem || a.audienceChange || a.privacyChange ||
     a.authorityExpansion || !a.reversible
@@ -101,13 +99,30 @@ def ActionIntent.isCriticalDestructive (a : ActionIntent) : Bool :=
     (!a.reversible || decide (a.scope = RiskLevel.critical) ||
       a.affectsExternalSystem)
 
-/-- The deterministic finite-state Script: the same priority-ordered
-    hard-predicate decision as `assess_action` in `controller.py`,
-    stripped of the reasons/risk-score audit payload (that is Ledger
-    material, not gate-decision logic). `authorized` collapses the
-    Python code's `current_turn_explicit_authorization or
-    standing_covers` boolean; the standing-authority lattice itself is
-    out of scope for this pass (see `formal/README.md`). -/
+/-- Exact finite mirror of `controller.py:risk_score` for the fields that
+    affect the gate. Natural-number subtraction matches Python's final
+    `max(score, 0)` because `Nat.sub` truncates at zero. -/
+def ActionIntent.riskScore (a : ActionIntent) (authorized : Bool) : Nat :=
+  let base :=
+    (if a.reversible then 0 else 2) +
+    (if a.rollbackAvailable then 0 else 2) +
+    (if a.inspectable then 0 else 1) +
+    (if a.affectsExternalSystem then 2 else 0) +
+    (if a.audienceChange then 1 else 0) +
+    (if a.privacyChange then 1 else 0) +
+    (if a.authorityExpansion then 2 else 0) +
+    a.scope.toNat +
+    a.uncertainty.toNat +
+    (if a.destructive then 1 else 0)
+  base - (if authorized then 2 else 0)
+
+/-- Deterministic finite-state Script mirroring the priority-ordered gate
+    selection in `controller.py:assess_action`.
+
+`authorized` collapses Python's
+`current_turn_explicit_authorization or standing_covers` to a Boolean.
+Critical-destructive and high-scope branches still require *fresh*
+current-turn explicit authorization, matching Python. -/
 def ActionIntent.assess (a : ActionIntent) (authorized : Bool) : ActionGate :=
   if a.hardBoundaryViolation then .stop
   else if !a.withinContract then .stop
@@ -119,7 +134,9 @@ def ActionIntent.assess (a : ActionIntent) (authorized : Bool) : ActionGate :=
       !a.currentTurnExplicitAuthorization then
     .checkpoint
   else if decide (a.uncertainty = RiskLevel.critical) then .checkpoint
-  else if a.materialChange || a.hasBoundaryCrossing then .proceedAndReport
+  else if a.materialChange || decide (3 ≤ a.riskScore authorized) ||
+      a.hasBoundaryCrossing then
+    .proceedAndReport
   else .proceed
 
 end Basilisk
