@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "description": "Finite cumulative-constraint witness for frame-indexed staging. The stage index k is a frame coordinate, not an ontological hierarchy. Each stage activates a prefix of nonnegative component pseudometrics; positive frame rescaling must preserve the zero-distance quotient.",
+  "states": [
+    {"id": "A", "features": [0.0, 0.0, 0.0]},
+    {"id": "B", "features": [0.0, 1.0, 0.0]},
+    {"id": "C", "features": [1.0, 1.0, 0.0]},
+    {"id": "D", "features": [1.0, 1.0, 1.0]}
+  ],
+  "weights": [1.0, 1.0, 1.0],
+  "stages": [
+    {"k": 1, "active_components": [0], "frame_scale": 1.0, "expected_zero_partition": [["A", "B"], ["C", "D"]]},
+    {"k": 2, "active_components": [0, 1], "frame_scale": 2.0, "expected_zero_partition": [["A"], ["B"], ["C", "D"]]},
+    {"k": 3, "active_components": [0, 1, 2], "frame_scale": 3.0, "expected_zero_partition": [["A"], ["B"], ["C"], ["D"]]}
+  ],
+  "required_invariants": [
+    "prefix_activation",
+    "nonnegative_weights",
+    "pointwise_stage_monotonicity",
+    "zero_kernel_refinement",
+    "positive_frame_scaling_preserves_zero_kernel",
+    "strict_refinement_occurs"
+  ]
+}
