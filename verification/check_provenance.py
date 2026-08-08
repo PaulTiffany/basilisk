@@ -2,22 +2,22 @@
 """Validate the machine-readable claim/provenance spine.
 
 Claims remain centralized; exact source bindings may be sharded across
-verification/bindings*.json. Shards are merged deterministically by filename,
+verification/bindings_*.json. Shards are merged deterministically by filename,
 while claim IDs and exact fragment receipts remain globally checked.
 """
 
 from __future__ import annotations
 
 import hashlib
-import json
 import os
 from collections import defaultdict
 from pathlib import Path
 
+from registry_io import load_registry_list, strict_load_json
+
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 ROOT = Path(os.environ.get("BASILISK_ROOT", DEFAULT_ROOT)).resolve()
 CLAIMS_PATH = ROOT / "verification" / "claims.json"
-BINDINGS_GLOB = "bindings*.json"
 
 ALLOWED_STATUSES = {
     "definition",
@@ -33,51 +33,57 @@ ALLOWED_STATUSES = {
 MECHANICAL_WITNESS_KINDS = {"lean", "python", "mechanism", "numpy"}
 
 
-def load_json(path: Path) -> dict:
-    return json.loads(path.read_text(encoding="utf-8"))
-
-
 def digest(fragment: str) -> str:
     return hashlib.sha256(fragment.encode("utf-8")).hexdigest()
 
 
 def load_bindings(errors: list[str]) -> tuple[list[dict], list[str]]:
-    paths = sorted((ROOT / "verification").glob(BINDINGS_GLOB))
-    if not paths:
-        errors.append("no provenance binding shards found")
-        return [], []
-    bindings: list[dict] = []
-    names: list[str] = []
-    for path in paths:
-        names.append(path.name)
-        try:
-            doc = load_json(path)
-        except json.JSONDecodeError as exc:
-            errors.append(f"{path.name}: malformed JSON: {exc}")
-            continue
-        if doc.get("schema_version") != 1:
-            errors.append(f"{path.name}: unsupported schema_version {doc.get('schema_version')!r}")
-        bindings.extend(doc.get("bindings", []))
-    return bindings, names
+    return load_registry_list(
+        ROOT / "verification",
+        base_name="bindings.json",
+        shard_prefix="bindings_",
+        payload_key="bindings",
+        errors=errors,
+    )
 
 
 def main() -> int:
-    claims_doc = load_json(CLAIMS_PATH)
     errors: list[str] = []
+    try:
+        claims_doc = strict_load_json(CLAIMS_PATH)
+    except Exception as exc:
+        print("PROVENANCE CHECK: FAIL")
+        print(f"- claims.json: malformed strict JSON: {exc}")
+        return 1
+    if not isinstance(claims_doc, dict):
+        print("PROVENANCE CHECK: FAIL")
+        print("- claims.json root must be an object")
+        return 1
+
     bindings, shard_names = load_bindings(errors)
     claims = claims_doc.get("claims", [])
+    if not isinstance(claims, list):
+        errors.append("claims.json: claims must be a list")
+        claims = []
 
-    ids = [c.get("id") for c in claims]
+    ids = [c.get("id") for c in claims if isinstance(c, dict)]
     if len(ids) != len(set(ids)):
         errors.append("duplicate claim IDs")
 
-    claim_by_id = {c["id"]: c for c in claims if "id" in c}
-    for claim in claims:
+    claim_by_id = {c["id"]: c for c in claims if isinstance(c, dict) and "id" in c}
+    for index, claim in enumerate(claims):
+        if not isinstance(claim, dict):
+            errors.append(f"claims[{index}] must be an object")
+            continue
         cid = claim.get("id", "<missing>")
         status = claim.get("status")
         if status not in ALLOWED_STATUSES:
             errors.append(f"{cid}: invalid status {status!r}")
-        for dep in claim.get("depends_on", []):
+        depends = claim.get("depends_on", [])
+        if not isinstance(depends, list):
+            errors.append(f"{cid}: depends_on must be a list")
+            depends = []
+        for dep in depends:
             if dep not in claim_by_id:
                 errors.append(f"{cid}: unknown dependency {dep}")
         if not claim.get("statement"):
@@ -99,7 +105,7 @@ def main() -> int:
         bindings_by_claim[cid].append(binding)
 
         rel = binding.get("path")
-        if not rel:
+        if not isinstance(rel, str) or not rel:
             errors.append(f"{cid}: binding missing path")
             continue
         path = ROOT / rel
@@ -109,8 +115,11 @@ def main() -> int:
 
         fragment = binding.get("fragment", "")
         expected = binding.get("sha256", "")
-        if not fragment:
+        if not isinstance(fragment, str) or not fragment:
             errors.append(f"{cid}: empty provenance fragment in {rel}")
+            continue
+        if not isinstance(expected, str) or not expected:
+            errors.append(f"{cid}: empty provenance receipt in {rel}")
             continue
         actual = digest(fragment)
         if actual != expected:
@@ -123,7 +132,11 @@ def main() -> int:
             errors.append(f"{cid}: provenance fragment no longer occurs in {rel}")
 
     for cid, claim in claim_by_id.items():
-        declared = set(claim.get("witnesses", []))
+        declared_raw = claim.get("witnesses", [])
+        if not isinstance(declared_raw, list):
+            errors.append(f"{cid}: witnesses must be a list")
+            declared_raw = []
+        declared = set(declared_raw)
         bound_kinds = {b.get("kind") for b in bindings_by_claim.get(cid, [])}
 
         if claim["status"] == "lean_theorem" and "lean" not in bound_kinds:
