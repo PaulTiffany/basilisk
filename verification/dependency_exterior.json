@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "claim_id": "C-MATH-002",
+  "cases": [
+    {
+      "id": "add_parent",
+      "vertices": ["x","parent","child","coparent"],
+      "distinguished": "x",
+      "before_edges": [],
+      "mutation": {"operator":"add_edge","edge":["parent","x"]},
+      "target_vertex": "parent",
+      "expected": {"target_before":false,"target_after":true}
+    },
+    {
+      "id": "remove_parent",
+      "vertices": ["x","parent","child","coparent"],
+      "distinguished": "x",
+      "before_edges": [["parent","x"]],
+      "mutation": {"operator":"remove_edge","edge":["parent","x"]},
+      "target_vertex": "parent",
+      "expected": {"target_before":true,"target_after":false}
+    },
+    {
+      "id": "add_child",
+      "vertices": ["x","parent","child","coparent"],
+      "distinguished": "x",
+      "before_edges": [],
+      "mutation": {"operator":"add_edge","edge":["x","child"]},
+      "target_vertex": "child",
+      "expected": {"target_before":false,"target_after":true}
+    },
+    {
+      "id": "remove_child",
+      "vertices": ["x","parent","child","coparent"],
+      "distinguished": "x",
+      "before_edges": [["x","child"]],
+      "mutation": {"operator":"remove_edge","edge":["x","child"]},
+      "target_vertex": "child",
+      "expected": {"target_before":true,"target_after":false}
+    },
+    {
+      "id": "add_coparent",
+      "vertices": ["x","parent","child","coparent"],
+      "distinguished": "x",
+      "before_edges": [["x","child"]],
+      "mutation": {"operator":"add_edge","edge":["coparent","child"]},
+      "target_vertex": "coparent",
+      "expected": {"target_before":false,"target_after":true}
+    },
+    {
+      "id": "remove_coparent",
+      "vertices": ["x","parent","child","coparent"],
+      "distinguished": "x",
+      "before_edges": [["x","child"],["coparent","child"]],
+      "mutation": {"operator":"remove_edge","edge":["coparent","child"]},
+      "target_vertex": "coparent",
+      "expected": {"target_before":true,"target_after":false}
+    }
+  ]
+}
