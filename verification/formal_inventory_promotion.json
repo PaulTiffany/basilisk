@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "normalization": "collapse-whitespace; theorem/lemma declaration through but excluding :=",
+  "formal_claims": [
+    {"id":"FP-001","module":"formal/Basilisk/Promotion.lean","symbol":"recurrence_does_not_confer_verification","signature":"theorem recurrence_does_not_confer_verification (n : Nat) (ideal : Bool) : assertionPromotion false ideal n = .checkpoint","statement_sha256":"0281a3080db86102a5e5182d081ea2a1bf901149ac536f52b1ff4bc98a8f243f","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FP-002","module":"formal/Basilisk/Promotion.lean","symbol":"ideal_does_not_confer_verification","signature":"theorem ideal_does_not_confer_verification (n : Nat) : assertionPromotion false true n = .checkpoint","statement_sha256":"47c1bf1670150bfa0298982e8e202a7951f9c0065f2ee612291f3ce3c6d48242","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FP-003","module":"formal/Basilisk/Promotion.lean","symbol":"recurrence_does_not_confer_authority","signature":"theorem recurrence_does_not_confer_authority (n : Nat) (ideal : Bool) : authorityPromotion false ideal n = .checkpoint","statement_sha256":"a3be6500c9ffef26f19fb881d8343e75d55a3c9681565fae16dcc4f55001ebb7","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FP-004","module":"formal/Basilisk/Promotion.lean","symbol":"ideal_cannot_self_authorize","signature":"theorem ideal_cannot_self_authorize (n : Nat) : authorityPromotion false true n = .checkpoint","statement_sha256":"afa54c0e8aaea82c8cb375913b8cd77a6fb16dba2f0d794313b0c676037538d9","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FP-005","module":"formal/Basilisk/Promotion.lean","symbol":"verification_releases_assertion","signature":"theorem verification_releases_assertion (n : Nat) (ideal : Bool) : assertionPromotion true ideal n = .report","statement_sha256":"6b2c4a5a4370ef2188fdfbfee21a29676599808d47617f9237ffa77868a52e82","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FP-006","module":"formal/Basilisk/Promotion.lean","symbol":"human_authorization_releases_action","signature":"theorem human_authorization_releases_action (n : Nat) (ideal : Bool) : authorityPromotion true ideal n = .report","statement_sha256":"5d06397537eefd529136d8221a37f7681ab614792b91825eb8c68a77c9c20810","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]}
+  ]
+}
