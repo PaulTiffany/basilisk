@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from dataclasses import asdict, dataclass, field
+from dataclasses import asdict, dataclass, field, replace
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
@@ -69,7 +69,10 @@ class LedgerEntry:
 
     def sealed(self) -> "LedgerEntry":
         computed = self.compute_hash()
-        return LedgerEntry(**self.payload(), entry_hash=computed)
+        # Serialization deliberately lowers tuple fields to JSON lists. Sealing is
+        # an in-memory operation, so preserve the typed carrier rather than
+        # reconstructing a LedgerEntry from its serialization representation.
+        return replace(self, entry_hash=computed)
 
     def to_dict(self) -> dict[str, Any]:
         data = self.payload()
@@ -136,9 +139,7 @@ class HashLedger:
     def append(self, entry: LedgerEntry) -> LedgerEntry:
         if entry.previous_hash not in {GENESIS_HASH, self.head}:
             raise ValueError("entry previous_hash does not match ledger head")
-        payload = entry.payload()
-        payload["previous_hash"] = self.head
-        candidate = LedgerEntry(**payload).sealed()
+        candidate = replace(entry, previous_hash=self.head, entry_hash="").sealed()
         self._entries.append(candidate)
         return candidate
 
