@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "principle": "Materiality is witnessed as shared obstruction, not mere shared belief; recursive materialization requires an agent-authored world change whose new constraint is later encountered across observers and frames.",
+  "cases": [
+    {
+      "id": "MW01-shared-obstruction",
+      "kind": "shared_obstruction",
+      "encounters": [
+        {"observer_id":"alice","frame_id":"visual","representation":"opaque wall","world_state":"room-with-wall","constraint_signature":"wall-blocks-east","attempted_transition":"cross-east","realized_transition":"remain-west","coupled":true},
+        {"observer_id":"bob","frame_id":"tactile","representation":"hard barrier","world_state":"room-with-wall","constraint_signature":"wall-blocks-east","attempted_transition":"cross-east","realized_transition":"remain-west","coupled":true}
+      ],
+      "expected": true
+    },
+    {
+      "id": "MW02-shared-belief-only",
+      "kind": "shared_obstruction",
+      "encounters": [
+        {"observer_id":"alice","frame_id":"verbal","representation":"there is a barrier","world_state":"claimed-barrier","constraint_signature":"barrier-claim","attempted_transition":"cross-east","realized_transition":"cross-east","coupled":true},
+        {"observer_id":"bob","frame_id":"symbolic","representation":"BARRIER","world_state":"claimed-barrier","constraint_signature":"barrier-claim","attempted_transition":"cross-east","realized_transition":"cross-east","coupled":true}
+      ],
+      "expected": false
+    },
+    {
+      "id": "MW03-one-observer-only",
+      "kind": "shared_obstruction",
+      "encounters": [
+        {"observer_id":"alice","frame_id":"visual","representation":"opaque wall","world_state":"room-with-wall","constraint_signature":"wall-blocks-east","attempted_transition":"cross-east","realized_transition":"remain-west","coupled":true}
+      ],
+      "expected": false
+    },
+    {
+      "id": "MW04-recursive-materialization",
+      "kind": "recursive_materialization",
+      "transition": {"before_state":"open-passage","after_state":"bridge-installed","actor_observer_id":"builder","action":"install-bridge","created_constraint_signature":"bridge-supports-crossing"},
+      "later_encounters": [
+        {"observer_id":"traveler-a","frame_id":"pedestrian","representation":"walkable bridge","world_state":"bridge-installed","constraint_signature":"bridge-supports-crossing","attempted_transition":"fall-at-gap","realized_transition":"cross-over-bridge","coupled":true},
+        {"observer_id":"traveler-b","frame_id":"vehicle","representation":"load-bearing span","world_state":"bridge-installed","constraint_signature":"bridge-supports-crossing","attempted_transition":"cannot-cross-gap","realized_transition":"cross-over-bridge","coupled":true}
+      ],
+      "expected": true
+    },
+    {
+      "id": "MW05-recursion-without-shared-aftereffect",
+      "kind": "recursive_materialization",
+      "transition": {"before_state":"open-passage","after_state":"painted-sign","actor_observer_id":"builder","action":"paint-sign","created_constraint_signature":"sign-says-stop"},
+      "later_encounters": [
+        {"observer_id":"traveler-a","frame_id":"visual","representation":"stop sign","world_state":"painted-sign","constraint_signature":"sign-says-stop","attempted_transition":"continue","realized_transition":"continue","coupled":true},
+        {"observer_id":"traveler-b","frame_id":"symbolic","representation":"STOP","world_state":"painted-sign","constraint_signature":"sign-says-stop","attempted_transition":"continue","realized_transition":"continue","coupled":true}
+      ],
+      "expected": false
+    }
+  ]
+}
