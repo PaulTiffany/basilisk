@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Validate the machine-readable claim/provenance spine.
 
-This checker is intentionally dependency-free. It verifies exact source bindings,
-claim-status discipline, dependency references, and minimum witness coverage.
+Claims remain centralized; exact source bindings may be sharded across
+verification/bindings*.json. Shards are merged deterministically by filename,
+while claim IDs and exact fragment receipts remain globally checked.
 """
 
 from __future__ import annotations
@@ -16,7 +17,7 @@ from pathlib import Path
 DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 ROOT = Path(os.environ.get("BASILISK_ROOT", DEFAULT_ROOT)).resolve()
 CLAIMS_PATH = ROOT / "verification" / "claims.json"
-BINDINGS_PATH = ROOT / "verification" / "bindings.json"
+BINDINGS_GLOB = "bindings*.json"
 
 ALLOWED_STATUSES = {
     "definition",
@@ -40,13 +41,32 @@ def digest(fragment: str) -> str:
     return hashlib.sha256(fragment.encode("utf-8")).hexdigest()
 
 
+def load_bindings(errors: list[str]) -> tuple[list[dict], list[str]]:
+    paths = sorted((ROOT / "verification").glob(BINDINGS_GLOB))
+    if not paths:
+        errors.append("no provenance binding shards found")
+        return [], []
+    bindings: list[dict] = []
+    names: list[str] = []
+    for path in paths:
+        names.append(path.name)
+        try:
+            doc = load_json(path)
+        except json.JSONDecodeError as exc:
+            errors.append(f"{path.name}: malformed JSON: {exc}")
+            continue
+        if doc.get("schema_version") != 1:
+            errors.append(f"{path.name}: unsupported schema_version {doc.get('schema_version')!r}")
+        bindings.extend(doc.get("bindings", []))
+    return bindings, names
+
+
 def main() -> int:
     claims_doc = load_json(CLAIMS_PATH)
-    bindings_doc = load_json(BINDINGS_PATH)
-    claims = claims_doc.get("claims", [])
-    bindings = bindings_doc.get("bindings", [])
-
     errors: list[str] = []
+    bindings, shard_names = load_bindings(errors)
+    claims = claims_doc.get("claims", [])
+
     ids = [c.get("id") for c in claims]
     if len(ids) != len(set(ids)):
         errors.append("duplicate claim IDs")
@@ -64,11 +84,18 @@ def main() -> int:
             errors.append(f"{cid}: empty canonical statement")
 
     bindings_by_claim: dict[str, list[dict]] = defaultdict(list)
+    seen_receipts: set[tuple[str, str, str, str]] = set()
     for binding in bindings:
         cid = binding.get("claim_id")
         if cid not in claim_by_id:
             errors.append(f"binding references unknown claim {cid}")
             continue
+        receipt_key = (
+            str(cid), str(binding.get("kind")), str(binding.get("path")), str(binding.get("sha256"))
+        )
+        if receipt_key in seen_receipts:
+            errors.append(f"duplicate provenance receipt across shards for {cid}: {binding.get('path')}")
+        seen_receipts.add(receipt_key)
         bindings_by_claim[cid].append(binding)
 
         rel = binding.get("path")
@@ -112,8 +139,7 @@ def main() -> int:
         }
         if missing_declared:
             errors.append(
-                f"{cid}: declared witnesses without corresponding artifact: "
-                f"{sorted(missing_declared)}"
+                f"{cid}: declared witnesses without corresponding artifact: {sorted(missing_declared)}"
             )
 
     if errors:
@@ -123,8 +149,8 @@ def main() -> int:
         return 1
 
     print(
-        f"PROVENANCE CHECK: PASS — {len(claims)} claims, "
-        f"{len(bindings)} exact bindings"
+        f"PROVENANCE CHECK: PASS — {len(claims)} claims, {len(bindings)} exact bindings, "
+        f"{len(shard_names)} binding shard(s)"
     )
     return 0
 
