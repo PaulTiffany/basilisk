@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "claim_id": "C-MATH-007",
+  "vertices": [
+    "x",
+    "child",
+    "coparent",
+    "other"
+  ],
+  "distinguished": "x",
+  "before_edges": [
+    [
+      "x",
+      "child"
+    ]
+  ],
+  "mutation": {
+    "operator": "add_edge",
+    "edge": [
+      "coparent",
+      "child"
+    ]
+  },
+  "target_vertex": "coparent",
+  "expected": {
+    "before_family_closure": [
+      "child"
+    ],
+    "after_family_closure": [
+      "child",
+      "coparent"
+    ],
+    "target_before": false,
+    "target_after": true
+  }
+}
