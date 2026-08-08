@@ -63,6 +63,15 @@
       "depends_on": [],
       "witnesses": ["mechanism"],
       "interpretation": "Executable provenance for symbolic mutations."
+    },
+    {
+      "id": "C-MECH-002",
+      "title": "Python and Lean controller correspondence on shared vectors",
+      "status": "engineering_mechanism",
+      "statement": "The Python reference controller and the Lean finite Script agree on every case in the registered shared controller vector corpus.",
+      "depends_on": [],
+      "witnesses": ["python", "lean", "mechanism"],
+      "interpretation": "Cross-substrate agreement is mechanically checked on a finite observable corpus; this is not yet a universal equivalence theorem."
     }
   ],
   "recursion_policy": {
