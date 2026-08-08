@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MECH-012","kind":"mechanism","path":"verification/check_machine_interpretability.py","fragment":"print(\n        \"MACHINE INTERPRETABILITY CHECK: PASS — \"\n        f\"{len(claims)} claims, {len(data['bindings'])} bindings, \"\n        f\"{len(data['formal_inventory'])} formal symbols, \"\n        f\"{len(open_frontier)} open + {len(closed_frontier)} closed frontier items\"\n    )","sha256":"4e789b1f2112a6ef3a3333397ae9d42bb249cff316c5b7af50fc61adb9bc7e2b"}
+  ]
+}
