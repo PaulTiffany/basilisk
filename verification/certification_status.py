@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """Report CI certification freshness for the current Basilisk main head.
 
-The most recent successful *push* run of `.github/workflows/ci.yml` on `main` is
-treated as the last certified commit because that workflow's merge-gate requires
-both `make package-check` and the Lean build to succeed.
+The most recent successful certifying run of `.github/workflows/ci.yml` on
+`main` is treated as the last certified commit because that workflow's
+merge-gate requires both `make package-check` and the Lean build to succeed.
+Certifying events are `push` and `workflow_dispatch`; pull-request runs do not
+certify the public `main` surface.
 
 This script deliberately distinguishes workflow success from current freshness:
 a successful run for an ancestor is green-but-stale, not fresh green.
@@ -23,6 +25,7 @@ from typing import Any
 
 DEFAULT_REPOSITORY = "PaulTiffany/basilisk"
 DEFAULT_WORKFLOW = "ci.yml"
+CERTIFYING_EVENTS = {"push", "workflow_dispatch"}
 
 
 @dataclass(frozen=True)
@@ -59,11 +62,10 @@ def current_main_sha(repository: str) -> str:
         return str(commit["sha"])
 
 
-def latest_successful_push(repository: str, workflow: str) -> dict[str, Any] | None:
+def latest_successful_certification(repository: str, workflow: str) -> dict[str, Any] | None:
     query = urllib.parse.urlencode(
         {
             "branch": "main",
-            "event": "push",
             "status": "success",
             "per_page": 100,
         }
@@ -72,8 +74,13 @@ def latest_successful_push(repository: str, workflow: str) -> dict[str, Any] | N
     runs = doc.get("workflow_runs", [])
     if not isinstance(runs, list) or not runs:
         return None
-    # API returns newest first for this endpoint; still sort defensively by run_number.
-    runs = [r for r in runs if isinstance(r, dict) and r.get("conclusion") == "success"]
+    runs = [
+        row
+        for row in runs
+        if isinstance(row, dict)
+        and row.get("conclusion") == "success"
+        and row.get("event") in CERTIFYING_EVENTS
+    ]
     if not runs:
         return None
     runs.sort(key=lambda row: int(row.get("run_number", 0)), reverse=True)
@@ -91,7 +98,7 @@ def compare(repository: str, certified_sha: str, head_sha: str) -> CompareResult
 
 def status_payload(repository: str, workflow: str) -> dict[str, Any]:
     head = current_main_sha(repository)
-    run = latest_successful_push(repository, workflow)
+    run = latest_successful_certification(repository, workflow)
     if run is None:
         return {
             "schema_version": 1,
@@ -99,7 +106,7 @@ def status_payload(repository: str, workflow: str) -> dict[str, Any]:
             "workflow": workflow,
             "head_sha": head,
             "certification_state": "unknown",
-            "reason": "no successful main/push workflow run found",
+            "reason": "no successful main certification run (push/workflow_dispatch) found",
         }
 
     certified = str(run["head_sha"])
@@ -128,6 +135,7 @@ def status_payload(repository: str, workflow: str) -> dict[str, Any]:
         "certification_state": state,
         "lag_commits": lag,
         "last_certified_sha": certified,
+        "last_certified_event": run.get("event"),
         "last_certified_run_id": run.get("id"),
         "last_certified_run_number": run.get("run_number"),
         "last_certified_run_attempt": run.get("run_attempt"),
@@ -141,7 +149,7 @@ def status_payload(repository: str, workflow: str) -> dict[str, Any]:
         },
         "fresh_definition": (
             "fresh iff current head SHA equals the head SHA of the most recent successful "
-            "main/push run of the configured workflow"
+            "main certification run (push or workflow_dispatch) of the configured workflow"
         ),
     }
 
@@ -172,7 +180,8 @@ def main() -> int:
         if state == "fresh":
             print(
                 "CERTIFICATION STATUS: FRESH GREEN — "
-                f"{payload.get('head_sha')} run={payload.get('last_certified_run_id')} lag=0"
+                f"{payload.get('head_sha')} run={payload.get('last_certified_run_id')} "
+                f"event={payload.get('last_certified_event')} lag=0"
             )
         elif state == "lagging":
             print(
