@@ -22,6 +22,7 @@ CHECKS = {
     "cross": ROOT / "verification" / "check_cross_witness.py",
     "domain": ROOT / "verification" / "check_domain_witnesses.py",
     "witness": ROOT / "verification" / "check_witness_graph.py",
+    "exterior": ROOT / "verification" / "check_exterior_coverage.py",
     "json": ROOT / "scripts" / "validate_json.py",
 }
 
@@ -107,7 +108,6 @@ def mutate_false_exact_transport(root: Path) -> None:
     edge = next(e for e in doc["edges"] if e["id"] == "T-VECTORS-PYTHON")
     edge["loss_class"] = "exact"
     edge["residual"] = ""
-    # No exactness_scope is added: exactness cannot be silently asserted.
     path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 
 
@@ -155,6 +155,45 @@ def mutate_duplicate_json_key(root: Path) -> None:
     path.write_text(text, encoding="utf-8")
 
 
+def mutate_remove_controller_surface(root: Path) -> None:
+    path = root / "verification" / "exterior_coverage.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["controller"]["surfaces"] = [
+        s for s in doc["controller"]["surfaces"] if s["id"] != "EC08-privacy-boundary"
+    ]
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_nonminimal_controller_surface(root: Path) -> None:
+    path = root / "verification" / "exterior_coverage.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    surface = next(s for s in doc["controller"]["surfaces"] if s["id"] == "EC06-external-boundary")
+    surface["after"]["audience_change"] = True
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_remove_dependency_role(root: Path) -> None:
+    path = root / "verification" / "dependency_exterior.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["cases"] = [case for case in doc["cases"] if case["id"] != "remove_parent"]
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_remove_quotient_class(root: Path) -> None:
+    path = root / "verification" / "witness_graph.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    edge = next(e for e in doc["edges"] if e["id"] == "Q-GATE-INTERRUPTION")
+    edge["loss_class"] = "projective"
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
+def mutate_deregister_assumption_surface(root: Path) -> None:
+    path = root / "verification" / "formal_inventory.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    doc["formal_claims"] = [e for e in doc["formal_claims"] if e["symbol"] != "preserves_comp_needs_hT"]
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
 CASES = [
     ("bad provenance receipt", "provenance", mutate_bad_receipt),
     ("undeclared recursive justification", "recursivity", mutate_cycle),
@@ -170,6 +209,11 @@ CASES = [
     ("dependency source changed behind Lean witness", "domain", mutate_dependency_source_but_keep_execution_consistent),
     ("no-op dependency mutation", "domain", mutate_noop_dependency),
     ("duplicate JSON object key", "json", mutate_duplicate_json_key),
+    ("missing controller exterior surface", "exterior", mutate_remove_controller_surface),
+    ("non-minimal controller exterior pair", "exterior", mutate_nonminimal_controller_surface),
+    ("missing dependency role surface", "exterior", mutate_remove_dependency_role),
+    ("missing quotient loss class", "exterior", mutate_remove_quotient_class),
+    ("deregistered theorem assumption surface", "exterior", mutate_deregister_assumption_surface),
 ]
 
 
