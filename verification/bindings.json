@@ -20,6 +20,7 @@
     {"claim_id":"C-MECH-005","kind":"python","path":"verification/check_interaction_diagnostics.py","fragment":"return assess_action(intent, authority)","sha256":"a744c142f9c11dcf4d7b67882da20f2b0dc008e69ba8ceddb01f678c1a781db8"},
     {"claim_id":"C-MECH-005","kind":"mechanism","path":"verification/check_interaction_diagnostics.py","fragment":"print(\n        \"INTERACTION DIAGNOSTIC CHECK: PASS — \"\n        f\"{len(assertions)} diagnostic assertions across {len(covered_squares)} interaction squares\"\n    )","sha256":"48fcefd6cc2bc0efbe0d0fe1c14057a9de965658a37f1c14f193aa4b7f554dc7"},
     {"claim_id":"C-MECH-006","kind":"python","path":"src/map_lb/controller.py","fragment":"def assess_action(\n    intent: ActionIntent,\n    standing_authority: StandingAuthority | None = None,\n) -> Assessment:","sha256":"00829b1b0177458ed0213930edad9b5436297437d4d557ca38af6d20866a7f87"},
-    {"claim_id":"C-MECH-006","kind":"mechanism","path":"verification/check_trefoil_junctions.py","fragment":"def third_order_residual(ordinals: dict[str, int]) -> int:","sha256":"0f2ffc9c4fc26528a9cb0ef2dec60bb7aa9911b06ae91635757b67942cc32dfd"}
+    {"claim_id":"C-MECH-006","kind":"mechanism","path":"verification/check_trefoil_junctions.py","fragment":"def third_order_residual(ordinals: dict[str, int]) -> int:","sha256":"0f2ffc9c4fc26528a9cb0ef2dec60bb7aa9911b06ae91635757b67942cc32dfd"},
+    {"claim_id":"C-MECH-006","kind":"lean","path":"formal/Basilisk/JunctionTopology.lean","fragment":"def tj01TrefoilWitness : TrefoilLike tj01Cube := by","sha256":"3a6038ab7ce19d0ade8f0de88ea8c3f14d792aa7672aa7065b98ed6aded06478"}
   ]
 }
