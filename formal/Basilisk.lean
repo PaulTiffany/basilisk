@@ -14,6 +14,7 @@ mathlib dependency):
   * WitnessAlgebra.lean   — typed transports, loss classes, commuting squares
   * LipschitzWitness.lean — shared JSON/NumPy/Lean counterexample instance
   * AssumptionSurfaces.lean — countermodels for dropped composition hypotheses
+  * JunctionTopology.lean — three-way interaction signatures and controls
   * Blanket.lean          — direct-edge separator-property shape
   * DependencyCut.lean    — parent/child/co-parent family closure
   * DependencyMutationWitness.lean — shared topology-mutation instance
@@ -32,6 +33,7 @@ import Basilisk.WitnessAlgebra
 import Basilisk.ConstitutionalLipschitz
 import Basilisk.LipschitzWitness
 import Basilisk.AssumptionSurfaces
+import Basilisk.JunctionTopology
 import Basilisk.Blanket
 import Basilisk.DependencyCut
 import Basilisk.DependencyMutationWitness
@@ -49,6 +51,10 @@ namespace Basilisk
 #print axioms shared_lipschitz_counterexample
 #print axioms preserves_comp_needs_hT
 #print axioms preserves_comp_needs_hS
+#print axioms tj01TrefoilWitness
+#print axioms tj01StopReleaseWitness
+#print axioms uc01UnknotWitness
+#print axioms dc01DetachedWitness
 #print axioms Contract.traceAdmissible_tail
 #print axioms Blanket.isSeparator_of_no_edges
 #print axioms DepGraph.familyClosure_iff
