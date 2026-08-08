@@ -1,17 +1,5 @@
 #!/usr/bin/env python3
-"""Check the theorem-assumption exterior against the complete formal inventory.
-
-Local Lean style treats explicit proof-premise binders as names beginning with
-``h`` or ``_h``. Ordinary carrier, function, predicate, and data arguments are
-parameters rather than theorem assumptions. This checker therefore discovers
-all such proof-premise binders from every registered theorem/lemma signature and
-requires one exact classification in ``theorem_assumptions.json``.
-
-Substantive premises must carry a distinct, registered finite necessity witness
-from AssumptionSurfaces.lean or AssumptionNecessity.lean. Structural and
-definitional premises remain explicitly classified but do not require ceremonial
-countermodels.
-"""
+"""Check theorem-premise classification against formal inventory and necessity witnesses."""
 
 from __future__ import annotations
 
@@ -24,6 +12,7 @@ DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 ROOT = Path(os.environ.get("BASILISK_ROOT", DEFAULT_ROOT)).resolve()
 VERIFICATION = ROOT / "verification"
 REGISTRY = VERIFICATION / "theorem_assumptions.json"
+EXPECTATIONS = VERIFICATION / "substantive_assumption_expectations.json"
 
 ALLOWED_CATEGORIES = {"structural", "definitional", "substantive"}
 NECESSITY_MODULES = {
@@ -33,7 +22,6 @@ NECESSITY_MODULES = {
 
 
 def conclusion_colon(signature: str) -> int:
-    """Return the top-level colon separating binders from the conclusion."""
     depth = {"(": 0, "{": 0, "[": 0}
     matching = {")": "(", "}": "{", "]": "["}
     in_string = False
@@ -54,8 +42,7 @@ def conclusion_colon(signature: str) -> int:
             depth[ch] += 1
             continue
         if ch in matching:
-            opener = matching[ch]
-            depth[opener] -= 1
+            depth[matching[ch]] -= 1
             continue
         if ch == ":" and all(v == 0 for v in depth.values()):
             return i
@@ -63,7 +50,6 @@ def conclusion_colon(signature: str) -> int:
 
 
 def top_level_binder_groups(prefix: str) -> list[str]:
-    """Extract top-level (...) and {...} binder bodies from a theorem prefix."""
     out: list[str] = []
     i = 0
     while i < len(prefix):
@@ -127,17 +113,22 @@ def main() -> int:
         payload_key="formal_claims",
         errors=errors,
     )
-
     try:
         doc = strict_load_json(REGISTRY)
+        expectations_doc = strict_load_json(EXPECTATIONS)
     except Exception as exc:
         print("THEOREM ASSUMPTION CHECK: FAIL")
-        print(f"- theorem_assumptions.json malformed: {exc}")
+        print(f"- malformed registry: {exc}")
         return 1
+
     rows = doc.get("assumptions", []) if isinstance(doc, dict) else []
     if not isinstance(rows, list):
         errors.append("theorem_assumptions.json: assumptions must be a list")
         rows = []
+    expectation_rows = expectations_doc.get("substantive", []) if isinstance(expectations_doc, dict) else []
+    if not isinstance(expectation_rows, list):
+        errors.append("substantive_assumption_expectations.json: substantive must be a list")
+        expectation_rows = []
 
     theorem_by_key: dict[tuple[str, str], dict] = {}
     symbol_entries: dict[str, list[dict]] = {}
@@ -181,7 +172,6 @@ def main() -> int:
             errors.append(f"{key}: invalid category {category!r}")
         if not isinstance(row.get("rationale"), str) or not row["rationale"].strip():
             errors.append(f"{key}: rationale must be nonempty")
-
         evidence = row.get("evidence_symbol")
         if category == "substantive":
             if not isinstance(evidence, str) or not evidence:
@@ -189,19 +179,41 @@ def main() -> int:
                 continue
             candidates = symbol_entries.get(evidence, [])
             if len(candidates) != 1:
-                errors.append(
-                    f"{key}: evidence_symbol {evidence!r} must resolve to exactly one formal theorem"
-                )
+                errors.append(f"{key}: evidence_symbol {evidence!r} must resolve to exactly one formal theorem")
                 continue
             witness = candidates[0]
             if witness.get("module") not in NECESSITY_MODULES:
-                errors.append(
-                    f"{key}: substantive witness {evidence} must live in an assumption-necessity module"
-                )
+                errors.append(f"{key}: substantive witness {evidence} must live in an assumption-necessity module")
             if witness.get("module") == key[0] and witness.get("symbol") == key[1]:
                 errors.append(f"{key}: theorem cannot witness necessity of its own premise")
         elif evidence is not None:
             errors.append(f"{key}: non-substantive premise must use evidence_symbol null")
+
+    expected_substantive: dict[tuple[str, str, str], str] = {}
+    for index, row in enumerate(expectation_rows):
+        if not isinstance(row, dict):
+            errors.append(f"substantive[{index}] must be an object")
+            continue
+        key = (row.get("module"), row.get("symbol"), row.get("binder"))
+        evidence = row.get("evidence_symbol")
+        if not all(isinstance(x, str) and x for x in key) or not isinstance(evidence, str) or not evidence:
+            errors.append(f"substantive[{index}] must name module/symbol/binder/evidence_symbol")
+            continue
+        if key in expected_substantive:
+            errors.append(f"duplicate substantive expectation: {key}")
+        expected_substantive[key] = evidence
+
+    actual_substantive = {key: row.get("evidence_symbol") for key, row in registered.items() if row.get("category") == "substantive"}
+    if set(actual_substantive) != set(expected_substantive):
+        missing = sorted(set(expected_substantive) - set(actual_substantive))
+        extra = sorted(set(actual_substantive) - set(expected_substantive))
+        if missing:
+            errors.append(f"substantive classifications missing relative to independent expectation surface: {missing}")
+        if extra:
+            errors.append(f"unexpected substantive classifications relative to independent expectation surface: {extra}")
+    for key, evidence in expected_substantive.items():
+        if actual_substantive.get(key) != evidence:
+            errors.append(f"{key}: substantive evidence disagrees with independent expectation surface")
 
     missing = sorted(discovered - set(registered))
     stale = sorted(set(registered) - discovered)
@@ -223,6 +235,7 @@ def main() -> int:
         "THEOREM ASSUMPTION CHECK: PASS — "
         f"{len(formal_entries)} formal declarations, {len(discovered)} proof premises; "
         + ", ".join(f"{k}={counts[k]}" for k in sorted(counts))
+        + f"; substantive expectations={len(expected_substantive)}"
     )
     return 0
 
