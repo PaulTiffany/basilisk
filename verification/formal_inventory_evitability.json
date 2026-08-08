@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FEV-001","module":"formal/Basilisk/Evitability.lean","symbol":"nominal_choice_does_not_imply_evitability","signature":"theorem nominal_choice_does_not_imply_evitability : NominallyPreserves pluralBefore nominalOnlyAfter ∧ ¬ PreservesEvitability pluralBefore nominalOnlyAfter","statement_sha256":"82beab22105bbe2f67f1ced51fff645ca84b12400e07ede321893de13b98bc22","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FEV-002","module":"formal/Basilisk/Evitability.lean","symbol":"plural_identity_preserves_evitability","signature":"theorem plural_identity_preserves_evitability : NominallyPreserves pluralBefore pluralBefore ∧ PreservesEvitability pluralBefore pluralBefore","statement_sha256":"78f60f4e8c7b7e04ead58b7adf229543147f9b986d061baf08305c3f12f49362","semantic_claim_id":null,"semantic_depends_on":[]}
+  ]
+}
