@@ -1,4 +1,4 @@
-.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality evitability meta-mutation interpret certification-status certification-fresh paper clean package-check
+.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality evitability observability meta-mutation interpret certification-status certification-fresh paper clean package-check
 
 compile:
 	python3 -m compileall -q src scripts verification tests examples
@@ -88,6 +88,9 @@ materiality:
 evitability:
 	python3 verification/check_evitability.py
 
+observability:
+	python3 verification/check_observability.py
+
 meta-mutation:
 	python3 verification/meta_mutation.py
 	python3 verification/meta_mutation_frontier.py
@@ -102,7 +105,7 @@ meta-mutation:
 	python3 verification/meta_mutation_machine_interpretability.py
 	python3 verification/meta_mutation_evitability.py
 
-interpret: provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality evitability meta-mutation
+interpret: provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality evitability observability meta-mutation
 
 certification-status:
 	python3 verification/certification_status.py
