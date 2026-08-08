@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
-"""Check closure of the local Lean theorem inventory.
-
-The semantic claim Atlas is intentionally small. This checker separately requires
-that every local theorem/lemma declaration in formal/Basilisk/*.lean is registered
-in one of verification/formal_inventory_*.json, has the same normalized statement
-fingerprint, and is reachable from the root formal/Basilisk.lean import surface.
-
-Inventory shards are merged deterministically by filename. IDs and theorem symbols
-remain globally unique across shards; sharding is organizational, not semantic.
-"""
+"""Check closure of the local Lean theorem inventory."""
 
 from __future__ import annotations
 
@@ -37,8 +28,72 @@ def sha256(text: str) -> str:
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
+def strip_lean_comments(text: str) -> str:
+    """Remove Lean line/block comments while preserving line structure.
+
+    Lean block comments may nest. String contents are preserved so comment-like
+    text in declarations does not accidentally alter parsing.
+    """
+    out: list[str] = []
+    i = 0
+    block_depth = 0
+    in_string = False
+    escaped = False
+    while i < len(text):
+        if block_depth:
+            if text.startswith("/-", i):
+                block_depth += 1
+                out.extend("  ")
+                i += 2
+            elif text.startswith("-/", i):
+                block_depth -= 1
+                out.extend("  ")
+                i += 2
+            else:
+                out.append("\n" if text[i] == "\n" else " ")
+                i += 1
+            continue
+
+        ch = text[i]
+        if in_string:
+            out.append(ch)
+            if escaped:
+                escaped = False
+            elif ch == "\\":
+                escaped = True
+            elif ch == '"':
+                in_string = False
+            i += 1
+            continue
+
+        if ch == '"':
+            in_string = True
+            out.append(ch)
+            i += 1
+        elif text.startswith("/-", i):
+            block_depth = 1
+            out.extend("  ")
+            i += 2
+        elif text.startswith("--", i):
+            out.extend("  ")
+            i += 2
+            while i < len(text) and text[i] != "\n":
+                out.append(" ")
+                i += 1
+        else:
+            out.append(ch)
+            i += 1
+    if block_depth:
+        raise ValueError("unterminated Lean block comment")
+    return "".join(out)
+
+
 def extract_declarations(path: Path) -> list[dict]:
-    lines = path.read_text(encoding="utf-8").splitlines()
+    try:
+        cleaned = strip_lean_comments(path.read_text(encoding="utf-8"))
+    except ValueError as exc:
+        raise ValueError(f"{path}: {exc}") from exc
+    lines = cleaned.splitlines()
     out: list[dict] = []
     i = 0
     while i < len(lines):
@@ -47,7 +102,6 @@ def extract_declarations(path: Path) -> list[dict]:
         if not match:
             i += 1
             continue
-
         kind, symbol = match.groups()
         parts = [stripped]
         j = i
@@ -58,22 +112,12 @@ def extract_declarations(path: Path) -> list[dict]:
                 raise ValueError(f"unterminated declaration {symbol} in {path}")
             nxt = lines[j].strip()
             if DECL_START.match(nxt):
-                raise ValueError(
-                    f"declaration {symbol} in {path} reached another declaration before :="
-                )
+                raise ValueError(f"declaration {symbol} in {path} reached another declaration before :=")
             parts.append(nxt)
             terminated = ":=" in nxt
-
         joined = " ".join(parts)
         signature = normalize(joined.split(":=", 1)[0].rstrip())
-        out.append(
-            {
-                "kind": kind,
-                "symbol": symbol,
-                "signature": signature,
-                "statement_sha256": sha256(signature),
-            }
-        )
+        out.append({"kind": kind, "symbol": symbol, "signature": signature, "statement_sha256": sha256(signature)})
         i = j + 1
     return out
 
@@ -83,18 +127,11 @@ def module_name(path: Path) -> str:
 
 
 def load_inventory_entries(errors: list[str]) -> tuple[list[dict], list[str]]:
-    return load_registry_list(
-        ROOT / "verification",
-        base_name="formal_inventory.json",
-        shard_prefix="formal_inventory_",
-        payload_key="formal_claims",
-        errors=errors,
-    )
+    return load_registry_list(ROOT / "verification", base_name="formal_inventory.json", shard_prefix="formal_inventory_", payload_key="formal_claims", errors=errors)
 
 
 def main() -> int:
     errors: list[str] = []
-
     entries, inventory_names = load_inventory_entries(errors)
     try:
         claims_doc = strict_load_json(CLAIMS)
@@ -111,16 +148,13 @@ def main() -> int:
         errors.append("claims.json: claims must be a list")
         raw_claims = []
     semantic_ids = {c["id"] for c in raw_claims if isinstance(c, dict) and "id" in c}
-
     ids = [e.get("id") for e in entries]
     if len(ids) != len(set(ids)):
         errors.append("duplicate formal inventory IDs across shards")
     symbols = [e.get("symbol") for e in entries]
     if len(symbols) != len(set(symbols)):
         errors.append("duplicate formal theorem symbols across inventory shards")
-
     by_key = {(e.get("module"), e.get("symbol")): e for e in entries}
-
     discovered: dict[tuple[str, str], dict] = {}
     module_files = sorted(p for p in FORMAL_DIR.glob("*.lean") if p.name != "Basilisk.lean")
     for path in module_files:
@@ -136,10 +170,7 @@ def main() -> int:
                 errors.append(f"duplicate discovered Lean declaration: {declaration['symbol']} in {rel}")
             discovered[key] = declaration
             if key not in by_key:
-                errors.append(
-                    f"unregistered Lean {declaration['kind']}: {declaration['symbol']} in {rel}"
-                )
-
+                errors.append(f"unregistered Lean {declaration['kind']}: {declaration['symbol']} in {rel}")
     for key, entry in by_key.items():
         module, symbol = key
         if not isinstance(module, str) or not isinstance(symbol, str):
@@ -154,10 +185,7 @@ def main() -> int:
             errors.append(f"statement drift for {symbol}: registered signature no longer matches source")
         registered_sha = entry.get("statement_sha256", "")
         if registered_sha != actual["statement_sha256"]:
-            errors.append(
-                f"statement receipt drift for {symbol}: expected {registered_sha}, "
-                f"computed {actual['statement_sha256']}"
-            )
+            errors.append(f"statement receipt drift for {symbol}: expected {registered_sha}, computed {actual['statement_sha256']}")
         semantic = entry.get("semantic_claim_id")
         if semantic is not None and semantic not in semantic_ids:
             errors.append(f"{symbol}: unknown semantic_claim_id {semantic}")
@@ -168,37 +196,25 @@ def main() -> int:
         for dep in deps:
             if dep not in semantic_ids:
                 errors.append(f"{symbol}: unknown semantic dependency {dep}")
-
     imports = set()
     for line in ROOT_KERNEL.read_text(encoding="utf-8").splitlines():
         match = IMPORT.match(line.strip())
         if match:
             imports.add(match.group(1))
-
     modules_with_proofs = {module_name(ROOT / module) for (module, _symbol) in discovered}
     for module in sorted(modules_with_proofs):
         if module not in imports:
-            errors.append(
-                f"formal module containing local proofs is not imported by root kernel: Basilisk.{module}"
-            )
-
+            errors.append(f"formal module containing local proofs is not imported by root kernel: Basilisk.{module}")
     linked_semantic = {e.get("semantic_claim_id") for e in entries if e.get("semantic_claim_id")}
     for claim in raw_claims:
-        if not isinstance(claim, dict):
-            continue
-        if claim.get("status") == "lean_theorem" and claim.get("id") not in linked_semantic:
+        if isinstance(claim, dict) and claim.get("status") == "lean_theorem" and claim.get("id") not in linked_semantic:
             errors.append(f"semantic Lean claim lacks formal-inventory linkage: {claim.get('id')}")
-
     if errors:
         print("FORMAL CLOSURE CHECK: FAIL")
         for error in errors:
             print(f"- {error}")
         return 1
-
-    print(
-        f"FORMAL CLOSURE CHECK: PASS — {len(discovered)} local theorem/lemma "
-        f"declarations, {len(imports)} root imports, {len(inventory_names)} inventory shard(s)"
-    )
+    print(f"FORMAL CLOSURE CHECK: PASS — {len(discovered)} local theorem/lemma declarations, {len(imports)} root imports, {len(inventory_names)} inventory shard(s)")
     return 0
 
 
