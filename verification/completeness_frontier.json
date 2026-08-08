@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "frontier": [
+    {
+      "id": "CF-001",
+      "status": "open",
+      "surface": "Universal Python/Lean controller correspondence",
+      "gap": "Current cross-substrate agreement is finite-corpus and exterior-pair based, not a theorem quantifying over all ActionIntent states and StandingAuthority structures.",
+      "closure_condition": "Provide an exhaustive finite equivalence argument for the full gate-relevant carrier or a proved refinement theorem connecting the Python and Lean semantics."
+    },
+    {
+      "id": "CF-002",
+      "status": "open",
+      "surface": "Standing-authority structure",
+      "gap": "Lean currently receives authorization as a collapsed Boolean and does not formalize StandingAuthority.covers, expiry, action classes, or authority provenance.",
+      "closure_condition": "Formalize the standing-authority carrier and prove the Boolean projection used by Script is faithful for the gate-relevant scope claimed."
+    },
+    {
+      "id": "CF-003",
+      "status": "open",
+      "surface": "Boundary-aware Lipschitz theorem",
+      "gap": "C-MATH-005 remains a target specification; no general bound for the reference controller is proved.",
+      "closure_condition": "Prove or falsify the declared boundary-aware Lipschitz inequality on a precisely typed action space."
+    },
+    {
+      "id": "CF-004",
+      "status": "open",
+      "surface": "Authority lattice",
+      "gap": "The permission monotonicity lattice and standing/current authority join are specified in prose but not formalized in the current Lean root.",
+      "closure_condition": "Define the authority order/join and prove the intended permission monotonicity properties."
+    },
+    {
+      "id": "CF-005",
+      "status": "open",
+      "surface": "Probabilistic and dynamical Markov-blanket semantics",
+      "gap": "Current dependency closure is graph-theoretic only; Bayesian conditional independence and Fristonian dynamical blankets remain deliberately distinct and unproved.",
+      "closure_condition": "Introduce explicit probability/dynamical semantics and prove the exact relation, if any, to the finite family-closure construction."
+    },
+    {
+      "id": "CF-006",
+      "status": "open",
+      "surface": "Constitutional significance of dependency topology change",
+      "gap": "A family-closure change is mechanically visible, but no theorem says every such change should stop, checkpoint, or otherwise determine a constitutional gate.",
+      "closure_condition": "Specify the constitutional rule as a typed policy and prove/check its relation to declared dependency-topology mutations."
+    },
+    {
+      "id": "CF-007",
+      "status": "open",
+      "surface": "Higher-order controller interactions",
+      "gap": "Exterior coverage currently emphasizes one-coordinate minimal pairs plus enum probes; interactions among multiple simultaneous boundary changes are not exhaustively covered.",
+      "closure_condition": "Define an interaction-coverage criterion (pairwise, combinatorial, or exhaustive finite carrier) and satisfy it mechanically."
+    },
+    {
+      "id": "CF-008",
+      "status": "open",
+      "surface": "Complete theorem-assumption exterior",
+      "gap": "Assumption countermodels currently line the two hypotheses of PreservesPredicate.comp, not every hypothesis of every theorem in the formal inventory.",
+      "closure_condition": "Classify theorem hypotheses as structural, definitional, or substantive and provide necessity/countermodel witnesses where mathematically meaningful."
+    },
+    {
+      "id": "CF-009",
+      "status": "open",
+      "surface": "Natural-language classification boundary",
+      "gap": "The trusted core assumes supplied ActionIntent features are accurate; extraction of those features from natural language remains outside the verified surface.",
+      "closure_condition": "Define and evaluate a separately bounded classifier/extractor interface with explicit uncertainty and adversarial coverage."
+    },
+    {
+      "id": "CF-010",
+      "status": "open",
+      "surface": "Ledger cryptographic and semantic completeness",
+      "gap": "Lean formalizes minimal lossless encoding and chain linking, not SHA-256 security, complete runtime Ledger fields, or truth of recorded claims.",
+      "closure_condition": "Separate and witness cryptographic integrity, schema completeness, and semantic truth claims without conflating them."
+    }
+  ]
+}
