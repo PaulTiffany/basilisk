@@ -90,6 +90,15 @@
       "depends_on": ["C-MECH-002", "C-MATH-002", "C-MATH-003"],
       "witnesses": ["mechanism"],
       "interpretation": "This is completeness relative to the declared exterior registry, not a claim that the registry already contains every important future surface."
+    },
+    {
+      "id": "C-MECH-004",
+      "title": "Selected pairwise exterior seams are mechanically lined",
+      "status": "engineering_mechanism",
+      "statement": "Every interaction seam declared in interaction_coverage.json is witnessed as a complete 2x2 square against the live Python controller, with all required seam classes represented.",
+      "depends_on": ["C-MECH-003"],
+      "witnesses": ["mechanism", "python"],
+      "interpretation": "This establishes pairwise coverage for the selected seam registry only; it does not claim three-way, higher-order, or exhaustive controller closure."
     }
   ],
   "recursion_policy": {
