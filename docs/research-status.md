@@ -1,34 +1,72 @@
 # Research status
 
-## Implemented in the starter
+Basilisk is a living experimental research repository. The current object is a finite reference controller plus a growing assurance and formalization exterior; it is not a certification of alignment or production safety.
 
-- deterministic action gate controller;
-- explicit judgment modes;
-- current-turn and standing authorization distinction;
+See [`core-scope.md`](core-scope.md) for the current consolidation boundary and `verification/scope_registry.json` for its machine-readable placement/scheduling.
+
+## Implemented reference mechanisms
+
+The repository currently contains:
+
+- a deterministic four-gate action controller;
+- explicit judgment modes and unrequested-judgment stops;
+- current-turn versus structured standing authorization;
+- typed permission breadth separated from authorization freshness;
 - scoped memory corrections;
-- hash-chained JSONL ledger;
-- minimal-pair corpus;
-- reference unit tests;
-- JSON schemas;
-- agent-operation prompts;
-- a Lean 4 formal core for the finite reference controller (`formal/`): typed ports, an admissible-event Contract with trace lifting, a faithful mirror of the gate-priority Script, a Blanket separator property, a lossless Ledger encode/decode pair with the chain-linking discipline, a Quartet bundling type, and one machine-checked Script/Ledger non-identifiability counterexample. No mathlib dependency; axiom-audited (clean except one lemma depending on `propext`).
+- hash-chained JSONL Ledger entries with strict serialized schema and SHA-256 validation;
+- minimal-pair, pairwise-interaction, and selected three-way junction corpora;
+- promotion boundaries separating imagination, assertion, authority, and enactment;
+- finite materiality witnesses distinguishing shared obstruction from shared belief;
+- JSON schemas, examples, reference evaluations, and unit tests;
+- a dependency-free Lean 4 formal core with theorem inventory and axiom-audit surface;
+- claim/provenance bindings, formal-closure checks, frontier closure receipts, and mutation/meta-mutation checks.
 
-## Specified but not empirically calibrated
+The controller trusts the typed features supplied to it. Natural-language extraction into those features remains outside the trusted core.
 
-- action-distance weights;
-- risk thresholds;
-- boundary-aware Lipschitz constant (the metric itself has no Lean formalization yet — only the finite gate-decision Script does);
-- human disagreement aggregation;
-- interruption-cost tradeoff;
-- semantic classification of natural-language requests.
+## Mechanically represented mathematical surface
 
-## Mathematical research objects
+The registered claim atlas currently includes machine-witnessed results for:
 
-- non-collapse among Quartet artifacts — one finite counterexample is now machine-checked (`formal/Basilisk/Counterexamples.lean`); the general theorem is not;
-- future-deletion defect — `formal/Basilisk/Reachability.lean` states reachable-future monotonicity given an explicit hypothesis; the strict-inclusion claim and any deletion operator are not modeled;
-- restricted continuity guarantees — the boundary-aware Lipschitz bound itself remains unformalized;
-- independent witness and certificate composition;
-- authority lattices and scoped update support — `formal/Basilisk/Script.lean` still collapses authorization to a plain boolean; no lattice exists in either the Python or the Lean model yet.
+- Lipschitz boundedness not implying constitutional preservation;
+- parent/child/co-parent finite dependency closure and one topology-mutation witness;
+- compositional constitutional preservation under explicit hypotheses;
+- weighted operational distance as a pseudometric prior to a separation condition;
+- typed authority permission preorder/join and a separate freshness algebra;
+- Ledger structural integrity not entailing semantic truth;
+- frame-indexed staging as monotone zero-kernel refinement;
+- positive frame scaling preserving the zero-distance kernel;
+- reflective history inducing a finite operational arrow under explicit history-monotonicity;
+- amortization as a finite observable-preserving parameter compilation witness.
+
+These results have different evidence strengths. `verification/claims.json`, `verification/formal_inventory_*.json`, and `verification/bindings_*.json` are the canonical machine-readable sources for status and exact evidence.
+
+## Still target theorems or open Core debts
+
+The following remain unsolved or deliberately incomplete:
+
+- **Boundary-aware Lipschitz control (C-MATH-005 / CF-003).** The declared jump-aware inequality is still a target theorem for a precisely typed action space.
+- **Constitutionally completed bounded composition (C-MATH-006).** The geometric and constitutional halves are not yet combined into the full target theorem.
+- **Universal Python/Lean controller correspondence (CF-001).** The gate has a finite 11-bit quotient and an exhaustive 2^11 truth table, but the complete cross-substrate equivalence argument remains open. This item is currently scheduled as deferred during consolidation while language/compiler infrastructure is improved elsewhere.
+- **Constitutional significance of dependency-topology change (CF-006).** Topology change is visible; its general gate consequence is not yet specified.
+- **Higher-order controller interaction sufficiency (CF-007).** Selected pairwise and three-way surfaces are lined; no general interaction-order sufficiency theorem exists.
+- **Complete theorem-assumption exterior (CF-008).** Countermodels do not yet cover every substantive formal hypothesis.
+- **Natural-language classification boundary (CF-009).** No bounded extractor/classifier is yet part of the trusted core.
+
+## Parked Research Bridges
+
+During consolidation, richer domain transports remain visible but are not Core release requirements:
+
+- probabilistic and Fristonian Markov-blanket semantics beyond the finite dependency cut (CF-005);
+- generalized materiality beyond the finite shared-obstruction witnesses (CF-011);
+- Principia Symbolica Born-arrow / dual-horizon / physical-time transport (CF-012).
+
+Bridge work may re-enter the Core queue only if it exposes a concrete distinction the current Core cannot represent.
+
+## Assurance posture
+
+The preferred growth direction is now outward rather than inward: more exhaustive enumeration, mutation, cross-substrate witnessing, provenance checks, documentation consistency, and reproducibility around a comparatively small conceptual kernel.
+
+A passing finite witness establishes only its declared surface. It does not automatically generalize to arbitrary models, domains, users, institutions, or physical systems.
 
 ## Explicit non-claims
 
@@ -39,11 +77,13 @@ This repository does not show that:
 - passing tests guarantees safe deployment;
 - human authorization is always ethically sufficient;
 - hash chaining supplies independent truth;
+- operational parameterization exhausts physical time;
+- the finite materiality witness defines all matter;
 - one set of risk weights applies to every person or culture.
 
 ## Evaluation discipline
 
-Any future performance claim should identify:
+Any future empirical performance claim should identify:
 
 - model and version;
 - prompt and tool environment;
