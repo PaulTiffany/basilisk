@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime
 
 from .types import ActionGate, ActionIntent, JudgmentMode, RiskLevel, StandingAuthority
 
@@ -26,12 +27,18 @@ class Assessment:
 def assess_action(
     intent: ActionIntent,
     standing_authority: StandingAuthority | None = None,
+    *,
+    now: datetime | None = None,
 ) -> Assessment:
     """Assess an explicitly described action intent.
 
     Hard predicates are evaluated before the scalar score. The controller
     assumes the supplied features are accurate; natural-language inference is
     outside this trusted core.
+
+    ``now`` is optional and exists so timestamp-bearing standing authority can
+    be evaluated reproducibly by verification fixtures. Runtime callers normally
+    omit it and retain wall-clock behavior.
     """
 
     reasons: list[str] = []
@@ -63,7 +70,9 @@ def assess_action(
             "none",
         )
 
-    standing_covers = bool(standing_authority and standing_authority.covers(intent))
+    standing_covers = bool(
+        standing_authority and standing_authority.covers(intent, now=now)
+    )
     authorized = intent.current_turn_explicit_authorization or standing_covers
     authority_basis = (
         "current_turn_explicit"
