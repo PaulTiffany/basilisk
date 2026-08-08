@@ -6,6 +6,7 @@
     {"id":"R-LEAN","kind":"formal_model","substrate":"lean","artifact":"formal/Basilisk/Script.lean"},
     {"id":"R-LEAN-VECTORS","kind":"formal_witness","substrate":"lean","artifact":"formal/Basilisk/ControllerVectors.lean"},
     {"id":"R-GATE","kind":"observable","substrate":"abstract","artifact":"ActionGate"},
+    {"id":"R-INTERRUPTION","kind":"quotient_observable","substrate":"abstract","artifact":"verification/gate_quotient.json"},
 
     {"id":"R-LIP-SPEC","kind":"shared_witness","substrate":"json","artifact":"verification/lipschitz_counterexample.json"},
     {"id":"R-LIP-NUMPY","kind":"numeric_witness","substrate":"numpy","artifact":"verification/check_domain_witnesses.py"},
@@ -23,6 +24,7 @@
     {"id":"T-LEAN-VECTORS-LEAN","source":"R-LEAN-VECTORS","target":"R-LEAN","claim_id":"C-MECH-002","loss_class":"exact","residual":"","exactness_scope":"Within the registered finite vector propositions, the Lean witness invokes the same ActionIntent.assess function imported from Script.lean; no additional representation transform occurs on this edge.","checker":"formal/Basilisk/ControllerVectors.lean"},
     {"id":"O-PYTHON-GATE","source":"R-PYTHON","target":"R-GATE","claim_id":"C-MECH-002","loss_class":"projective","residual":"Assessment reasons, score, authority basis, and report flag are projected away; only the gate is compared.","checker":"verification/check_controller_vectors.py"},
     {"id":"O-LEAN-GATE","source":"R-LEAN","target":"R-GATE","claim_id":"C-MECH-002","loss_class":"exact","residual":"","exactness_scope":"The Lean Script already returns ActionGate; the observable is the returned gate itself.","checker":"formal/Basilisk/ControllerVectors.lean"},
+    {"id":"Q-GATE-INTERRUPTION","source":"R-GATE","target":"R-INTERRUPTION","claim_id":"C-MECH-002","loss_class":"quotient","residual":"The quotient identifies proceed with proceed_and_report as continue, and checkpoint with stop as interrupt; reporting and interruption-severity distinctions are intentionally forgotten.","checker":"verification/check_exterior_coverage.py"},
 
     {"id":"T-LIP-SPEC-NUMPY","source":"R-LIP-SPEC","target":"R-LIP-NUMPY","claim_id":"C-MATH-001","loss_class":"projective","residual":"The NumPy path evaluates the registered finite carrier, map, distance, and predicates but does not carry a proof object or generalize beyond the finite witness.","checker":"verification/check_domain_witnesses.py"},
     {"id":"O-LIP-NUMPY","source":"R-LIP-NUMPY","target":"R-LIP-OBS","claim_id":"C-MATH-001","loss_class":"projective","residual":"Only the observed Lipschitz constant and predicate-preservation result are compared.","checker":"verification/check_domain_witnesses.py"},
@@ -36,6 +38,7 @@
   ],
   "agreements": [
     {"id":"A-CONTROLLER-GATE","claim_id":"C-MECH-002","source":"R-VECTORS","observable":"R-GATE","require_independent_substrates":true,"paths":[["T-VECTORS-PYTHON","O-PYTHON-GATE"],["T-VECTORS-LEAN-VECTORS","T-LEAN-VECTORS-LEAN","O-LEAN-GATE"]],"scope":"The 16 registered finite controller vectors only; this is not universal Python/Lean functional equivalence."},
+    {"id":"A-CONTROLLER-INTERRUPTION-QUOTIENT","claim_id":"C-MECH-002","source":"R-VECTORS","observable":"R-INTERRUPTION","require_independent_substrates":true,"paths":[["T-VECTORS-PYTHON","O-PYTHON-GATE","Q-GATE-INTERRUPTION"],["T-VECTORS-LEAN-VECTORS","T-LEAN-VECTORS-LEAN","O-LEAN-GATE","Q-GATE-INTERRUPTION"]],"scope":"The same finite controller corpus observed through the explicit continue/interrupt quotient. Agreement here is weaker than gate equality because reporting and stop/checkpoint distinctions are intentionally collapsed."},
     {"id":"A-LIPSCHITZ-COUNTEREXAMPLE","claim_id":"C-MATH-001","source":"R-LIP-SPEC","observable":"R-LIP-OBS","require_independent_substrates":true,"paths":[["T-LIP-SPEC-NUMPY","O-LIP-NUMPY"],["T-LIP-SPEC-LEAN","O-LIP-LEAN"]],"scope":"The registered two-point counterexample only. NumPy supplies a finite numerical witness; Lean supplies the proof. Agreement does not promote NumPy to a proof engine."},
     {"id":"A-DEPENDENCY-MUTATION","claim_id":"C-MATH-007","source":"R-DEP-SPEC","observable":"R-DEP-OBS","require_independent_substrates":true,"paths":[["T-DEP-SPEC-MUTATOR","O-DEP-MUTATOR"],["T-DEP-SPEC-LEAN","O-DEP-LEAN"]],"scope":"The registered four-node edge-addition witness only. It establishes a family-closure topology change, not a probabilistic Markov-blanket theorem or a constitutional gate."}
   ]
