@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MECH-013","kind":"mechanism","path":"verification/check_interaction_order.py","fragment":"INTERACTION ORDER CHECK: PASS — exhaustive 2^11 state / 2^11 subset Möbius analysis; ","sha256":"14f20f660f3101f0abd351862a57dac38dd321ca03bf6af20e189e7438db8155"}
+  ]
+}
