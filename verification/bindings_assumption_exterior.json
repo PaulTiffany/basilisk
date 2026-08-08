@@ -1,0 +1,6 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MECH-011","kind":"mechanism","path":"verification/check_theorem_assumptions.py","fragment":"ALLOWED_CATEGORIES = {\"structural\", \"definitional\", \"substantive\"}","sha256":"65a1d7883c7d18965e27e62da99764f67d8e4aa747a7db2db45ee1c6d4c14562"}
+  ]
+}
