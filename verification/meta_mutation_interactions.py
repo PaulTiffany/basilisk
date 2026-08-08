@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Attack pairwise seam completeness in isolated temporary copies."""
+"""Attack pairwise seam completeness and diagnostics in isolated temp copies."""
 
 from __future__ import annotations
 
@@ -12,7 +12,10 @@ import tempfile
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-CHECKER = ROOT / "verification" / "check_interaction_coverage.py"
+CHECKERS = {
+    "coverage": ROOT / "verification" / "check_interaction_coverage.py",
+    "diagnostics": ROOT / "verification" / "check_interaction_diagnostics.py",
+}
 
 
 def clone_minimal(dst: Path) -> None:
@@ -20,11 +23,11 @@ def clone_minimal(dst: Path) -> None:
     shutil.copytree(ROOT / "src", dst / "src")
 
 
-def run_check(temp_root: Path) -> subprocess.CompletedProcess[str]:
+def run_check(name: str, temp_root: Path) -> subprocess.CompletedProcess[str]:
     env = os.environ.copy()
     env["BASILISK_ROOT"] = str(temp_root)
     return subprocess.run(
-        [sys.executable, str(CHECKER)],
+        [sys.executable, str(CHECKERS[name])],
         env=env,
         text=True,
         stdout=subprocess.PIPE,
@@ -56,23 +59,33 @@ def mutate_false_corner(root: Path) -> None:
     path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
 
 
+def mutate_diagnostic_reason_only(root: Path) -> None:
+    path = root / "verification" / "interaction_diagnostics.json"
+    doc = json.loads(path.read_text(encoding="utf-8"))
+    assertion = next(a for a in doc["assertions"] if a["id"] == "ID03-audience-and-privacy")
+    assertion["reason_contains"] = ["audience change"]
+    assertion["reason_excludes"] = ["privacy boundary change"]
+    path.write_text(json.dumps(doc, indent=2) + "\n", encoding="utf-8")
+
+
 CASES = [
-    ("erased interaction seam class", mutate_remove_seam_class),
-    ("degenerated 2x2 interaction square", mutate_degenerate_square),
-    ("falsified interaction corner", mutate_false_corner),
+    ("erased interaction seam class", "coverage", mutate_remove_seam_class),
+    ("degenerated 2x2 interaction square", "coverage", mutate_degenerate_square),
+    ("falsified interaction corner", "coverage", mutate_false_corner),
+    ("diagnostic semantics corrupted while gate stays unchanged", "diagnostics", mutate_diagnostic_reason_only),
 ]
 
 
 def main() -> int:
     failures: list[str] = []
-    for label, mutator in CASES:
+    for label, checker, mutator in CASES:
         with tempfile.TemporaryDirectory(prefix="basilisk-interaction-mutation-") as tmp:
             temp_root = Path(tmp)
             clone_minimal(temp_root)
             mutator(temp_root)
-            result = run_check(temp_root)
+            result = run_check(checker, temp_root)
             if result.returncode == 0:
-                failures.append(f"{label}: interaction checker FAILED TO DETECT mutation")
+                failures.append(f"{label}: {checker} checker FAILED TO DETECT mutation")
             else:
                 first = result.stdout.strip().splitlines()[0] if result.stdout.strip() else "<no output>"
                 print(f"INTERACTION META-MUTATION DETECTED: {label} -> {first}")
