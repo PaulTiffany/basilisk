@@ -25,6 +25,7 @@ mathlib dependency):
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
   * Evitability.lean      — nominal choice versus materially viable alternatives
   * Observability.lean    — external observables, opaque interior, accountability cut
+  * Privacy.lean          — minimum sufficient disclosure without total interior exposure
   * Blanket.lean          — direct-edge separator-property shape
   * DependencyCut.lean    — parent/child/co-parent family closure
   * DependencyMutationWitness.lean — shared topology-mutation instance
@@ -55,6 +56,7 @@ import Basilisk.Promotion
 import Basilisk.Materiality
 import Basilisk.Evitability
 import Basilisk.Observability
+import Basilisk.Privacy
 import Basilisk.Blanket
 import Basilisk.DependencyCut
 import Basilisk.DependencyMutationWitness
@@ -130,6 +132,10 @@ namespace Basilisk
 #print axioms opaque_remainder_requires_explanatory_accountability
 #print axioms relevant_interpretability_removes_explanatory_accountability
 #print axioms interpretability_does_not_supply_authorization
+#print axioms selective_and_total_have_same_accountability_view
+#print axioms sufficient_accountability_does_not_require_total_exposure
+#print axioms total_exposure_adds_no_accountability_sufficiency
+#print axioms equal_accountability_evidence_can_differ_on_privacy
 #print axioms Contract.traceAdmissible_tail
 #print axioms Blanket.isSeparator_of_no_edges
 #print axioms DepGraph.familyClosure_iff
