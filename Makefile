@@ -1,4 +1,4 @@
-.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures controller-vectors authority-vectors authority-transcription ledger-integrity cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation interpret paper clean package-check
+.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation interpret paper clean package-check
 
 compile:
 	python3 -m compileall -q src scripts verification tests examples
@@ -43,6 +43,9 @@ authority-transcription:
 ledger-integrity:
 	python3 verification/check_ledger_integrity.py
 
+staging-geometry:
+	python3 verification/check_staging_geometry.py
+
 cross-witness:
 	python3 verification/check_cross_witness.py
 
@@ -79,7 +82,7 @@ meta-mutation:
 	python3 verification/meta_mutation_materiality.py
 	python3 verification/meta_mutation_authority.py
 
-interpret: provenance recursivity numeric formal-closure frontier-closures controller-vectors authority-vectors authority-transcription ledger-integrity cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation
+interpret: provenance recursivity numeric formal-closure frontier-closures controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics trefoil-junctions promotion-vectors materiality meta-mutation
 
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
