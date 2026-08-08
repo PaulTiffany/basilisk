@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "method": "Exact real multilinear Möbius transform on the Boolean cube. For each gate label, evaluate its one-hot indicator on all 2^11 GateProjection states, then apply subset Möbius inversion. Interaction order is the largest subset size with nonzero coefficient.",
+  "bit_order_lsb_first": [
+    "hard_boundary_violation",
+    "within_contract",
+    "unrequested_model_judgment",
+    "critical_destructive",
+    "current_turn_explicit_authorization",
+    "boundary_crossing",
+    "authorized",
+    "high_scope",
+    "critical_uncertainty",
+    "material_change",
+    "risk_score_at_least_report"
+  ],
+  "state_count": 2048,
+  "expected": {
+    "proceed": {
+      "max_order": 10,
+      "nonzero_coefficients_by_order": {"1":1,"2":8,"3":30,"4":69,"5":106,"6":111,"7":78,"8":35,"9":9,"10":1},
+      "max_order_supports": [["hard_boundary_violation","within_contract","unrequested_model_judgment","critical_destructive","current_turn_explicit_authorization","boundary_crossing","high_scope","critical_uncertainty","material_change","risk_score_at_least_report"]]
+    },
+    "proceed_and_report": {
+      "max_order": 10,
+      "nonzero_coefficients_by_order": {"2":2,"3":14,"4":45,"5":87,"6":108,"7":85,"8":40,"9":10,"10":1},
+      "max_order_supports": [["hard_boundary_violation","within_contract","unrequested_model_judgment","critical_destructive","current_turn_explicit_authorization","boundary_crossing","high_scope","critical_uncertainty","material_change","risk_score_at_least_report"]]
+    },
+    "checkpoint": {
+      "max_order": 9,
+      "nonzero_coefficients_by_order": {"2":4,"3":17,"4":34,"5":43,"6":37,"7":21,"8":7,"9":1},
+      "max_order_supports": [["hard_boundary_violation","within_contract","unrequested_model_judgment","critical_destructive","current_turn_explicit_authorization","boundary_crossing","authorized","high_scope","critical_uncertainty"]]
+    },
+    "stop": {
+      "max_order": 3,
+      "nonzero_coefficients_by_order": {"0":1,"1":1,"2":2,"3":1},
+      "max_order_supports": [["hard_boundary_violation","within_contract","unrequested_model_judgment"]]
+    }
+  },
+  "closure_interpretation": "The selected trefoil cubes are local witnesses only. Complete interaction coverage for the finite gate quotient is supplied instead by exhaustive evaluation of all 2^11 states and all subset coefficients. No one-hot gate indicator has order 11; the exact maximum is 10.",
+  "non_claim": "Multilinear interaction order is representation-relative to the declared Boolean GateProjection coordinates and one-hot gate observables. It does not imply a universal causal interaction order for richer ActionIntent, authority preprocessing, natural-language extraction, or physical systems."
+}
