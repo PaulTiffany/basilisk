@@ -58,6 +58,7 @@ namespace Basilisk
 #print axioms StandingAuthority.inactive_never_covers
 #print axioms StandingAuthority.expired_never_covers
 #print axioms StandingAuthority.external_effect_requires_permission
+#print axioms AuthorityEnvelope.covers_independent_of_provenance
 #print axioms ActionIntent.current_authorization_dominates_projection
 #print axioms ActionIntent.assessWithStanding_eq_assess_projection
 #print axioms standing_authority_does_not_replace_fresh_high_scope_authorization
