@@ -108,6 +108,8 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`PHILOSOPHY.md`](PHILOSOPHY.md) — living operational philosophy and Chalked surface rules;
 - [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md) — LLM-mediated authorship and attribution ledger;
 - [`MEDIA.md`](MEDIA.md) — visual gallery, accession record, and preservation policy;
+- [`docs/core-scope.md`](docs/core-scope.md) — finite Core / Theory / Research Bridge consolidation boundary;
+- [`docs/project-state.md`](docs/project-state.md) — generated current claim/debt/scheduling surface;
 - [`docs/protocol.md`](docs/protocol.md) — normative protocol;
 - [`docs/mathematical-model.md`](docs/mathematical-model.md) — boundary-aware Lipschitz model;
 - [`docs/human-authority-boundary.md`](docs/human-authority-boundary.md) — division of labor;
@@ -116,6 +118,7 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`docs/mutually-assured-progress.md`](docs/mutually-assured-progress.md) — useful initiative without surrender;
 - [`docs/threat-model.md`](docs/threat-model.md) — failure modes;
 - [`docs/assurance-case.md`](docs/assurance-case.md) — claims, evidence, and gaps;
+- [`docs/research-status.md`](docs/research-status.md) — current implemented, target, deferred, and parked research status;
 - [`docs/project-context.md`](docs/project-context.md) — map of the wider Tiffany research ecosystem this repository sits inside;
 - [`docs/glossary.md`](docs/glossary.md) — cross-project nomenclature, with overloaded terms disambiguated by source repository;
 - [`docs/lineage-and-non-collapse.md`](docs/lineage-and-non-collapse.md) — explicit non-collapse warnings and one unresolved provenance discrepancy;
@@ -128,6 +131,8 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`PROVENANCE.md`](PROVENANCE.md) — cultural and technical lineage.
 
 ## Research status
+
+The project is currently in a consolidation phase: the preferred growth direction is a denser assurance exterior around a comparatively small conceptual kernel, not indefinite expansion of the Core. The machine-readable scope and scheduling policy lives in [`verification/scope_registry.json`](verification/scope_registry.json).
 
 This is an early, falsifiable research and engineering object—not a proof of alignment. The reference implementation checks explicit fields supplied to it; it does not infer hidden intent, guarantee independent witnessing, or solve specification gaming. See [`docs/research-status.md`](docs/research-status.md).
 
