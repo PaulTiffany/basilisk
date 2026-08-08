@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FOB-001","module":"formal/Basilisk/Observability.lean","symbol":"external_observable_does_not_imply_relevant_interior_observable","signature":"theorem external_observable_does_not_imply_relevant_interior_observable : visibleOutputOpaqueInterior.externalObservable = true ∧ visibleOutputOpaqueInterior.relevantInteriorObservable = false","statement_sha256":"c2686426373cd2aa2db3878a286365ea28a0b3090c86d95ff9393ca3e81fc782","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FOB-002","module":"formal/Basilisk/Observability.lean","symbol":"opaque_remainder_requires_explanatory_accountability","signature":"theorem opaque_remainder_requires_explanatory_accountability : visibleOutputOpaqueInterior.explanatoryAccountabilityNeeded = true","statement_sha256":"106d33c605f9468cdec4afa75ab537caa2b9bc7064f9814c1e85b9db42c6e15e","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FOB-003","module":"formal/Basilisk/Observability.lean","symbol":"relevant_interpretability_removes_explanatory_accountability","signature":"theorem relevant_interpretability_removes_explanatory_accountability : fullyRelevantObservable.explanatoryAccountabilityNeeded = false","statement_sha256":"5f14016a2a54445c86e97bf6a5365a4ec9c83a70a4542b9e85a6fa9f5a66e442","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FOB-004","module":"formal/Basilisk/Observability.lean","symbol":"interpretability_does_not_supply_authorization","signature":"theorem interpretability_does_not_supply_authorization : transparentUnauthorized.frame.relevantInteriorObservable = true ∧ transparentUnauthorized.authorized = false","statement_sha256":"24fdd8c0221f282dfc6bfedcdc42319a773f487cff96afe7996bcd66d45b9de6","semantic_claim_id":null,"semantic_depends_on":[]}
+  ]
+}
