@@ -6,6 +6,9 @@ Authority.lean — formalize the standing-authority structure that Python
 Expiry is represented here by the already-evaluated Boolean `expired`; parsing
 wall-clock timestamps remains a Python/runtime concern. This makes the semantic
 projection explicit without pretending Lean implements datetime parsing.
+
+Authority provenance is preserved in a separate envelope because Python's
+`authority_id` and notes are audit fields, not inputs to `covers`.
 -/
 
 import Basilisk.Script
@@ -23,6 +26,16 @@ structure StandingAuthority where
   expired : Bool
   deriving DecidableEq, Repr
 
+structure AuthorityProvenance where
+  authorityId : String
+  notes : String
+  deriving DecidableEq, Repr
+
+structure AuthorityEnvelope where
+  grant : StandingAuthority
+  provenance : AuthorityProvenance
+  deriving DecidableEq, Repr
+
 /-- Finite mirror of Python `StandingAuthority.covers` after expiry evaluation. -/
 def StandingAuthority.covers
     (auth : StandingAuthority) (actionClass : String) (a : ActionIntent) : Bool :=
@@ -34,6 +47,18 @@ def StandingAuthority.covers
   (!a.audienceChange || auth.allowAudienceChange) &&
   (!a.privacyChange || auth.allowPrivacyChange) &&
   (!a.authorityExpansion || auth.allowAuthorityExpansion)
+
+/-- Provenance is carried for auditability but does not silently alter permission. -/
+def AuthorityEnvelope.covers
+    (auth : AuthorityEnvelope) (actionClass : String) (a : ActionIntent) : Bool :=
+  auth.grant.covers actionClass a
+
+theorem AuthorityEnvelope.covers_independent_of_provenance
+    (grant : StandingAuthority) (p q : AuthorityProvenance)
+    (actionClass : String) (a : ActionIntent) :
+    (AuthorityEnvelope.mk grant p).covers actionClass a =
+      (AuthorityEnvelope.mk grant q).covers actionClass a := by
+  rfl
 
 /-- Exact Boolean consumed by the lower-level finite Script. -/
 def ActionIntent.authorizedBy
