@@ -99,6 +99,15 @@
       "depends_on": ["C-MECH-003"],
       "witnesses": ["mechanism", "python"],
       "interpretation": "This establishes pairwise coverage for the selected seam registry only; it does not claim three-way, higher-order, or exhaustive controller closure."
+    },
+    {
+      "id": "C-MECH-005",
+      "title": "Selected interaction seams preserve diagnostic distinctions",
+      "status": "engineering_mechanism",
+      "statement": "Registered interaction diagnostics check reasons, authority basis, report requirement, and selected risk scores so equal action gates cannot silently erase distinct boundary semantics.",
+      "depends_on": ["C-MECH-004"],
+      "witnesses": ["mechanism", "python"],
+      "interpretation": "This is diagnostic coverage for selected seams, not a proof that every explanatory field is complete or semantically sufficient."
     }
   ],
   "recursion_policy": {
