@@ -49,6 +49,7 @@ interaction-coverage:
 meta-mutation:
 	python3 verification/meta_mutation.py
 	python3 verification/meta_mutation_frontier.py
+	python3 verification/meta_mutation_interactions.py
 
 interpret: provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage meta-mutation
 
