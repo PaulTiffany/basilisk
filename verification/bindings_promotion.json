@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MECH-007","kind":"python","path":"src/map_lb/promotion.py","fragment":"def assess_promotion(intent: PromotionIntent) -> PromotionAssessment:","sha256":"4f47878b4127c57fa8f4e2f366e6a8c942637ecf7764fd84bafcfb6fef4cc9af"},
+    {"claim_id":"C-MECH-007","kind":"mechanism","path":"verification/check_promotion_vectors.py","fragment":"print(f\"PROMOTION VECTOR CHECK: PASS — {len(cases)} imaginal/operative boundary vectors\")","sha256":"129d1163d7f660bce7550d8139bc5e450e04cb9afba25b812d8b1570009adfc6"},
+    {"claim_id":"C-MECH-007","kind":"lean","path":"formal/Basilisk/Promotion.lean","fragment":"theorem recurrence_does_not_confer_authority\n    (n : Nat) (ideal : Bool) :\n    authorityPromotion false ideal n = .checkpoint := by","sha256":"0dca250c5093557a2c1debd083652e86566a5a927a7a464c47c14af3832b0f5b"}
+  ]
+}
