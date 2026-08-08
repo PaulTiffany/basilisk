@@ -1,0 +1,7 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MATH-010","kind":"lean","path":"formal/Basilisk/StagingGeometry.lean","fragment":"theorem zeroKernel_refines_of_pointwise_le","sha256":"25204bb324852028d0f8abe72ad169f8a675d8222bdcd0e67788dea53e2b17bb"},
+    {"claim_id":"C-MATH-010","kind":"mechanism","path":"verification/check_staging_geometry.py","fragment":"print(\n        \"STAGING GEOMETRY CHECK: PASS — \","sha256":"c392e6bbabc9672869ba903c59e4e8658f2850ee1bd7cbdbc71c5ddae0c8f367"}
+  ]
+}
