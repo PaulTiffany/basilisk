@@ -1,6 +1,7 @@
 {
   "schema_version": 1,
   "bindings": [
+    {"claim_id":"C-MECH-013","kind":"python","path":"src/map_lb/gate_projection.py","fragment":"def gate_from_projection(q: GateProjection) -> ActionGate:","sha256":"a9c432078e7d9737334729e9e70a780416c5c07879aed58ca66744a340323ce2"},
     {"claim_id":"C-MECH-013","kind":"mechanism","path":"verification/check_interaction_order.py","fragment":"INTERACTION ORDER CHECK: PASS — exhaustive 2^11 state / 2^11 subset Möbius analysis; ","sha256":"14f20f660f3101f0abd351862a57dac38dd321ca03bf6af20e189e7438db8155"}
   ]
 }
