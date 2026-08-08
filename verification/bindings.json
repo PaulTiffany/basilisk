@@ -69,7 +69,7 @@
       "kind": "mechanism",
       "path": "verification/check_cross_witness.py",
       "fragment": "print(\n        f\"CROSS-WITNESS TRANSCRIPTION CHECK: PASS — {len(cases)} JSON↔Lean vectors\"\n    )",
-      "sha256": "7b56bef21297e0f4cb4c5118898215584225537d15604f8da0a125038fbc2ad1"
+      "sha256": "a144c74cb9ec7174762cc84eae9985d08ec7e5976e13b298f4b3f420a5d6cae4"
     }
   ]
 }
