@@ -69,9 +69,15 @@ jobs:
     if: always()
     needs: [runtime, formal]
     runs-on: ubuntu-24.04
-    timeout-minutes: 2
+    timeout-minutes: 3
 
     steps:
+      - name: Check out certified commit
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 1
+
       - name: Require bootstrap checks
         env:
           RUNTIME_RESULT: ${{ needs.runtime.result }}
@@ -79,3 +85,32 @@ jobs:
         run: |
           test "$RUNTIME_RESULT" = success
           test "$FORMAL_RESULT" = success
+
+      - name: Generate certification receipt
+        env:
+          RUNTIME_RESULT: ${{ needs.runtime.result }}
+          FORMAL_RESULT: ${{ needs.formal.result }}
+        run: |
+          python3 verification/certification_receipt.py \
+            --output certification-receipt.json \
+            --runtime-result "$RUNTIME_RESULT" \
+            --formal-result "$FORMAL_RESULT"
+          python3 verification/certification_receipt.py --verify certification-receipt.json
+
+      - name: Publish certification summary
+        run: |
+          {
+            echo '## Basilisk certification receipt'
+            echo
+            echo '```json'
+            cat certification-receipt.json
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload certification receipt
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # pinned v7-era main
+        with:
+          name: certification-receipt-${{ github.sha }}
+          path: certification-receipt.json
+          if-no-files-found: error
+          retention-days: 90
