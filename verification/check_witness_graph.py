@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 """Validate the cross-representation witness graph.
 
-The graph is deliberately stricter than a diagram: transports must connect
-existing nodes, cite existing semantic claims, declare an allowed loss class,
-name a checker artifact, and disclose a residual whenever the transport is not
-exact. Agreement claims must provide at least two valid source-to-observable
-paths, and every path must actually compose.
+Hardening goals:
+- transports must connect declared nodes and claims;
+- every transport declares a loss class;
+- non-exact transports disclose residual loss;
+- exact transports disclose the scope in which exactness is claimed;
+- agreement paths must compose from the same source to the same observable;
+- when requested, agreement paths must traverse genuinely different substrates,
+  not merely two filenames implemented by the same mechanism.
 """
 
 from __future__ import annotations
@@ -20,6 +23,7 @@ GRAPH = ROOT / "verification" / "witness_graph.json"
 CLAIMS = ROOT / "verification" / "claims.json"
 
 LOSS_CLASSES = {"exact", "quotient", "projective", "interpretive"}
+ALLOWED_SUBSTRATES = {"json", "python", "numpy", "lean", "abstract"}
 
 
 def artifact_exists(value: str) -> bool:
@@ -34,15 +38,24 @@ def main() -> int:
     claim_ids = {c["id"] for c in claims.get("claims", [])}
     errors: list[str] = []
 
+    if graph.get("schema_version") != 1:
+        errors.append(f"unsupported witness graph schema_version: {graph.get('schema_version')!r}")
+
     nodes = graph.get("nodes", [])
     node_ids = [n.get("id") for n in nodes]
     if len(node_ids) != len(set(node_ids)):
         errors.append("duplicate witness node IDs")
     node_by_id = {n["id"]: n for n in nodes if n.get("id")}
     for node in nodes:
+        nid = node.get("id", "<missing>")
+        if not node.get("kind"):
+            errors.append(f"{nid}: missing node kind")
+        substrate = node.get("substrate")
+        if substrate not in ALLOWED_SUBSTRATES:
+            errors.append(f"{nid}: invalid or missing substrate {substrate!r}")
         artifact = node.get("artifact", "")
         if not artifact_exists(artifact):
-            errors.append(f"{node.get('id')}: missing node artifact {artifact}")
+            errors.append(f"{nid}: missing node artifact {artifact}")
 
     edges = graph.get("edges", [])
     edge_ids = [e.get("id") for e in edges]
@@ -58,14 +71,23 @@ def main() -> int:
             errors.append(f"{eid}: unknown target {edge.get('target')}")
         if edge.get("claim_id") not in claim_ids:
             errors.append(f"{eid}: unknown claim {edge.get('claim_id')}")
+
         loss = edge.get("loss_class")
         if loss not in LOSS_CLASSES:
             errors.append(f"{eid}: invalid loss class {loss!r}")
         residual = edge.get("residual", "").strip()
-        if loss != "exact" and not residual:
-            errors.append(f"{eid}: non-exact transport lacks explicit residual")
-        if loss == "exact" and residual:
-            errors.append(f"{eid}: exact transport must not declare a residual")
+        exactness_scope = edge.get("exactness_scope", "").strip()
+        if loss != "exact":
+            if not residual:
+                errors.append(f"{eid}: non-exact transport lacks explicit residual")
+            if exactness_scope:
+                errors.append(f"{eid}: non-exact transport must not declare exactness_scope")
+        else:
+            if residual:
+                errors.append(f"{eid}: exact transport must not declare a residual")
+            if not exactness_scope:
+                errors.append(f"{eid}: exact transport lacks explicit exactness_scope")
+
         checker = edge.get("checker", "")
         if not checker or not artifact_exists(checker):
             errors.append(f"{eid}: checker artifact missing: {checker}")
@@ -83,17 +105,25 @@ def main() -> int:
             errors.append(f"{aid}: unknown source/observable")
             continue
         if len(paths) < 2:
-            errors.append(f"{aid}: agreement requires at least two independent paths")
+            errors.append(f"{aid}: agreement requires at least two paths")
         if not agreement.get("scope", "").strip():
             errors.append(f"{aid}: agreement lacks explicit scope/non-claim")
+
+        path_internal_substrates: list[set[str]] = []
+        path_edge_sets: list[set[str]] = []
 
         for path in paths:
             current = source
             used_nodes.add(current)
+            internal_substrates: set[str] = set()
+            seen_edges: set[str] = set()
             if not path:
                 errors.append(f"{aid}: empty agreement path")
                 continue
             for eid in path:
+                if eid in seen_edges:
+                    errors.append(f"{aid}: repeated edge {eid} within one path")
+                seen_edges.add(eid)
                 edge = edge_by_id.get(eid)
                 if edge is None:
                     errors.append(f"{aid}: unknown edge {eid}")
@@ -107,8 +137,29 @@ def main() -> int:
                     )
                 current = edge.get("target")
                 used_nodes.add(current)
+                if current not in {source, observable} and current in node_by_id:
+                    internal_substrates.add(node_by_id[current].get("substrate"))
             if current != observable:
                 errors.append(f"{aid}: path terminates at {current}, not {observable}")
+            path_internal_substrates.append(internal_substrates)
+            path_edge_sets.append(seen_edges)
+
+        # Two syntactically distinct paths are not necessarily independent. If an
+        # agreement claims substrate independence, require each pair of paths to have
+        # at least one distinct non-shared implementation/formal substrate.
+        if agreement.get("require_independent_substrates", False):
+            for i in range(len(path_internal_substrates)):
+                for j in range(i + 1, len(path_internal_substrates)):
+                    left = path_internal_substrates[i] - {"json", "abstract"}
+                    right = path_internal_substrates[j] - {"json", "abstract"}
+                    if not left or not right:
+                        errors.append(f"{aid}: path pair {i}/{j} lacks an internal executable/formal substrate")
+                    elif left == right:
+                        errors.append(
+                            f"{aid}: path pair {i}/{j} is not substrate-independent: {sorted(left)}"
+                        )
+                    if path_edge_sets[i] == path_edge_sets[j]:
+                        errors.append(f"{aid}: duplicate agreement paths at indices {i}/{j}")
 
     # Nodes may exist for future work only if explicitly marked optional.
     for nid, node in node_by_id.items():
