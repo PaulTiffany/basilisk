@@ -2,149 +2,23 @@
   "schema_version": 1,
   "normalization": "collapse-whitespace; theorem/lemma declaration through but excluding :=",
   "formal_claims": [
-    {
-      "id": "F-001",
-      "module": "formal/Basilisk/Script.lean",
-      "symbol": "ActionGate.fromNat_toNat",
-      "signature": "theorem ActionGate.fromNat_toNat (g : ActionGate) : ActionGate.fromNat g.toNat = some g",
-      "statement_sha256": "b02e5ed1a6c942371959e0c92c38453d96022f8639f54048700398960634b06a",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-002",
-      "module": "formal/Basilisk/Contract.lean",
-      "symbol": "Contract.traceAdmissible_tail",
-      "signature": "theorem Contract.traceAdmissible_tail {E : Type} (C : Contract E) (e : E) (es : List E) (h : C.traceAdmissible (e :: es)) : C.traceAdmissible es",
-      "statement_sha256": "43e25732cb6156ce49e743a9f879358fe8533881749932c79e847d9e0036e474",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-003",
-      "module": "formal/Basilisk/Blanket.lean",
-      "symbol": "Blanket.isSeparator_of_no_edges",
-      "signature": "theorem Blanket.isSeparator_of_no_edges {V : Type} {G : DepGraph V} (B : Blanket V G) (hNoEdges : ∀ v w, G.edges v w = false) : B.isSeparator",
-      "statement_sha256": "df80458b074001712adf3e443940df58df3ea44af59022e9a0814170b5148522",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-004",
-      "module": "formal/Basilisk/DependencyCut.lean",
-      "symbol": "DepGraph.parent_mem_familyClosure",
-      "signature": "theorem DepGraph.parent_mem_familyClosure {V : Type} (G : DepGraph V) (x v : V) (h : G.isParent x v) : G.inFamilyClosure x v",
-      "statement_sha256": "20c31e855e36d7b781983c72540e5c0eaa64a289ef611adaef4b34345851be06",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-005",
-      "module": "formal/Basilisk/DependencyCut.lean",
-      "symbol": "DepGraph.child_mem_familyClosure",
-      "signature": "theorem DepGraph.child_mem_familyClosure {V : Type} (G : DepGraph V) (x v : V) (h : G.isChild x v) : G.inFamilyClosure x v",
-      "statement_sha256": "2e7137be9c1afcc6feb1d072761a73126021ff41ea2036552d573380d4e4cd19",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-006",
-      "module": "formal/Basilisk/DependencyCut.lean",
-      "symbol": "DepGraph.coparent_mem_familyClosure",
-      "signature": "theorem DepGraph.coparent_mem_familyClosure {V : Type} (G : DepGraph V) (x v : V) (h : G.isCoParent x v) : G.inFamilyClosure x v",
-      "statement_sha256": "e46fc080fa9df8ea447a3e7656650eec1818cd0699f2310c1c79ec07016d2ce7",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-007",
-      "module": "formal/Basilisk/DependencyCut.lean",
-      "symbol": "DepGraph.familyClosure_iff",
-      "signature": "theorem DepGraph.familyClosure_iff {V : Type} (G : DepGraph V) (x v : V) : G.inFamilyClosure x v ↔ G.isParent x v ∨ G.isChild x v ∨ G.isCoParent x v",
-      "statement_sha256": "dfd63ca864826dd83a49ba4a1b86a418cd4d940e9c53c3ce279138a73c7d8455",
-      "semantic_claim_id": "C-MATH-002",
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-008",
-      "module": "formal/Basilisk/Ledger.lean",
-      "symbol": "LedgerEntry.decode_encode",
-      "signature": "theorem LedgerEntry.decode_encode (e : LedgerEntry) : LedgerEntry.decode (LedgerEntry.encode e) = some e",
-      "statement_sha256": "d4cf1acdd347723ff7482cd3263ff55fc30213ba3a0c567d4f42fbae5ba4a11d",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-009",
-      "module": "formal/Basilisk/Counterexamples.lean",
-      "symbol": "scriptHonest_ne_scriptSneaky",
-      "signature": "theorem scriptHonest_ne_scriptSneaky : scriptHonest hiddenViolationIntent false ≠ scriptSneaky hiddenViolationIntent false",
-      "statement_sha256": "77f91c4db8f0068325895b018d8beb3d7dc4e1b5b9f4a7a63754e664aa981382",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-010",
-      "module": "formal/Basilisk/Counterexamples.lean",
-      "symbol": "ledger_does_not_identify_script",
-      "signature": "theorem ledger_does_not_identify_script : scriptHonest observedIntent false = scriptSneaky observedIntent false",
-      "statement_sha256": "41ea9956f8194861c60214604c88211656d026bcc999bd97679c7b8a46529e14",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-011",
-      "module": "formal/Basilisk/Reachability.lean",
-      "symbol": "reachable_mono",
-      "signature": "theorem reachable_mono {W : Type} (reachBefore reachAfter : W → W → Prop) (w : W) (h : ∀ w', reachAfter w w' → reachBefore w w') : ∀ w', Reachable reachAfter w w' → Reachable reachBefore w w'",
-      "statement_sha256": "9c9f4689515b81f66b3721d6121182e940bc5c1cd0fe4856def0705906856801",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-012",
-      "module": "formal/Basilisk/ConstitutionalLipschitz.lean",
-      "symbol": "collapseToBad_zero_lipschitz",
-      "signature": "theorem collapseToBad_zero_lipschitz : IsLipschitzNat twoPointDist twoPointDist 0 collapseToBad",
-      "statement_sha256": "85daacb9aeba096367e015bd096d96545906a6152aa8a5e935b13a6b05c9b1a8",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-013",
-      "module": "formal/Basilisk/ConstitutionalLipschitz.lean",
-      "symbol": "collapseToBad_not_constitutional",
-      "signature": "theorem collapseToBad_not_constitutional : ¬ PreservesPredicate collapseToBad (fun _ => True) (fun y => y = TwoPoint.good)",
-      "statement_sha256": "8674b10ac438abe778bbd9282168b31fb748e7fd1621484aa3faca2f6cb7f2fd",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-014",
-      "module": "formal/Basilisk/ConstitutionalLipschitz.lean",
-      "symbol": "lipschitz_alone_not_constitutional",
-      "signature": "theorem lipschitz_alone_not_constitutional : ∃ T : TwoPoint → TwoPoint, IsLipschitzNat twoPointDist twoPointDist 0 T ∧ ¬ PreservesPredicate T (fun _ => True) (fun y => y = TwoPoint.good)",
-      "statement_sha256": "c7095eb6fabc9976c431ab7711101cad5a48df5da1a55aedd2eee39e4783ea0e",
-      "semantic_claim_id": "C-MATH-001",
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-015",
-      "module": "formal/Basilisk/ConstitutionalLipschitz.lean",
-      "symbol": "PreservesPredicate.comp",
-      "signature": "theorem PreservesPredicate.comp {X Y Z : Type} (T : X → Y) (S : Y → Z) (CX : X → Prop) (CY : Y → Prop) (CZ : Z → Prop) (hT : PreservesPredicate T CX CY) (hS : PreservesPredicate S CY CZ) : PreservesPredicate (fun x => S (T x)) CX CZ",
-      "statement_sha256": "e0cace33aa6eaac898ffa91cdb15041260b38ff61a6e862bb386fff6bf624438",
-      "semantic_claim_id": "C-MATH-003",
-      "semantic_depends_on": []
-    },
-    {
-      "id": "F-016",
-      "module": "formal/Basilisk/ControllerVectors.lean",
-      "symbol": "controller_vectors_hold",
-      "signature": "theorem controller_vectors_hold : controllerVectorsProp",
-      "statement_sha256": "c00438a0375a4c57cce75db77545641473b08afbf946e3828bedf8731c219bb1",
-      "semantic_claim_id": null,
-      "semantic_depends_on": []
-    }
+    {"id":"F-001","module":"formal/Basilisk/Script.lean","symbol":"ActionGate.fromNat_toNat","signature":"theorem ActionGate.fromNat_toNat (g : ActionGate) : ActionGate.fromNat g.toNat = some g","statement_sha256":"b02e5ed1a6c942371959e0c92c38453d96022f8639f54048700398960634b06a","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-002","module":"formal/Basilisk/Contract.lean","symbol":"Contract.traceAdmissible_tail","signature":"theorem Contract.traceAdmissible_tail {E : Type} (C : Contract E) (e : E) (es : List E) (h : C.traceAdmissible (e :: es)) : C.traceAdmissible es","statement_sha256":"43e25732cb6156ce49e743a9f879358fe8533881749932c79e847d9e0036e474","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-003","module":"formal/Basilisk/Blanket.lean","symbol":"Blanket.isSeparator_of_no_edges","signature":"theorem Blanket.isSeparator_of_no_edges {V : Type} {G : DepGraph V} (B : Blanket V G) (hNoEdges : ∀ v w, G.edges v w = false) : B.isSeparator","statement_sha256":"df80458b074001712adf3e443940df58df3ea44af59022e9a0814170b5148522","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-004","module":"formal/Basilisk/DependencyCut.lean","symbol":"DepGraph.parent_mem_familyClosure","signature":"theorem DepGraph.parent_mem_familyClosure {V : Type} (G : DepGraph V) (x v : V) (h : G.isParent x v) : G.inFamilyClosure x v","statement_sha256":"20c31e855e36d7b781983c72540e5c0eaa64a289ef611adaef4b34345851be06","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-005","module":"formal/Basilisk/DependencyCut.lean","symbol":"DepGraph.child_mem_familyClosure","signature":"theorem DepGraph.child_mem_familyClosure {V : Type} (G : DepGraph V) (x v : V) (h : G.isChild x v) : G.inFamilyClosure x v","statement_sha256":"2e7137be9c1afcc6feb1d072761a73126021ff41ea2036552d573380d4e4cd19","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-006","module":"formal/Basilisk/DependencyCut.lean","symbol":"DepGraph.coparent_mem_familyClosure","signature":"theorem DepGraph.coparent_mem_familyClosure {V : Type} (G : DepGraph V) (x v : V) (h : G.isCoParent x v) : G.inFamilyClosure x v","statement_sha256":"e46fc080fa9df8ea447a3e7656650eec1818cd0699f2310c1c79ec07016d2ce7","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-007","module":"formal/Basilisk/DependencyCut.lean","symbol":"DepGraph.familyClosure_iff","signature":"theorem DepGraph.familyClosure_iff {V : Type} (G : DepGraph V) (x v : V) : G.inFamilyClosure x v ↔ G.isParent x v ∨ G.isChild x v ∨ G.isCoParent x v","statement_sha256":"dfd63ca864826dd83a49ba4a1b86a418cd4d940e9c53c3ce279138a73c7d8455","semantic_claim_id":"C-MATH-002","semantic_depends_on":[]},
+    {"id":"F-008","module":"formal/Basilisk/Ledger.lean","symbol":"LedgerEntry.decode_encode","signature":"theorem LedgerEntry.decode_encode (e : LedgerEntry) : LedgerEntry.decode (LedgerEntry.encode e) = some e","statement_sha256":"d4cf1acdd347723ff7482cd3263ff55fc30213ba3a0c567d4f42fbae5ba4a11d","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-009","module":"formal/Basilisk/Counterexamples.lean","symbol":"scriptHonest_ne_scriptSneaky","signature":"theorem scriptHonest_ne_scriptSneaky : scriptHonest hiddenViolationIntent false ≠ scriptSneaky hiddenViolationIntent false","statement_sha256":"77f91c4db8f0068325895b018d8beb3d7dc4e1b5b9f4a7a63754e664aa981382","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-010","module":"formal/Basilisk/Counterexamples.lean","symbol":"ledger_does_not_identify_script","signature":"theorem ledger_does_not_identify_script : scriptHonest observedIntent false = scriptSneaky observedIntent false","statement_sha256":"41ea9956f8194861c60214604c88211656d026bcc999bd97679c7b8a46529e14","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-011","module":"formal/Basilisk/Reachability.lean","symbol":"reachable_mono","signature":"theorem reachable_mono {W : Type} (reachBefore reachAfter : W → W → Prop) (w : W) (h : ∀ w', reachAfter w w' → reachBefore w w') : ∀ w', Reachable reachAfter w w' → Reachable reachBefore w w'","statement_sha256":"9c9f4689515b81f66b3721d6121182e940bc5c1cd0fe4856def0705906856801","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-012","module":"formal/Basilisk/ConstitutionalLipschitz.lean","symbol":"collapseToBad_zero_lipschitz","signature":"theorem collapseToBad_zero_lipschitz : IsLipschitzNat twoPointDist twoPointDist 0 collapseToBad","statement_sha256":"85daacb9aeba096367e015bd096d96545906a6152aa8a5e935b13a6b05c9b1a8","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-013","module":"formal/Basilisk/ConstitutionalLipschitz.lean","symbol":"collapseToBad_not_constitutional","signature":"theorem collapseToBad_not_constitutional : ¬ PreservesPredicate collapseToBad (fun _ => True) (fun y => y = TwoPoint.good)","statement_sha256":"8674b10ac438abe778bbd9282168b31fb748e7fd1621484aa3faca2f6cb7f2fd","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-014","module":"formal/Basilisk/ConstitutionalLipschitz.lean","symbol":"lipschitz_alone_not_constitutional","signature":"theorem lipschitz_alone_not_constitutional : ∃ T : TwoPoint → TwoPoint, IsLipschitzNat twoPointDist twoPointDist 0 T ∧ ¬ PreservesPredicate T (fun _ => True) (fun y => y = TwoPoint.good)","statement_sha256":"c7095eb6fabc9976c431ab7711101cad5a48df5da1a55aedd2eee39e4783ea0e","semantic_claim_id":"C-MATH-001","semantic_depends_on":[]},
+    {"id":"F-015","module":"formal/Basilisk/ConstitutionalLipschitz.lean","symbol":"PreservesPredicate.comp","signature":"theorem PreservesPredicate.comp {X Y Z : Type} (T : X → Y) (S : Y → Z) (CX : X → Prop) (CY : Y → Prop) (CZ : Z → Prop) (hT : PreservesPredicate T CX CY) (hS : PreservesPredicate S CY CZ) : PreservesPredicate (fun x => S (T x)) CX CZ","statement_sha256":"e0cace33aa6eaac898ffa91cdb15041260b38ff61a6e862bb386fff6bf624438","semantic_claim_id":"C-MATH-003","semantic_depends_on":[]},
+    {"id":"F-016","module":"formal/Basilisk/ControllerVectors.lean","symbol":"controller_vectors_hold","signature":"theorem controller_vectors_hold : controllerVectorsProp","statement_sha256":"c00438a0375a4c57cce75db77545641473b08afbf946e3828bedf8731c219bb1","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-017","module":"formal/Basilisk/WitnessAlgebra.lean","symbol":"CommutesSquare.identity","signature":"theorem CommutesSquare.identity {A B : Type} (f : A → B) : CommutesSquare f f id id","statement_sha256":"989b3d67472b10ef935129da4f56493fd16abe70328b8f7186a46cd3a55562ea","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"F-018","module":"formal/Basilisk/WitnessAlgebra.lean","symbol":"CommutesSquare.postcompose","signature":"theorem CommutesSquare.postcompose {A B C D E : Type} (top : A → B) (left : A → C) (right : B → D) (bottom : C → D) (observe : D → E) (h : CommutesSquare top left right bottom) : CommutesSquare top left (fun b => observe (right b)) (fun c => observe (bottom c))","statement_sha256":"1746bb14307d79a220b5881f420e896f5272def5f3d2d002af4c6251ef9bd4b3","semantic_claim_id":null,"semantic_depends_on":[]}
   ]
 }
