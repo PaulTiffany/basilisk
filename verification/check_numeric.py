@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from numeric_witness import main_data
 
-ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(os.environ.get("BASILISK_ROOT", DEFAULT_ROOT)).resolve()
 EXPECTED = ROOT / "verification" / "EXPECTED_NUMERIC.json"
 
 
