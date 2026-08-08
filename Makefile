@@ -1,4 +1,4 @@
-.PHONY: test eval validate example provenance recursivity numeric formal-closure controller-vectors cross-witness witness-graph meta-mutation interpret paper clean package-check
+.PHONY: test eval validate example provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph meta-mutation interpret paper clean package-check
 
 test:
 	python3 -m unittest discover -s tests -v
@@ -31,13 +31,16 @@ controller-vectors:
 cross-witness:
 	python3 verification/check_cross_witness.py
 
+domain-witnesses:
+	python3 verification/check_domain_witnesses.py
+
 witness-graph:
 	python3 verification/check_witness_graph.py
 
 meta-mutation:
 	python3 verification/meta_mutation.py
 
-interpret: provenance recursivity numeric formal-closure controller-vectors cross-witness witness-graph meta-mutation
+interpret: provenance recursivity numeric formal-closure controller-vectors cross-witness domain-witnesses witness-graph meta-mutation
 
 paper:
 	cd paper && latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
