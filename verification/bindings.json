@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {
+      "claim_id": "C-MATH-001",
+      "kind": "lean",
+      "path": "formal/Basilisk/ConstitutionalLipschitz.lean",
+      "fragment": "theorem lipschitz_alone_not_constitutional :\n    ∃ T : TwoPoint → TwoPoint,\n      IsLipschitzNat twoPointDist twoPointDist 0 T ∧\n      ¬ PreservesPredicate T\n        (fun _ => True)\n        (fun y => y = TwoPoint.good) := by",
+      "sha256": "bdcdf8d84d548fbdc6aa29e5b12b90c54532cea963ef83d61b314ef622927c9a"
+    },
+    {
+      "claim_id": "C-MATH-002",
+      "kind": "lean",
+      "path": "formal/Basilisk/DependencyCut.lean",
+      "fragment": "def DepGraph.inFamilyClosure {V : Type} (G : DepGraph V) (x v : V) : Prop :=\n  G.isParent x v ∨ G.isChild x v ∨ G.isCoParent x v",
+      "sha256": "dff47718d61e73f5dd2ff5ae863a2b41f25192c0e90745810b7d6a3c1ee58a83"
+    },
+    {
+      "claim_id": "C-MATH-003",
+      "kind": "lean",
+      "path": "formal/Basilisk/ConstitutionalLipschitz.lean",
+      "fragment": "theorem PreservesPredicate.comp\n    {X Y Z : Type}\n    (T : X → Y)\n    (S : Y → Z)\n    (CX : X → Prop)\n    (CY : Y → Prop)\n    (CZ : Z → Prop)\n    (hT : PreservesPredicate T CX CY)\n    (hS : PreservesPredicate S CY CZ) :\n    PreservesPredicate (fun x => S (T x)) CX CZ := by",
+      "sha256": "07f8ccc35409cf47830ca1242551a28a4fb4db92a00d7f853cbf00b2c9314e7b"
+    },
+    {
+      "claim_id": "C-MATH-004",
+      "kind": "prose",
+      "path": "docs/mathematical-foundations.md",
+      "fragment": "**Standard fact.** A nonnegative weighted sum of pseudometrics is a pseudometric. It is a metric only if zero total distance separates distinct actions—for example, if the positively weighted feature map is jointly injective (or another explicit separation condition holds).",
+      "sha256": "81e5eb4d24d1299978531f5f51e961a6c7218916cebc337ef4537b852bf11163"
+    },
+    {
+      "claim_id": "C-MATH-005",
+      "kind": "prose",
+      "path": "docs/mathematical-foundations.md",
+      "fragment": "This inequality is currently a **target specification**, not a proved property of the reference controller.",
+      "sha256": "b575afb29d589a8595aa13fa1bb33aa6a1a90f571af1cc3d40a131aefe1c0fb2"
+    },
+    {
+      "claim_id": "C-MATH-006",
+      "kind": "prose",
+      "path": "docs/mathematical-foundations.md",
+      "fragment": "The substantive research program is to determine which preservation predicates \\(C\\) and which dependency cuts are natural for specific systems, and which sufficient conditions are mathematically provable.",
+      "sha256": "bb2e75755e98be8e866d97ef3dbbb82e32849f5b59bd5975931898588553a267"
+    },
+    {
+      "claim_id": "C-MECH-001",
+      "kind": "mechanism",
+      "path": "evals/mutation/README.md",
+      "fragment": "Mutation is treated as a **witnessed transformation**, not merely “generate a bad input.”",
+      "sha256": "4e536561c7255fb10ad08c2788441319ab67f925f5a8bf0dd52de6b51e6766da"
+    }
+  ]
+}
