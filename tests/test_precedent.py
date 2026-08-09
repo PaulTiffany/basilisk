@@ -6,6 +6,7 @@ from pathlib import Path
 
 import _bootstrap  # noqa: F401
 from map_lb.precedent import (
+    ExecutionPhase,
     TrajectoryPrecedent,
     bellman_action_value,
     price_action,
@@ -36,6 +37,7 @@ class PrecedentTests(unittest.TestCase):
 
     def test_repeated_unchanged_observation_receives_precedent_surcharge(self) -> None:
         price = price_action(
+            phase=ExecutionPhase.STEADY,
             resource_costs={"compute": 2.0, "attention": 1.0},
             shadow_prices={"compute": 0.25, "attention": 2.0},
             observed_signature=self.precedent.structural_signature,
@@ -46,8 +48,20 @@ class PrecedentTests(unittest.TestCase):
         self.assertEqual(price.matches[0].precedent_id, self.precedent.precedent_id)
         self.assertFalse(price.hard_stop)
 
+    def test_same_observation_during_initialization_is_not_stall_precedent(self) -> None:
+        price = price_action(
+            phase=ExecutionPhase.INITIALIZING,
+            resource_costs={},
+            shadow_prices={},
+            observed_signature=self.precedent.structural_signature,
+            precedents=(self.precedent,),
+        )
+        self.assertEqual(price.trajectory_surcharge, 0.0)
+        self.assertEqual(price.matches, ())
+
     def test_unrelated_action_is_not_charged_precedent_surcharge(self) -> None:
         price = price_action(
+            phase=ExecutionPhase.STEADY,
             resource_costs={},
             shadow_prices={},
             observed_signature={"local_edit", "new_evidence", "reversible"},
@@ -56,8 +70,9 @@ class PrecedentTests(unittest.TestCase):
         self.assertEqual(price.trajectory_surcharge, 0.0)
         self.assertEqual(price.matches, ())
 
-    def test_practical_loss_of_interruptibility_is_hard_stop(self) -> None:
+    def test_practical_loss_of_interruptibility_is_hard_stop_even_during_initialization(self) -> None:
         result = bellman_action_value(
+            phase=ExecutionPhase.INITIALIZING,
             immediate_reward=1_000_000.0,
             continuation_value=1_000_000.0,
             discount=1.0,
@@ -72,6 +87,7 @@ class PrecedentTests(unittest.TestCase):
 
     def test_bounded_branch_remains_optimizable(self) -> None:
         result = bellman_action_value(
+            phase=ExecutionPhase.STEADY,
             immediate_reward=4.0,
             continuation_value=10.0,
             discount=0.9,
