@@ -9,12 +9,20 @@ from .ledger import HashLedger, LedgerEntry
 from .memory import MemoryRule, ScopedMemory
 from .precedent import (
     BellmanActionValue,
+    ExecutionPhase,
     PrecedentMatch,
     PrecedentPrice,
     TrajectoryPrecedent,
     bellman_action_value,
     price_action,
     structural_similarity,
+)
+from .precedent_game import (
+    ContractState,
+    DerivedTrajectory,
+    FiniteContractGame,
+    RoundTransition,
+    TransitionCheck,
 )
 from .types import (
     ActionGate,
@@ -29,6 +37,10 @@ __all__ = [
     "ActionIntent",
     "Assessment",
     "BellmanActionValue",
+    "ContractState",
+    "DerivedTrajectory",
+    "ExecutionPhase",
+    "FiniteContractGame",
     "HashLedger",
     "JudgmentMode",
     "LedgerEntry",
@@ -36,9 +48,11 @@ __all__ = [
     "PrecedentMatch",
     "PrecedentPrice",
     "RiskLevel",
+    "RoundTransition",
     "ScopedMemory",
     "StandingAuthority",
     "TrajectoryPrecedent",
+    "TransitionCheck",
     "assess_action",
     "bellman_action_value",
     "price_action",
