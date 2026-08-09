@@ -1,4 +1,4 @@
-.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics interaction-order trefoil-junctions promotion-vectors materiality evitability observability privacy empirical-contract meta-mutation interpret certification-status certification-fresh paper clean package-check
+.PHONY: compile test eval validate example provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics gate-projection-exhaustive interaction-order trefoil-junctions promotion-vectors materiality evitability observability privacy empirical-contract meta-mutation interpret certification-status certification-fresh paper clean package-check
 
 compile:
 	python3 -m compileall -q src scripts verification tests examples
@@ -76,6 +76,9 @@ interaction-coverage:
 interaction-diagnostics:
 	python3 verification/check_interaction_diagnostics.py
 
+gate-projection-exhaustive:
+	python3 verification/render_gate_projection_exhaustive.py --check
+
 interaction-order:
 	python3 verification/check_interaction_order.py
 
@@ -117,7 +120,7 @@ meta-mutation:
 	python3 verification/meta_mutation_observability.py
 	python3 verification/meta_mutation_privacy.py
 
-interpret: provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics interaction-order trefoil-junctions promotion-vectors materiality evitability observability privacy empirical-contract meta-mutation
+interpret: provenance recursivity numeric formal-closure frontier-closures scope-registry project-state theorem-assumptions machine-interpretability controller-vectors authority-vectors authority-transcription ledger-integrity staging-geometry cross-witness domain-witnesses witness-graph exterior-coverage interaction-coverage interaction-diagnostics gate-projection-exhaustive interaction-order trefoil-junctions promotion-vectors materiality evitability observability privacy empirical-contract meta-mutation
 
 certification-status:
 	python3 verification/certification_status.py
