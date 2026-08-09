@@ -21,6 +21,6 @@
     {"claim_id":"C-MECH-005","kind":"mechanism","path":"verification/check_interaction_diagnostics.py","fragment":"print(\n        \"INTERACTION DIAGNOSTIC CHECK: PASS — \"\n        f\"{len(assertions)} diagnostic assertions across {len(covered_squares)} interaction squares\"\n    )","sha256":"48fcefd6cc2bc0efbe0d0fe1c14057a9de965658a37f1c14f193aa4b7f554dc7"},
     {"claim_id":"C-MECH-006","kind":"python","path":"src/map_lb/controller.py","fragment":"def assess_action(\n    intent: ActionIntent,\n    standing_authority: StandingAuthority | None = None,\n    *,\n    now: datetime | None = None,\n) -> Assessment:","sha256":"c8e85e4b24fda5bf37ed206cb6a94710b7179d638db411fc436ed860b2586d02"},
     {"claim_id":"C-MECH-006","kind":"mechanism","path":"verification/check_trefoil_junctions.py","fragment":"def third_order_residual(ordinals: dict[str, int]) -> int:","sha256":"0f2ffc9c4fc26528a9cb0ef2dec60bb7aa9911b06ae91635757b67942cc32dfd"},
-    {"claim_id":"C-MECH-006","kind":"lean","path":"formal/Basilisk/JunctionTopology.lean","fragment":"theorem tj01TrefoilWitness : TrefoilLike tj01Cube := by","sha256":"150171da7491194c9653c2934238ba3abe1eb97e31006245a6272d0af0e6b964"}
+    {"claim_id":"C-MECH-006","kind":"lean","path":"formal/Basilisk/JunctionTopology.lean","fragment":"def tj01TrefoilWitness : TrefoilLike tj01Cube := by","sha256":"3a6038ab7ce19d0ade8f0de88ea8c3f14d792aa7672aa7065b98ed6aded06478"}
   ]
 }
