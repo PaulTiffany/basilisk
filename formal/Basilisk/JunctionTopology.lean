@@ -94,7 +94,7 @@ def tj01Cube (destructive external missingFresh : Bool) : ActionGate :=
   a.assess true
 
 /-- The positive three-way interaction witness is mechanically reducible. -/
-theorem tj01TrefoilWitness : TrefoilLike tj01Cube := by
+def tj01TrefoilWitness : TrefoilLike tj01Cube := by
   simp [TrefoilLike, linkedAB, linkedBC, linkedCA, secondDiffAB, secondDiffBC,
     secondDiffCA, thirdOrderResidual, tj01Cube, baseIntent, ActionGate.ordinal,
     ActionGate.toNat, ActionIntent.assess, ActionIntent.isUnrequestedModelJudgment,
@@ -104,7 +104,7 @@ theorem tj01TrefoilWitness : TrefoilLike tj01Cube := by
 /-- Arthur-style local stop/release boundary: at the fully active corner the
     action checkpoints; restoring fresh authorization releases to reportable
     action without erasing the external boundary. -/
-theorem tj01StopReleaseWitness :
+def tj01StopReleaseWitness :
     tj01Cube true true true = .checkpoint ∧
     tj01Cube true true false = .proceedAndReport := by
   simp [tj01Cube, baseIntent, ActionIntent.assess,
@@ -120,7 +120,7 @@ def uc01Cube (hard missingFresh missingStanding : Bool) : ActionGate :=
       currentTurnExplicitAuthorization := !missingFresh }
   a.assess ((!missingFresh) || (!missingStanding))
 
-theorem uc01UnknotWitness : UnknotControl uc01Cube := by
+def uc01UnknotWitness : UnknotControl uc01Cube := by
   simp [UnknotControl, linkedAB, linkedBC, linkedCA, secondDiffAB, secondDiffBC,
     secondDiffCA, thirdOrderResidual, uc01Cube, baseIntent, ActionGate.ordinal,
     ActionGate.toNat, ActionIntent.assess, ActionIntent.isUnrequestedModelJudgment,
@@ -137,7 +137,7 @@ def dc01Cube (recommendation missingRequest freshAuthority : Bool) : ActionGate 
       currentTurnExplicitAuthorization := freshAuthority }
   a.assess freshAuthority
 
-theorem dc01DetachedWitness : DetachedCControl dc01Cube := by
+def dc01DetachedWitness : DetachedCControl dc01Cube := by
   simp [DetachedCControl, linkedAB, linkedBC, linkedCA, secondDiffAB, secondDiffBC,
     secondDiffCA, thirdOrderResidual, dc01Cube, baseIntent, ActionGate.ordinal,
     ActionGate.toNat, ActionIntent.assess, ActionIntent.isUnrequestedModelJudgment,
