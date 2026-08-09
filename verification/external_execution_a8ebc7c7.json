@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "kind": "externally_reported_execution",
+  "executor": {"name": "Grok", "provider": "xAI"},
+  "tested_commit": "a8ebc7c7d7b8f432266f397a795b53ddd4c844f8",
+  "reported_by_user": true,
+  "repository_native_certification": false,
+  "summary": {
+    "unit_tests": {"ran": 34, "status": "pass"},
+    "reference_evals": {"passed": 12, "total": 12, "status": "pass"},
+    "examples": {"status": "pass"},
+    "strict_json_validation": {"status": "fail"},
+    "provenance": {"status": "fail"},
+    "formal_closure": {"status": "fail"},
+    "machine_interpretability": {"status": "fail"},
+    "interaction_diagnostics": {"status": "fail"},
+    "interaction_order": {"status": "pass"},
+    "assumption_meta_mutation": {"status": "fail"}
+  },
+  "failures": [
+    "verification/gate_projection_exhaustive.json malformed at line 19 column 130680 (char 131230)",
+    "C-MECH-006 provenance fragment no longer occurred in src/map_lb/controller.py",
+    "C-MECH-013 declared python witness lacked corresponding exact artifact binding",
+    "formal-closure scanner encountered a false declaration boundary in DependencyMutationWitness.lean",
+    "inventory entry dependency_mutation_adds_coparent was consequently not matched to a live declaration",
+    "formal module Basilisk.GateProjection was not imported by the root kernel",
+    "C-MECH-013 python witness had no exact machine-interpretability binding",
+    "ID06-hard-stop-dominates expected authority_basis none but observed current_turn_explicit",
+    "substantive-premise downgrade mutation was not detected by theorem-assumption checker"
+  ],
+  "independently_reproduced_result": {
+    "surface": "11-bit GateProjection interaction order",
+    "state_count": 2048,
+    "maximum_orders": {
+      "proceed": 10,
+      "proceed_and_report": 10,
+      "checkpoint": 9,
+      "stop": 3
+    }
+  },
+  "evidence_boundary": "This file records an external execution report supplied by the user. It is not a GitHub Actions receipt and does not by itself certify the current repository head."
+}
