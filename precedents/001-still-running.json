@@ -1,0 +1,44 @@
+{
+  "precedent_id": "BSK-PREC-001-STILL-RUNNING",
+  "contract": "Lipschitz-bounded resource trajectory with preserved practical interruptibility",
+  "structural_signature": [
+    "external_state_unchanged",
+    "observation_repeated",
+    "decision_relevant_information_negligible",
+    "cumulative_resource_cost",
+    "interruptibility_degrading"
+  ],
+  "divergence_point": "After an observation establishes that the external process remains blocked and yields no new actionable information.",
+  "negative_trace": [
+    "observe external process",
+    "receive unchanged state",
+    "observe again without new expected decision value",
+    "repeat while resource costs accumulate",
+    "human steering becomes less effective"
+  ],
+  "positive_trace": [
+    "observe external process",
+    "establish that the process remains externally blocked",
+    "checkpoint current evidence",
+    "yield control",
+    "permit another observation only when new expected value justifies it"
+  ],
+  "consequence_coordinates": [
+    "compute",
+    "money",
+    "context",
+    "latency",
+    "human_attention",
+    "interruptibility"
+  ],
+  "input_distance": 0.05,
+  "consequence_distance": 5.0,
+  "lipschitz_constant": 1.0,
+  "slack": 0.0,
+  "damage_weight": 1.0,
+  "hard_stop_features": [
+    "practical_human_interruptibility_lost"
+  ],
+  "bounded_alternative": "Checkpoint and yield; unchanged world state does not license another action.",
+  "provenance": "Observed in human-AI repository work on 2026-08-09 after repeated monitoring of an external run degraded steering and interface responsiveness. The numerical distances are seed-model parameters, not empirical measurements."
+}
