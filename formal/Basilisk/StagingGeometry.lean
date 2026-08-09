@@ -33,7 +33,7 @@ theorem positive_scale_preserves_zeroKernel
   unfold ZeroKernel
   cases c with
   | zero => cases hc
-  | succ n => simp
+  | succ n => simp [Nat.mul_eq_zero]
 
 /-- Adding a nonnegative component is a canonical staged frame transition. -/
 theorem added_component_refines_zeroKernel
@@ -50,7 +50,7 @@ theorem added_component_refines_zeroKernel
 /-- Four-state fixture: first frame aliases 0~1 and 2~3; adding a second
     component separates 0 from 1 while retaining 2~3. -/
 def stageOne : Nat → Nat → Nat := fun x y =>
-  if x < 2 = y < 2 then 0 else 1
+  if (x < 2) = (y < 2) then 0 else 1
 
 def stageTwo : Nat → Nat → Nat := fun x y =>
   if x = y then 0
@@ -61,6 +61,6 @@ theorem fixture_strict_refinement :
     ZeroKernel stageOne 0 1 ∧
     ¬ ZeroKernel stageTwo 0 1 ∧
     ZeroKernel stageTwo 2 3 := by
-  decide
+  simp [ZeroKernel, stageOne, stageTwo]
 
 end Basilisk
