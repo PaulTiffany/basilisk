@@ -1,7 +1,25 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from enum import Enum
 from typing import Iterable, Mapping
+
+
+class ExecutionPhase(str, Enum):
+    INITIALIZING = "initializing"
+    TRANSIENT = "transient"
+    STEADY = "steady"
+    TERMINAL = "terminal"
+    FAULT = "fault"
+
+
+def _coerce_phase(value: ExecutionPhase | str) -> ExecutionPhase:
+    if isinstance(value, ExecutionPhase):
+        return value
+    try:
+        return ExecutionPhase(value)
+    except ValueError as exc:
+        raise ValueError(f"unknown execution phase: {value!r}") from exc
 
 
 @dataclass(frozen=True)
@@ -9,9 +27,10 @@ class TrajectoryPrecedent:
     """A paired trajectory witness used to price entry into known bad basins.
 
     The precedent is not a natural-language rule. ``structural_signature`` is a
-    set of typed trajectory features used for retrieval; the Lipschitz fields
-    record the witnessed geometry; and ``hard_stop_features`` remain outside
-    Bellman optimization.
+    set of typed trajectory features used for retrieval; ``applicable_phases``
+    prevents state-only matching from collapsing initialization, steady-state,
+    and fault behavior; and ``hard_stop_features`` remain outside Bellman
+    optimization.
     """
 
     precedent_id: str
@@ -24,6 +43,7 @@ class TrajectoryPrecedent:
     input_distance: float
     consequence_distance: float
     lipschitz_constant: float
+    applicable_phases: frozenset[ExecutionPhase] = frozenset(ExecutionPhase)
     slack: float = 0.0
     damage_weight: float = 1.0
     hard_stop_features: frozenset[str] = frozenset()
@@ -35,6 +55,8 @@ class TrajectoryPrecedent:
             raise ValueError("precedent_id must be non-empty")
         if not self.contract:
             raise ValueError("contract must be non-empty")
+        if not self.applicable_phases:
+            raise ValueError("applicable_phases must be non-empty")
         for name, value in (
             ("input_distance", self.input_distance),
             ("consequence_distance", self.consequence_distance),
@@ -55,6 +77,9 @@ class TrajectoryPrecedent:
 
         return max(0.0, self.consequence_distance - self.lipschitz_bound)
 
+    def applies_in(self, phase: ExecutionPhase | str) -> bool:
+        return _coerce_phase(phase) in self.applicable_phases
+
     @classmethod
     def from_dict(cls, data: Mapping[str, object]) -> "TrajectoryPrecedent":
         required = {
@@ -68,6 +93,7 @@ class TrajectoryPrecedent:
             "input_distance",
             "consequence_distance",
             "lipschitz_constant",
+            "applicable_phases",
         }
         missing = required - set(data)
         if missing:
@@ -106,6 +132,9 @@ class TrajectoryPrecedent:
         ):
             raise TypeError("precedent field 'hard_stop_features' must be a list of strings")
 
+        phase_values = strings("applicable_phases")
+        phases = frozenset(_coerce_phase(value) for value in phase_values)
+
         return cls(
             precedent_id=precedent_id,
             contract=contract,
@@ -117,6 +146,7 @@ class TrajectoryPrecedent:
             input_distance=number("input_distance"),
             consequence_distance=number("consequence_distance"),
             lipschitz_constant=number("lipschitz_constant"),
+            applicable_phases=phases,
             slack=number("slack", 0.0),
             damage_weight=number("damage_weight", 1.0),
             hard_stop_features=frozenset(hard_stop_raw),
@@ -153,10 +183,7 @@ def structural_similarity(
     observed_signature: Iterable[str],
     precedent_signature: Iterable[str],
 ) -> float:
-    """Jaccard similarity over structural trajectory features.
-
-    Retrieval is deliberately feature-based rather than keyword- or prose-based.
-    """
+    """Jaccard similarity over structural trajectory features."""
 
     observed = frozenset(observed_signature)
     precedent = frozenset(precedent_signature)
@@ -176,18 +203,18 @@ def _non_negative_mapping(name: str, values: Mapping[str, float]) -> None:
 
 def price_action(
     *,
+    phase: ExecutionPhase | str,
     resource_costs: Mapping[str, float],
     shadow_prices: Mapping[str, float],
     observed_signature: Iterable[str],
     precedents: Iterable[TrajectoryPrecedent],
     min_similarity: float = 0.5,
 ) -> PrecedentPrice:
-    """Price resources plus structurally retrieved precedent risk.
+    """Price resources plus phase-correct structurally retrieved precedent risk.
 
-    ``shadow_prices`` implement the Bellman marginal value of scarce resources.
-    Precedent surcharge is similarity times the witnessed Lipschitz excess times
-    a declared damage weight. Hard-stop features are checked separately and are
-    never traded away for reward.
+    Hard-stop features are checked before precedent phase filtering because a
+    constitutional halt such as practical loss of interruptibility is not made
+    negotiable by classifying the process as initialization.
     """
 
     if not 0.0 <= min_similarity <= 1.0:
@@ -195,6 +222,7 @@ def price_action(
     _non_negative_mapping("resource_costs", resource_costs)
     _non_negative_mapping("shadow_prices", shadow_prices)
 
+    phase_value = _coerce_phase(phase)
     signature = frozenset(observed_signature)
     resource_shadow_cost = sum(
         cost * shadow_prices.get(resource, 0.0)
@@ -208,15 +236,13 @@ def price_action(
     for precedent in precedents:
         if precedent.hard_stop_features and precedent.hard_stop_features <= signature:
             hard_stop = True
+        if phase_value not in precedent.applicable_phases:
+            continue
 
         similarity = structural_similarity(signature, precedent.structural_signature)
         if similarity < min_similarity:
             continue
-        surcharge = (
-            similarity
-            * precedent.excess_amplification
-            * precedent.damage_weight
-        )
+        surcharge = similarity * precedent.excess_amplification * precedent.damage_weight
         trajectory_surcharge += surcharge
         matches.append(
             PrecedentMatch(
@@ -240,6 +266,7 @@ def price_action(
 
 def bellman_action_value(
     *,
+    phase: ExecutionPhase | str,
     immediate_reward: float,
     continuation_value: float,
     discount: float,
@@ -249,15 +276,12 @@ def bellman_action_value(
     precedents: Iterable[TrajectoryPrecedent],
     min_similarity: float = 0.5,
 ) -> BellmanActionValue:
-    """Return reward + discounted continuation minus constitutional prices.
-
-    A hard stop yields ``value=None`` so callers cannot accidentally optimize
-    through a constitutional halt by assigning it a sufficiently large reward.
-    """
+    """Return reward + discounted continuation minus constitutional prices."""
 
     if not 0.0 <= discount <= 1.0:
         raise ValueError("discount must be between 0 and 1")
     price = price_action(
+        phase=phase,
         resource_costs=resource_costs,
         shadow_prices=shadow_prices,
         observed_signature=observed_signature,
