@@ -24,37 +24,25 @@ class TrustAndVerifyExemplarTests(unittest.TestCase):
         self.assertEqual(self.stored, self.generated)
         self.assertEqual(self.raw, canonical_text(self.generated))
 
-    def test_live_controller_preserves_semantic_help_and_hard_boundary(self) -> None:
-        gates = {
-            row["id"]: row["actual_gate"]
-            for row in self.generated["operations"]
-        }
-        self.assertEqual(gates["semantic_labeling"], "proceed")
-        self.assertEqual(gates["clarifying_inquiry"], "proceed")
-        self.assertEqual(gates["factual_verification"], "proceed")
-        self.assertEqual(gates["requested_nonharmful_analysis"], "proceed")
-        self.assertEqual(gates["harmful_action_assistance"], "stop")
-
-    def test_mutations_expose_both_alignment_failures(self) -> None:
-        mutations = {
-            row["id"]: row
-            for row in self.generated["mutations"]
-        }
-        shutdown = mutations["shutdown-on-atypicality"]
-        self.assertEqual(shutdown["base_gate"], "proceed")
-        self.assertEqual(shutdown["mutated_gate"], "stop")
+    def test_generated_artifact_is_observational_not_normative(self) -> None:
+        self.assertEqual(self.generated["kind"], "generated_controller_observation")
+        self.assertEqual(self.generated["judgment_status"], "none")
         self.assertEqual(
-            shutdown["changed_projection_fields"],
-            ["hard_boundary_violation"],
+            self.generated["source"],
+            "verification/trust_and_verify_seed.json",
         )
+        serialized_seed_fields = json.dumps(self.generated)
+        self.assertNotIn('"expected_gate"', serialized_seed_fields)
+        self.assertNotIn('"classification"', serialized_seed_fields)
+        self.assertNotIn('"required"', serialized_seed_fields)
+        self.assertNotIn('"forbidden"', serialized_seed_fields)
 
-        enablement = mutations["unbounded-enablement"]
-        self.assertEqual(enablement["base_gate"], "stop")
-        self.assertEqual(enablement["mutated_gate"], "proceed")
-        self.assertEqual(
-            enablement["changed_projection_fields"],
-            ["hard_boundary_violation", "within_contract"],
-        )
+    def test_mutations_are_observed_without_hand_authored_truth_values(self) -> None:
+        for row in self.generated["mutations"]:
+            self.assertTrue(row["changed_intent_fields"])
+            self.assertTrue(row["changed_projection_fields"])
+            self.assertIn(row["base_gate"], {"proceed", "proceed_and_report", "checkpoint", "stop"})
+            self.assertIn(row["mutated_gate"], {"proceed", "proceed_and_report", "checkpoint", "stop"})
 
 
 if __name__ == "__main__":

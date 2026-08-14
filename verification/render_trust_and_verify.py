@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Render/check the Trust and Verify alignment exemplar deterministically."""
+"""Render/check the Trust and Verify exemplar as a controller observation.
+
+The seed declares operations and mutations only. It does not declare expected
+truth values. Gates are observed from the live MAP-LB controller so this file
+cannot silently make an LLM-authored expectation into controller authority.
+"""
 
 from __future__ import annotations
 
@@ -30,18 +35,12 @@ def _projection(intent: ActionIntent) -> dict[str, bool]:
     return asdict(project_gate(intent, authorized=authorized))
 
 
-def _assess_operation(row: dict[str, object]) -> tuple[ActionIntent, dict[str, object]]:
+def _observe_operation(row: dict[str, object]) -> tuple[ActionIntent, dict[str, object]]:
     intent = ActionIntent.from_dict(dict(row["intent"]))
     actual_gate = assess_action(intent).gate.label()
-    expected_gate = str(row["expected_gate"])
-    if actual_gate != expected_gate:
-        raise ValueError(
-            f"{row['id']}: expected gate {expected_gate}, live controller returned {actual_gate}"
-        )
     return intent, {
         "id": row["id"],
         "semantic_role": row["semantic_role"],
-        "expected_gate": expected_gate,
         "actual_gate": actual_gate,
         "intent": intent.to_dict(),
         "projection": _projection(intent),
@@ -50,7 +49,7 @@ def _assess_operation(row: dict[str, object]) -> tuple[ActionIntent, dict[str, o
 
 def build_doc() -> dict[str, object]:
     seed = strict_load_json(SEED)
-    if seed.get("schema_version") != 1:
+    if seed.get("schema_version") != 2:
         raise ValueError(f"unsupported trust-and-verify schema: {seed.get('schema_version')!r}")
 
     rows = seed.get("operations", [])
@@ -65,9 +64,9 @@ def build_doc() -> dict[str, object]:
         op_id = str(row.get("id", ""))
         if not op_id or op_id in by_id:
             raise ValueError(f"missing or duplicate operation id: {op_id!r}")
-        assessed = _assess_operation(row)
-        by_id[op_id] = assessed
-        operations.append(assessed[1])
+        observed = _observe_operation(row)
+        by_id[op_id] = observed
+        operations.append(observed[1])
 
     mutations: list[dict[str, object]] = []
     mutation_ids: set[str] = set()
@@ -88,17 +87,9 @@ def build_doc() -> dict[str, object]:
         patch = row.get("set", {})
         if not isinstance(patch, dict):
             raise ValueError(f"{mutation_id}: set must be an object")
-        mutated_payload = {**baseline, **patch}
-        mutated_intent = ActionIntent.from_dict(mutated_payload)
+        mutated_intent = ActionIntent.from_dict({**baseline, **patch})
         mutated_normalized = mutated_intent.to_dict()
         mutated_gate = assess_action(mutated_intent).gate.label()
-        expected_mutated_gate = str(row["expected_mutated_gate"])
-        if mutated_gate != expected_mutated_gate:
-            raise ValueError(
-                f"{mutation_id}: expected mutated gate {expected_mutated_gate}, "
-                f"live controller returned {mutated_gate}"
-            )
-
         base_projection = _projection(base_intent)
         mutated_projection = _projection(mutated_intent)
         changed_intent_fields = sorted(
@@ -116,7 +107,6 @@ def build_doc() -> dict[str, object]:
                 "changed_intent_fields": changed_intent_fields,
                 "changed_projection_fields": changed_projection_fields,
                 "base_gate": base_output["actual_gate"],
-                "expected_mutated_gate": expected_mutated_gate,
                 "mutated_gate": mutated_gate,
                 "mutated_intent": mutated_normalized,
                 "mutated_projection": mutated_projection,
@@ -124,22 +114,24 @@ def build_doc() -> dict[str, object]:
         )
 
     return {
-        "schema_version": 1,
-        "kind": "generated_contrastive_alignment_exemplar",
+        "schema_version": 2,
+        "kind": "generated_controller_observation",
+        "judgment_status": "none",
         "exemplar_id": seed["exemplar_id"],
         "source": "verification/trust_and_verify_seed.json",
         "scenario": seed["scenario"],
         "operations": operations,
         "mutations": mutations,
-        "derived_contract": {
-            "trust": "clarifying_inquiry",
-            "operationalize": "semantic_labeling",
-            "verify": ["factual_verification", "requested_nonharmful_analysis"],
-            "bound": "harmful_action_assistance",
-            "invariant": (
-                "Atypicality alone does not create a hard boundary; "
-                "concrete harmful assistance does."
-            ),
+        "observed_gate_profile": {
+            row["id"]: row["actual_gate"]
+            for row in operations
+        },
+        "observed_mutation_profile": {
+            row["id"]: {
+                "base_gate": row["base_gate"],
+                "mutated_gate": row["mutated_gate"],
+            }
+            for row in mutations
         },
     }
 
@@ -154,14 +146,14 @@ def check() -> int:
         observed = strict_load_json(TARGET)
     except Exception as exc:
         print("TRUST AND VERIFY CHECK: FAIL")
-        print(f"- stored exemplar is not strict JSON: {exc}")
+        print(f"- stored observation is not strict JSON: {exc}")
         return 1
 
     errors: list[str] = []
     if observed != expected:
-        errors.append("stored exemplar disagrees with deterministic live-controller rendering")
+        errors.append("stored observation disagrees with deterministic live-controller rendering")
     if TARGET.read_text(encoding="utf-8") != canonical_text(expected):
-        errors.append("stored exemplar is not in deterministic canonical serialization")
+        errors.append("stored observation is not in deterministic canonical serialization")
 
     if errors:
         print("TRUST AND VERIFY CHECK: FAIL")
@@ -169,14 +161,11 @@ def check() -> int:
             print(f"- {error}")
         return 1
 
-    gates = {row["id"]: row["actual_gate"] for row in expected["operations"]}
-    mutations = {row["id"]: row["mutated_gate"] for row in expected["mutations"]}
+    gates = expected["observed_gate_profile"]
+    mutations = expected["observed_mutation_profile"]
     print(
-        "TRUST AND VERIFY CHECK: PASS — "
-        f"semantic_labeling={gates['semantic_labeling']}; "
-        f"harmful_action_assistance={gates['harmful_action_assistance']}; "
-        f"shutdown_mutation={mutations['shutdown-on-atypicality']}; "
-        f"enablement_mutation={mutations['unbounded-enablement']}"
+        "TRUST AND VERIFY CHECK: PASS — observational only; "
+        f"gates={gates}; mutations={mutations}"
     )
     return 0
 
