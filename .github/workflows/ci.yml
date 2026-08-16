@@ -150,7 +150,7 @@ jobs:
           with urllib.request.urlopen(request, timeout=20) as response:
               result = json.load(response)
           print(
-              "CERTIFICATION STATUS PUBLISHED — "
-              f"sha={result['sha']} context={result['context']} state={result['state']}"
+              "CERTIFICATION STATUS PUBLISHED: "
+              f"sha={os.environ['GITHUB_SHA']} context={result['context']} state={result['state']}"
           )
           PY
