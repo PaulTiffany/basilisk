@@ -52,14 +52,12 @@ theorem protectedGrowth_recovers {X Y : Type}
     target.recover (g.step (source.embed i)) = i := by
   rw [g.commutes i, target.leftInverse i]
 
-/-- Protected growth cannot collapse two distinct original coordinates. -/
+/-- Protected growth is injective on the original ten coordinates. -/
 theorem protectedGrowth_preserves_distinction {X Y : Type}
     (source : ProtectedTen X) (target : ProtectedTen Y)
-    (g : ProtectedGrowth X Y source target)
-    (i j : TenIndex) (hij : i ≠ j) :
-    g.step (source.embed i) ≠ g.step (source.embed j) := by
-  intro h
-  apply hij
+    (g : ProtectedGrowth X Y source target) :
+    Function.Injective (fun i => g.step (source.embed i)) := by
+  intro i j h
   calc
     i = target.recover (g.step (source.embed i)) :=
       (protectedGrowth_recovers source target g i).symm
