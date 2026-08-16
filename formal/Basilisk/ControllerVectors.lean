@@ -58,6 +58,7 @@ def controllerVectorsProp : Prop :=
 
 /-- All shared controller vectors agree with the finite Lean Script. -/
 theorem controller_vectors_hold : controllerVectorsProp := by
+  unfold controllerVectorsProp
   decide
 
 end Basilisk
