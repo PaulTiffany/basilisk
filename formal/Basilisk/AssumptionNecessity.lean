@@ -127,7 +127,7 @@ private def zeroDistance (_x _y : Bool) : Nat := 0
 theorem zeroKernel_refinement_without_monotonicity_can_fail :
     ZeroKernel zeroDistance false true ∧
     ¬ ZeroKernel oneDistance false true := by
-  decide
+  simp [ZeroKernel, zeroDistance, oneDistance]
 
 /-- Pointwise monotonicity alone does not imply that a selected pair is in the
     earlier zero kernel; the later-zero premise is also load-bearing. -/
@@ -137,14 +137,14 @@ theorem zeroKernel_without_zero_premise_can_fail :
   constructor
   · intro _ _
     exact Nat.le_refl 1
-  · decide
+  · simp [ZeroKernel, oneDistance]
 
 /-- Zero scaling aliases a separated pair, so positivity is necessary for exact
     preservation of the zero kernel. -/
 theorem zero_scale_does_not_preserve_zeroKernel :
     ZeroKernel (fun a b => 0 * oneDistance a b) false true ∧
     ¬ ZeroKernel oneDistance false true := by
-  decide
+  simp [ZeroKernel, oneDistance]
 
 private def idProcess : ParameterizedProcess Bool Unit :=
   { step := fun _ x => x }

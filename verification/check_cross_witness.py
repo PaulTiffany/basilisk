@@ -93,8 +93,9 @@ def main() -> int:
                 f"{case['id']}: expected Lean transcription missing: {expected}"
             )
 
-    if "theorem controller_vectors_hold : controllerVectorsProp := by decide" not in lean:
-        failures.append("aggregate Lean vector theorem is missing or changed")
+    declaration = "theorem controller_vectors_hold : controllerVectorsProp := by"
+    if declaration not in lean:
+        failures.append("aggregate Lean vector theorem declaration is missing or changed")
 
     if failures:
         print("CROSS-WITNESS TRANSCRIPTION CHECK: FAIL")

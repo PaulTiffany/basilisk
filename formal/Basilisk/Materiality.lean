@@ -81,13 +81,14 @@ private def bridgeB : MaterialEncounter :=
     attempted := 0, realized := 2, coupled := true }
 
 theorem wall_shared_obstruction : SharedObstruction2 wallA wallB := by
-  decide
+  simp [SharedObstruction2, MaterialEncounter.obstructed, wallA, wallB]
 
 theorem shared_belief_not_obstruction : ¬ SharedObstruction2 beliefA beliefB := by
-  decide
+  simp [SharedObstruction2, MaterialEncounter.obstructed, beliefA, beliefB]
 
 theorem bridge_recursive_materialization :
     RecursiveMaterialization2 bridgeTransition bridgeA bridgeB := by
-  decide
+  simp [RecursiveMaterialization2, SharedObstruction2,
+    MaterialEncounter.obstructed, bridgeTransition, bridgeA, bridgeB]
 
 end Basilisk
