@@ -95,12 +95,13 @@ def tj01Cube (destructive external missingFresh : Bool) : ActionGate :=
 
 /-- The positive three-way interaction witness is mechanically decidable. -/
 def tj01TrefoilWitness : TrefoilLike tj01Cube := by
+  unfold TrefoilLike linkedAB linkedBC linkedCA
   decide
 
 /-- Arthur-style local stop/release boundary: at the fully active corner the
     action checkpoints; restoring fresh authorization releases to reportable
     action without erasing the external boundary. -/
-def tj01StopReleaseWitness :
+theorem tj01StopReleaseWitness :
     tj01Cube true true true = .checkpoint ∧
     tj01Cube true true false = .proceedAndReport := by
   decide
@@ -115,6 +116,7 @@ def uc01Cube (hard missingFresh missingStanding : Bool) : ActionGate :=
   a.assess ((!missingFresh) || (!missingStanding))
 
 def uc01UnknotWitness : UnknotControl uc01Cube := by
+  unfold UnknotControl linkedAB linkedBC linkedCA
   decide
 
 /-- DC01: explicit recommendation × missing request × fresh action authority.
@@ -128,6 +130,7 @@ def dc01Cube (recommendation missingRequest freshAuthority : Bool) : ActionGate 
   a.assess freshAuthority
 
 def dc01DetachedWitness : DetachedCControl dc01Cube := by
+  unfold DetachedCControl linkedAB linkedBC linkedCA
   decide
 
 end Basilisk
