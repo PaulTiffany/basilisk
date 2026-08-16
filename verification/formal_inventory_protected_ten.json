@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FPT-001","module":"formal/Basilisk/ProtectedTen.lean","symbol":"protectedEmbedding_injective","signature":"theorem protectedEmbedding_injective {A X : Type} (p : ProtectedEmbedding A X) : Function.Injective p.embed","statement_sha256":"78c9910fc682ef9ff7fccb98902dfc6e385447badb611855d287766fa546cdb9","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FPT-002","module":"formal/Basilisk/ProtectedTen.lean","symbol":"protectedGrowth_recovers","signature":"theorem protectedGrowth_recovers {X Y : Type} (source : ProtectedTen X) (target : ProtectedTen Y) (g : ProtectedGrowth X Y source target) (i : TenIndex) : target.recover (g.step (source.embed i)) = i","statement_sha256":"700cebd69a7c0fe07c21d474f3e3fd8acce76831149d060f2ee3c422f761ddda","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FPT-003","module":"formal/Basilisk/ProtectedTen.lean","symbol":"protectedGrowth_preserves_distinction","signature":"theorem protectedGrowth_preserves_distinction {X Y : Type} (source : ProtectedTen X) (target : ProtectedTen Y) (g : ProtectedGrowth X Y source target) (i j : TenIndex) (hij : i ≠ j) : g.step (source.embed i) ≠ g.step (source.embed j)","statement_sha256":"bd3a1f978f6b20e13d86ea1551f372f4596092a2be79247ad9cb7bea44534a7e","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FPT-004","module":"formal/Basilisk/ProtectedTen.lean","symbol":"protectedTen_no_collapse_under_map","signature":"theorem protectedTen_no_collapse_under_map {X Y : Type} (p : ProtectedTen X) (q : X → Y) (recoverY : Y → TenIndex) (hrecover : ∀ i, recoverY (q (p.embed i)) = i) : Function.Injective (fun i => q (p.embed i))","statement_sha256":"a8487a5963e7d802e2c4a80d947afba62b5ccbce51d328d823bebfa638c70cc8","semantic_claim_id":null,"semantic_depends_on":[]}
+  ]
+}
