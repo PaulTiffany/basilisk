@@ -24,6 +24,7 @@ mathlib dependency):
   * JunctionTopology.lean — three-way interaction signatures and controls
   * ProtectedTen.lean     — recoverable ten-coordinate basis under growth and quotient maps
   * Promotion.lean        — imagination/verification/authority promotion boundaries
+  * ProducerAuthority.lean — producer self-check is not acceptance authority
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
   * Evitability.lean      — nominal choice versus materially viable alternatives
   * Observability.lean    — external observables, opaque interior, accountability cut
@@ -57,6 +58,7 @@ import Basilisk.AssumptionNecessity
 import Basilisk.JunctionTopology
 import Basilisk.ProtectedTen
 import Basilisk.Promotion
+import Basilisk.ProducerAuthority
 import Basilisk.Materiality
 import Basilisk.Evitability
 import Basilisk.Observability
@@ -132,6 +134,12 @@ namespace Basilisk
 #print axioms ideal_cannot_self_authorize
 #print axioms verification_releases_assertion
 #print axioms human_authorization_releases_action
+#print axioms producer_self_check_is_not_acceptance_authority
+#print axioms self_certified_production_does_not_self_accept
+#print axioms independent_witness_without_ratification_stays_checkpointed
+#print axioms veto_stops_witnessed_candidate
+#print axioms modification_requires_successor_checkpoint
+#print axioms witness_and_ratification_release_candidate
 #print axioms wall_shared_obstruction
 #print axioms shared_belief_not_obstruction
 #print axioms bridge_recursive_materialization
