@@ -1,6 +1,8 @@
 # Markov 10+ research bridge — limiting-body asymptotics
 
-**Status:** Parked Research Bridge / target mathematics. This document does **not** assert that Basilisk dynamics are a graded family of ideals, that long-horizon behavior is Markovian in the stochastic-process sense, or that the imported algebraic theorems already apply to agent trajectories.
+**Status:** Parked Research Bridge / target algebraic mathematics, with a finite mechanistic substrate now implemented. This document does **not** assert that Basilisk dynamics are a graded family of ideals, that long-horizon behavior is Markovian in the stochastic-process sense, or that the imported algebraic theorems already apply to agent trajectories.
+
+The finite substrate is executable in [`verification/check_markov10.py`](../verification/check_markov10.py), tested in [`tests/test_markov10_witness.py`](../tests/test_markov10_witness.py), and mirrored in Lean by [`formal/Basilisk/HorizonGeometry.lean`](../formal/Basilisk/HorizonGeometry.lean). Those artifacts establish only the finite composition/stabilization/collapse shapes stated below; the commutative-algebra bridge remains open.
 
 The local name **Markov 10+** denotes a modeling discipline: beyond a horizon where individual trajectory prediction is not justified, seek a mechanically defined, horizon-normalized geometry of reachable or admissible distinctions instead of extending one fluent story indefinitely.
 
@@ -112,7 +114,7 @@ This is compatible with the existing Basilisk distinction between a reachable fu
 
 ## 3. The missing theorem
 
-The central work is not in Hà–Nguyễn–Phạm. It is ours.
+The central algebraic work is not in Hà–Nguyễn–Phạm. It is ours.
 
 To turn the analogy into mathematics, construct an encoding
 
@@ -147,7 +149,17 @@ Basilisk already defines reachable-future deletion through a declared transition
 \mu\bigl(\mathcal R(x)\setminus\mathcal R(Tx)\bigr).
 \]
 
-Markov 10+ asks a different but adjacent question: when individual future paths proliferate beyond useful prediction, can the family of horizon-indexed reachable/admissible structures admit a normalized geometric carrier that preserves the distinctions required to reason about future loss?
+`HorizonGeometry.lean` now adds exact-horizon reachability `ReachableN` and a proof-producing composition operation
+
+\[
+\operatorname{ReachableN}_p(x,y)\;\wedge\;\operatorname{ReachableN}_q(y,z)
+\Longrightarrow
+\operatorname{ReachableN}_{p+q}(x,z).
+\]
+
+This is deliberately below the ideal-theoretic claim: it establishes that the transition semantics themselves have a summed-horizon composition law before asking for an algebraic carrier.
+
+Markov 10+ asks the adjacent question: when individual future paths proliferate beyond useful prediction, can the family of horizon-indexed reachable/admissible structures admit a normalized geometric carrier that preserves the distinctions required to reason about future loss?
 
 The ordering is deliberate:
 
@@ -161,23 +173,45 @@ The ordering is deliberate:
 
 No limiting body may certify itself. Any claimed correspondence should retain an independent witness back to the transition/reachability semantics that generated it.
 
-## 5. Falsification program
+## 5. Implemented finite falsification program
 
-A first mechanical program can use finite transition systems before any commutative-algebra formalization:
+The first mechanical program is now live rather than merely proposed.
 
-- enumerate reachable sets \(\mathcal R_n(x)\) through increasing horizons;
-- encode declared distinction-count vectors for each horizon;
-- test candidate composition operations;
-- normalize the resulting convex envelopes by horizon;
-- search for stabilization, oscillation, and strict growth;
-- deliberately construct encodings that collapse a known constitutional distinction and require the witness to reject them;
-- compare any finite analogue of “volume” against independently computed reachability loss.
+### Python transition witness
 
-If this finite program does not exhibit a robust algebraic structure, Markov 10+ remains a useful epistemic rule but this particular Newton-body bridge should stay parked.
+`verification/check_markov10.py` enumerates path-support vectors for finite weighted transition systems, performs exact Minkowski support composition, normalizes support by horizon using rational arithmetic, computes a two-dimensional convex hull, and separately checks whether semantic transition labels remain injectively represented.
+
+Its current fixtures mechanically exhibit three distinct facts:
+
+- **Compositional fixture.** A one-state linear system has exact support composition from horizons 2 and 3 into horizon 5, and its normalized hull is unchanged from horizons 1 through 5.
+- **Path-versus-surface fixture.** A branching one-state system has three support points at horizon 2 and four at horizon 3, so the finite path/support description is still changing, while the normalized convex hull is already the same line segment at every tested horizon. This is the finite witness for “continued local evolution with stabilized normalized geometry.”
+- **Faithfulness counterfixture.** Two distinct protected labels are deliberately encoded by the same vector. The geometry is perfectly compatible with the collapse, while the independent label-injectivity witness rejects it.
+
+`tests/test_markov10_witness.py` locks those distinctions into the ordinary unit-test surface, and the `markov10` Make target runs the witness directly inside `package-check`.
+
+### Lean finite core
+
+`formal/Basilisk/HorizonGeometry.lean` adds:
+
+- `ReachableN.comp`, a proof-producing exact-horizon composition operation;
+- `linearHorizonFamily_composes`, an additive horizon-family fixture;
+- `linearHorizonFamily_normalized_stable`, using cross multiplication to represent equal normalized profiles without importing rationals into the Lean core;
+- `collapsedTenProfile_not_injective`, a finite protected-coordinate collapse witness;
+- `normalized_stability_does_not_imply_protected_faithfulness`, which proves that perfect normalized stability can coexist with an invalid collapse of the original protected ten.
+
+That last theorem is the mechanical version of the epistemic guard:
+
+\[
+\boxed{\text{stable geometry}\;\not\Rightarrow\;\text{faithful encoding}.}
+\]
+
+The next falsification step is therefore no longer “build a finite witness.” It is to seek finite systems whose normalized hull oscillates or fails to stabilize, then determine which additional operational conditions correspond to finite generation/Noetherian behavior rather than assuming such behavior by analogy.
 
 ## 6. Claim boundary
 
 **Imported standard mathematics:** the definitions and theorems attributed above to arXiv:2503.16393, under their stated hypotheses.
+
+**Machine-witnessed finite mathematics:** exact-horizon composition, a linear normalized-stability fixture, and a counterexample showing that normalized stability does not imply protected semantic faithfulness.
 
 **Project definition:** “Markov 10+” as a horizon discipline for replacing unjustified path narration with mechanically warranted structural summaries.
 
