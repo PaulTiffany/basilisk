@@ -1,0 +1,8 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {"claim_id":"C-MECH-014","kind":"prose","path":"PROVENANCE.md","fragment":"Basilisk treats a mechanical or deterministic witness as an operator over a declared evidentiary relation, not as the operator of all judgment.","sha256":"707338da613d1ae196d91eb1c95295c1cb179424cb63697d59b6f61920e9f514"},
+    {"claim_id":"C-MECH-014","kind":"python","path":"verification/check_mechanical_witness_provenance.py","fragment":"def verify_receipt(receipt: dict[str, Any]) -> list[str]:","sha256":"84464115dd7429f5fe1c7a38479c76e87c72428f76a431fc7ac22b12a56c30fa"},
+    {"claim_id":"C-MECH-014","kind":"mechanism","path":"verification/check_mechanical_witness_provenance.py","fragment":"print(\n        \"MECHANICAL WITNESS PROVENANCE: PASS — \"\n        \"transition witnessed without identity or total-judgment claim\"\n    )","sha256":"b8ee96b767cf718c9f48dc7a23f9b38eca1f84560669a5b25aee03ea804d05f1"}
+  ]
+}
