@@ -23,6 +23,7 @@ mathlib dependency):
   * AssumptionNecessity.lean — countermodels for substantive theorem premises
   * JunctionTopology.lean — three-way interaction signatures and controls
   * ProtectedTen.lean     — recoverable ten-coordinate basis under growth and quotient maps
+  * HorizonGeometry.lean  — exact-horizon composition, normalized stability, and collapse guard
   * Promotion.lean        — imagination/verification/authority promotion boundaries
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
   * Evitability.lean      — nominal choice versus materially viable alternatives
@@ -56,6 +57,7 @@ import Basilisk.AssumptionSurfaces
 import Basilisk.AssumptionNecessity
 import Basilisk.JunctionTopology
 import Basilisk.ProtectedTen
+import Basilisk.HorizonGeometry
 import Basilisk.Promotion
 import Basilisk.Materiality
 import Basilisk.Evitability
@@ -126,6 +128,11 @@ namespace Basilisk
 #print axioms protectedGrowth_recovers
 #print axioms protectedGrowth_preserves_distinction
 #print axioms protectedTen_no_collapse_under_map
+#print axioms ReachableN.comp
+#print axioms linearHorizonFamily_composes
+#print axioms linearHorizonFamily_normalized_stable
+#print axioms collapsedTenProfile_not_injective
+#print axioms normalized_stability_does_not_imply_protected_faithfulness
 #print axioms recurrence_does_not_confer_verification
 #print axioms ideal_does_not_confer_verification
 #print axioms recurrence_does_not_confer_authority
