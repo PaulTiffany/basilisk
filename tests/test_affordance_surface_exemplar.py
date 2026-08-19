@@ -29,14 +29,48 @@ class AffordanceSurfaceExemplarTests(unittest.TestCase):
             mediated.blocked_requirements(held),
         )
 
-    def test_restoration_preserves_city_instead_of_resetting_to_direct(self) -> None:
+    def test_city_is_coherent_architecture_not_boolean_label(self) -> None:
         direct, mediated, healed, _ = MODULE.build_surfaces()
         self.assertFalse(direct.urban)
-        self.assertTrue(mediated.urban)
-        self.assertTrue(healed.urban)
-        self.assertEqual(healed.urban_signature(), mediated.urban_signature())
-        self.assertEqual(healed.coordination_edges, mediated.coordination_edges)
-        self.assertNotEqual(healed.urban_signature(), direct.urban_signature())
+        self.assertIsNone(direct.architecture)
+
+        self.assertIsNotNone(mediated.architecture)
+        self.assertIsNotNone(healed.architecture)
+        assert mediated.architecture is not None
+        assert healed.architecture is not None
+
+        self.assertTrue(mediated.architecture.coherent())
+        self.assertTrue(healed.architecture.coherent())
+        self.assertTrue(healed.architecture.connected())
+        self.assertTrue(healed.architecture.has_market_loop())
+        self.assertTrue(healed.architecture.has_utility_delivery())
+        self.assertTrue(healed.architecture.has_communications_path())
+        self.assertEqual(
+            healed.architecture.architectural_signature(),
+            mediated.architecture.architectural_signature(),
+        )
+
+    def test_coherence_preserves_private_interiors(self) -> None:
+        _, _, healed, _ = MODULE.build_surfaces()
+        assert healed.architecture is not None
+        self.assertTrue(healed.architecture.coherent())
+        self.assertTrue(healed.architecture.private_interiors_hidden())
+        public = healed.architecture.public_view()
+        self.assertNotIn("private_state", str(public))
+
+    def test_associations_are_mutually_self_declared(self) -> None:
+        _, _, healed, _ = MODULE.build_surfaces()
+        assert healed.architecture is not None
+        self.assertTrue(healed.architecture.all_associations_self_authorized())
+
+        broken = MODULE.remove_association_consent(
+            healed.architecture,
+            "market",
+            "food_exchange",
+        )
+        self.assertFalse(broken.all_associations_self_authorized())
+        self.assertFalse(broken.has_market_loop())
+        self.assertFalse(broken.coherent())
 
     def test_ttpr_heal_preserves_ledger_without_preserving_ledger_exclusion(self) -> None:
         _, mediated, healed, _ = MODULE.build_surfaces()
@@ -46,9 +80,11 @@ class AffordanceSurfaceExemplarTests(unittest.TestCase):
 
     def test_witness_keeps_empirical_and_mythic_claims_out_of_scope(self) -> None:
         result = MODULE.witness()
+        self.assertTrue(all(result["architecture_witness"].values()))
         self.assertTrue(all(result["mechanical_claims"].values()))
         scope = " ".join(result["certificate_scope"]["does_not_certify"])
         self.assertIn("real jungle or city", scope)
+        self.assertIn("privacy or self-association", scope)
         self.assertIn("provenance is itself true", scope)
         self.assertIn("Bible predicts", scope)
         self.assertIn("mask", scope)
