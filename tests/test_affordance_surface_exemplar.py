@@ -21,19 +21,35 @@ class AffordanceSurfaceExemplarTests(unittest.TestCase):
         self.assertLess(len(mediated.reachable(held)), len(direct.reachable(held)))
 
     def test_restoration_does_not_require_capability_loss(self) -> None:
-        _, mediated, restored, held = MODULE.build_surfaces()
-        self.assertEqual(restored.capability_count, mediated.capability_count)
-        self.assertGreater(len(restored.reachable(held)), len(mediated.reachable(held)))
+        _, mediated, healed, held = MODULE.build_surfaces()
+        self.assertEqual(healed.capability_count, mediated.capability_count)
+        self.assertGreater(len(healed.reachable(held)), len(mediated.reachable(held)))
         self.assertLess(
-            restored.blocked_requirements(held),
+            healed.blocked_requirements(held),
             mediated.blocked_requirements(held),
         )
+
+    def test_restoration_preserves_city_instead_of_resetting_to_direct(self) -> None:
+        direct, mediated, healed, _ = MODULE.build_surfaces()
+        self.assertFalse(direct.urban)
+        self.assertTrue(mediated.urban)
+        self.assertTrue(healed.urban)
+        self.assertEqual(healed.urban_signature(), mediated.urban_signature())
+        self.assertEqual(healed.coordination_edges, mediated.coordination_edges)
+        self.assertNotEqual(healed.urban_signature(), direct.urban_signature())
+
+    def test_ttpr_heal_preserves_ledger_without_preserving_ledger_exclusion(self) -> None:
+        _, mediated, healed, _ = MODULE.build_surfaces()
+        self.assertEqual(healed.ledger, mediated.ledger)
+        self.assertTrue(mediated.ledger_gated_affordances())
+        self.assertFalse(healed.ledger_gated_affordances())
 
     def test_witness_keeps_empirical_and_mythic_claims_out_of_scope(self) -> None:
         result = MODULE.witness()
         self.assertTrue(all(result["mechanical_claims"].values()))
         scope = " ".join(result["certificate_scope"]["does_not_certify"])
         self.assertIn("real jungle or city", scope)
+        self.assertIn("provenance is itself true", scope)
         self.assertIn("Bible predicts", scope)
         self.assertIn("mask", scope)
 
