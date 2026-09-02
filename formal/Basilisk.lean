@@ -22,6 +22,8 @@ mathlib dependency):
   * AssumptionSurfaces.lean — countermodels for dropped composition hypotheses
   * AssumptionNecessity.lean — countermodels for substantive theorem premises
   * JunctionTopology.lean — three-way interaction signatures and controls
+  * ProtectedTen.lean     — recoverable ten-coordinate basis under growth and quotient maps
+  * HorizonGeometry.lean  — exact-horizon composition, normalized stability, and collapse guard
   * Promotion.lean        — imagination/verification/authority promotion boundaries
   * Play.lean             — ten-clause interaction masks and non-capturing play envelope
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
@@ -55,6 +57,8 @@ import Basilisk.ParameterizedTime
 import Basilisk.AssumptionSurfaces
 import Basilisk.AssumptionNecessity
 import Basilisk.JunctionTopology
+import Basilisk.ProtectedTen
+import Basilisk.HorizonGeometry
 import Basilisk.Promotion
 import Basilisk.Play
 import Basilisk.Materiality
@@ -122,6 +126,15 @@ namespace Basilisk
 #print axioms tj01StopReleaseWitness
 #print axioms uc01UnknotWitness
 #print axioms dc01DetachedWitness
+#print axioms protectedEmbedding_injective
+#print axioms protectedGrowth_recovers
+#print axioms protectedGrowth_preserves_distinction
+#print axioms protectedTen_no_collapse_under_map
+#print axioms ReachableN.comp
+#print axioms linearHorizonFamily_composes
+#print axioms linearHorizonFamily_normalized_stable
+#print axioms collapsedTenProfile_not_injective
+#print axioms normalized_stability_does_not_imply_protected_faithfulness
 #print axioms recurrence_does_not_confer_verification
 #print axioms ideal_does_not_confer_verification
 #print axioms recurrence_does_not_confer_authority
