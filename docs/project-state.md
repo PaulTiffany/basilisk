@@ -4,10 +4,10 @@
 
 ## Claim surface
 
-- **Core:** 21 claims
+- **Core:** 22 claims
 - **Parameterized Transformation Theory:** 3 claims
 - **Research Bridges:** 1 claims
-- **Total:** 25 claims
+- **Total:** 26 claims
 
 ### Core claims
 
@@ -32,6 +32,7 @@
 - `C-MECH-011` — Every inventoried Lean proof premise is explicitly classified
 - `C-MECH-012` — Canonical project registries have a mechanically total machine join
 - `C-MECH-013` — The finite gate quotient has an exhaustively characterized interaction-order spectrum
+- `C-MECH-014` — Mechanical witnesses preserve provenance without assuming identity or total judgment
 
 ### Theory claims
 
