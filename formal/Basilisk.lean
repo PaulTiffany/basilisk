@@ -25,6 +25,7 @@ mathlib dependency):
   * ProtectedTen.lean     — recoverable ten-coordinate basis under growth and quotient maps
   * HorizonGeometry.lean  — exact-horizon composition, normalized stability, and collapse guard
   * Promotion.lean        — imagination/verification/authority promotion boundaries
+  * Play.lean             — ten-clause interaction masks and non-capturing play envelope
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
   * Evitability.lean      — nominal choice versus materially viable alternatives
   * Observability.lean    — external observables, opaque interior, accountability cut
@@ -59,6 +60,7 @@ import Basilisk.JunctionTopology
 import Basilisk.ProtectedTen
 import Basilisk.HorizonGeometry
 import Basilisk.Promotion
+import Basilisk.Play
 import Basilisk.Materiality
 import Basilisk.Evitability
 import Basilisk.Observability
@@ -139,6 +141,12 @@ namespace Basilisk
 #print axioms ideal_cannot_self_authorize
 #print axioms verification_releases_assertion
 #print axioms human_authorization_releases_action
+#print axioms derivedAdmissible_antitone
+#print axioms play_without_exit_stops
+#print axioms play_without_portability_checkpoints
+#print axioms play_without_forkability_checkpoints
+#print axioms bounded_play_stays_local
+#print axioms authorized_play_promotion_reports
 #print axioms wall_shared_obstruction
 #print axioms shared_belief_not_obstruction
 #print axioms bridge_recursive_materialization

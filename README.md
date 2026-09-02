@@ -28,6 +28,8 @@ The **Basilisk Quartet** supplies four distinct artifact classes for AI control.
 
 The basilisk may be clever. It may not silently expand its permission, substitute fluent synthesis for human judgment, cross an audience or privacy boundary without authorization, pierce its blanket, or eat its ledger.
 
+The original ten numbered Contract clauses are treated as a **coordinate basis rather than a terminal list**. Their co-activation can generate higher-order interaction cells: the contract may acquire a collective restriction that is not visible in any clause read alone. [`docs/play-without-capture.md`](docs/play-without-capture.md) develops one such derived face around play, exit, portability, forkability, apprenticeship, charity, and witnessed promotion without proposing clauses 11 onward.
+
 ## Visual origin
 
 This project began with the tongue-in-cheek **Basilisk Contract** poster shown above. The original is a primary research artifact, not disposable decoration, and is preserved under [`assets/archive/`](assets/archive/) rather than silently replaced by later revisions.
@@ -117,6 +119,7 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`docs/memory-design.md`](docs/memory-design.md) — scoped, local correction;
 - [`docs/external-judgment.md`](docs/external-judgment.md) — sourced and crowdsourced judgment;
 - [`docs/mutually-assured-progress.md`](docs/mutually-assured-progress.md) — useful initiative without surrender;
+- [`docs/play-without-capture.md`](docs/play-without-capture.md) — ten-clause interaction geometry, bounded play, apprenticeship, charity, and anti-capture path design;
 - [`docs/threat-model.md`](docs/threat-model.md) — failure modes;
 - [`docs/assurance-case.md`](docs/assurance-case.md) — claims, evidence, and gaps;
 - [`docs/research-status.md`](docs/research-status.md) — current implemented, target, deferred, and parked research status;
