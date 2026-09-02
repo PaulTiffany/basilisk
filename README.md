@@ -112,6 +112,7 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`docs/project-state.md`](docs/project-state.md) — generated current claim/debt/scheduling surface;
 - [`docs/protocol.md`](docs/protocol.md) — normative protocol;
 - [`docs/mathematical-model.md`](docs/mathematical-model.md) — boundary-aware Lipschitz model;
+- [`docs/precedent-shadow-pricing.md`](docs/precedent-shadow-pricing.md) — paired trajectory precedent, structural retrieval, and Bellman shadow pricing;
 - [`docs/human-authority-boundary.md`](docs/human-authority-boundary.md) — division of labor;
 - [`docs/memory-design.md`](docs/memory-design.md) — scoped, local correction;
 - [`docs/external-judgment.md`](docs/external-judgment.md) — sourced and crowdsourced judgment;
@@ -123,6 +124,7 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`docs/glossary.md`](docs/glossary.md) — cross-project nomenclature, with overloaded terms disambiguated by source repository;
 - [`docs/lineage-and-non-collapse.md`](docs/lineage-and-non-collapse.md) — explicit non-collapse warnings and one unresolved provenance discrepancy;
 - [`src/map_lb/`](src/map_lb/) — dependency-free reference controller;
+- [`precedents/`](precedents/) — machine-readable positive/negative trajectory exemplars admitted under declared contracts;
 - [`evals/`](evals/) — minimal pairs and scoring regime;
 - [`spec/`](spec/) — JSON schemas;
 - [`prompts/`](prompts/) — vendor-neutral pretest and compact memory;
