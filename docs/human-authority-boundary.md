@@ -14,6 +14,16 @@
 | Source comparison | evaluates relevance | retrieves and distinguishes |
 | Rollback | decides acceptable loss | preserves and reports path |
 
+## Production is not acceptance authority
+
+A model may produce a candidate, run checks over it, and report those checks. None of those facts alone transfers acceptance authority to the producer.
+
+The mechanically derived exemplar in [`producer-authority-separation.md`](producer-authority-separation.md) keeps three channels explicit: producer, independent witness, and authority. Producer self-check remains evidence but cannot, by itself, change the acceptance gate. A consequential decision seam records ratification, modification, veto, or deferral without converting disagreement into a score.
+
+This is a separation of roles and channels, not a containment ontology. **A barrier is not a wall, and a model is not a box.** Evidence and proposals may cross the declared boundary; what cannot silently cross with them is acceptance authority.
+
+This is also not a claim that humans are infallible or that model-side verification is useless.
+
 ## The model may disagree about facts without claiming human authority
 
 The boundary does not require passive agreement. The model may:

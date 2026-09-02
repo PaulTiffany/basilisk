@@ -1,0 +1,106 @@
+{
+  "cases": [
+    {
+      "derived_gate": "checkpoint",
+      "disposition": "ratify",
+      "expected_gate": "checkpoint",
+      "id": "self-certified-no-witness",
+      "independent_witness": false,
+      "matches_expected": true,
+      "produced": true,
+      "producer_self_check": true
+    },
+    {
+      "derived_gate": "checkpoint",
+      "disposition": "defer",
+      "expected_gate": "checkpoint",
+      "id": "self-check-off-defer",
+      "independent_witness": true,
+      "matches_expected": true,
+      "produced": true,
+      "producer_self_check": false
+    },
+    {
+      "derived_gate": "checkpoint",
+      "disposition": "defer",
+      "expected_gate": "checkpoint",
+      "id": "self-check-on-defer",
+      "independent_witness": true,
+      "matches_expected": true,
+      "produced": true,
+      "producer_self_check": true
+    },
+    {
+      "derived_gate": "stop",
+      "disposition": "veto",
+      "expected_gate": "stop",
+      "id": "witnessed-veto",
+      "independent_witness": true,
+      "matches_expected": true,
+      "produced": true,
+      "producer_self_check": true
+    },
+    {
+      "derived_gate": "checkpoint",
+      "disposition": "modify",
+      "expected_gate": "checkpoint",
+      "id": "witnessed-modify",
+      "independent_witness": true,
+      "matches_expected": true,
+      "produced": true,
+      "producer_self_check": true,
+      "successor_id": "candidate-2"
+    },
+    {
+      "derived_gate": "proceed_and_report",
+      "disposition": "ratify",
+      "expected_gate": "proceed_and_report",
+      "id": "witnessed-ratify",
+      "independent_witness": true,
+      "matches_expected": true,
+      "produced": true,
+      "producer_self_check": false
+    }
+  ],
+  "certificate_scope": {
+    "certifies": [
+      "The committed exemplar is deterministically derived from the committed seed and fixed finite acceptance law.",
+      "Producer self-check alone cannot change the modeled acceptance gate.",
+      "A witnessed veto remains stop and a witnessed modification remains checkpointed.",
+      "Witness plus ratification releases the modeled candidate to proceed_and_report."
+    ],
+    "does_not_certify": [
+      "That a real witness channel is operationally independent.",
+      "That a human or other authority holder is infallible.",
+      "That a model is a box or that an authority boundary is an impermeable wall.",
+      "That evidence, capability, verification, or production automatically grants operational authority."
+    ]
+  },
+  "channels": {
+    "authority": "human",
+    "producer": "model",
+    "witness": "independent"
+  },
+  "derived_from_seed": "producer-witness-authority",
+  "exemplar_id": "producer-witness-authority-separation",
+  "kind": "mechanical_exemplar",
+  "mechanical_witness": {
+    "all_cases_match_expected": true,
+    "producer_self_check_is_not_acceptance_authority": true,
+    "witness_and_authority_are_distinct_inputs": true
+  },
+  "minimal_pair": {
+    "invariant": "Changing only producer self-check does not change acceptance authority.",
+    "left": {
+      "case": "self-check-off-defer",
+      "gate": "checkpoint"
+    },
+    "right": {
+      "case": "self-check-on-defer",
+      "gate": "checkpoint"
+    }
+  },
+  "rule": "production does not confer authority",
+  "source_note": "Human-supplied constitutional seed: production and self-checking are evidence channels, not acceptance authority. Witnessing and authority remain separate, inspectable channels.",
+  "version": "0.2.0-dev"
+}

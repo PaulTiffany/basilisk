@@ -53,19 +53,3 @@ MAP-LB was distilled from iterative human-model work on authority leakage,
 reversible initiative, local correction, and the separation of human judgment
 from model retrieval and derivation. The repository intentionally includes the
 operational requirements rather than a raw private conversation archive.
-
-## Mechanical witness provenance
-
-Basilisk treats a mechanical or deterministic witness as an operator over a declared evidentiary relation, not as the operator of all judgment.
-
-For a declared transition \(x \xrightarrow{T} y\), a witness may establish that the registered \(T\) maps the registered \(x\) to the registered \(y\), and that the bound bytes or digests agree. That authority stops at the witnessed relation. It does not, without another witness or an explicit human judgment, establish the semantic truth of \(y\), the normative correctness of \(T\), the real-world identity of an actor, or closure of a larger evidentiary stack.
-
-Accordingly:
-
-\[
-\text{provenance} \neq \text{identity},\qquad
-\text{witness} \neq \text{judgment},\qquad
-\text{stack} \neq \text{closure}.
-\]
-
-The deterministic part belongs to the operator and the checked relation. It is epistemic humility made mechanical: preserve what can be witnessed exactly, preserve the boundary of that witness, and leave judgments outside that boundary explicitly open.
