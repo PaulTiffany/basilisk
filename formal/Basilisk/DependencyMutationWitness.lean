@@ -33,13 +33,9 @@ theorem dependency_mutation_adds_coparent :
     ¬ beforeGraph.inFamilyClosure DNode.x DNode.coparent ∧
     afterGraph.inFamilyClosure DNode.x DNode.coparent := by
   constructor
-  · simp [DepGraph.inFamilyClosure, DepGraph.isParent,
-      DepGraph.isChild, DepGraph.isCoParent, beforeGraph, beforeEdges]
+  · simp [DepGraph.inFamilyClosure, DepGraph.isParent, DepGraph.isChild,
+      DepGraph.isCoParent, beforeGraph, beforeEdges]
   · apply DepGraph.coparent_mem_familyClosure
-    unfold DepGraph.isCoParent
-    refine ⟨DNode.child, ?_, ?_, ?_⟩
-    · rfl
-    · rfl
-    · decide
+    exact ⟨DNode.child, rfl, rfl, by decide⟩
 
 end Basilisk

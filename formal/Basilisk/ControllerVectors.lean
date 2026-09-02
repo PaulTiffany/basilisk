@@ -58,7 +58,8 @@ def controllerVectorsProp : Prop :=
 
 /-- All shared controller vectors agree with the finite Lean Script. -/
 theorem controller_vectors_hold : controllerVectorsProp := by
-  unfold controllerVectorsProp
-  decide
+  simp [controllerVectorsProp, vIntent, ActionIntent.assess,
+    ActionIntent.isUnrequestedModelJudgment, ActionIntent.isCriticalDestructive,
+    ActionIntent.hasBoundaryCrossing, ActionIntent.riskScore, RiskLevel.toNat]
 
 end Basilisk

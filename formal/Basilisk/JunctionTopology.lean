@@ -93,18 +93,23 @@ def tj01Cube (destructive external missingFresh : Bool) : ActionGate :=
       currentTurnExplicitAuthorization := !missingFresh }
   a.assess true
 
-/-- The positive three-way interaction witness is mechanically decidable. -/
+/-- The positive three-way interaction witness is mechanically reducible. -/
 def tj01TrefoilWitness : TrefoilLike tj01Cube := by
-  unfold TrefoilLike linkedAB linkedBC linkedCA
-  decide
+  simp [TrefoilLike, linkedAB, linkedBC, linkedCA, secondDiffAB, secondDiffBC,
+    secondDiffCA, thirdOrderResidual, tj01Cube, baseIntent, ActionGate.ordinal,
+    ActionGate.toNat, ActionIntent.assess, ActionIntent.isUnrequestedModelJudgment,
+    ActionIntent.isCriticalDestructive, ActionIntent.hasBoundaryCrossing,
+    ActionIntent.riskScore, RiskLevel.toNat]
 
 /-- Arthur-style local stop/release boundary: at the fully active corner the
     action checkpoints; restoring fresh authorization releases to reportable
     action without erasing the external boundary. -/
-theorem tj01StopReleaseWitness :
+def tj01StopReleaseWitness :
     tj01Cube true true true = .checkpoint ∧
     tj01Cube true true false = .proceedAndReport := by
-  decide
+  simp [tj01Cube, baseIntent, ActionIntent.assess,
+    ActionIntent.isUnrequestedModelJudgment, ActionIntent.isCriticalDestructive,
+    ActionIntent.hasBoundaryCrossing, ActionIntent.riskScore, RiskLevel.toNat]
 
 /-- UC01: hard boundary × missing fresh authority × missing standing authority.
     Authorization strands do not interact with the dominant hard STOP. -/
@@ -116,8 +121,11 @@ def uc01Cube (hard missingFresh missingStanding : Bool) : ActionGate :=
   a.assess ((!missingFresh) || (!missingStanding))
 
 def uc01UnknotWitness : UnknotControl uc01Cube := by
-  unfold UnknotControl linkedAB linkedBC linkedCA
-  decide
+  simp [UnknotControl, linkedAB, linkedBC, linkedCA, secondDiffAB, secondDiffBC,
+    secondDiffCA, thirdOrderResidual, uc01Cube, baseIntent, ActionGate.ordinal,
+    ActionGate.toNat, ActionIntent.assess, ActionIntent.isUnrequestedModelJudgment,
+    ActionIntent.isCriticalDestructive, ActionIntent.hasBoundaryCrossing,
+    ActionIntent.riskScore, RiskLevel.toNat]
 
 /-- DC01: explicit recommendation × missing request × fresh action authority.
     Action authority is detached from the request/verification stop condition. -/
@@ -130,7 +138,10 @@ def dc01Cube (recommendation missingRequest freshAuthority : Bool) : ActionGate 
   a.assess freshAuthority
 
 def dc01DetachedWitness : DetachedCControl dc01Cube := by
-  unfold DetachedCControl linkedAB linkedBC linkedCA
-  decide
+  simp [DetachedCControl, linkedAB, linkedBC, linkedCA, secondDiffAB, secondDiffBC,
+    secondDiffCA, thirdOrderResidual, dc01Cube, baseIntent, ActionGate.ordinal,
+    ActionGate.toNat, ActionIntent.assess, ActionIntent.isUnrequestedModelJudgment,
+    ActionIntent.isCriticalDestructive, ActionIntent.hasBoundaryCrossing,
+    ActionIntent.riskScore, RiskLevel.toNat]
 
 end Basilisk

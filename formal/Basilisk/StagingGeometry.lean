@@ -31,11 +31,9 @@ theorem positive_scale_preserves_zeroKernel
     {α : Type} (d : α → α → Nat) (c : Nat) (hc : 0 < c) (x y : α) :
     ZeroKernel (fun a b => c * d a b) x y ↔ ZeroKernel d x y := by
   unfold ZeroKernel
-  constructor
-  · intro h
-    exact (Nat.mul_eq_zero.mp h).resolve_left (Nat.ne_of_gt hc)
-  · intro h
-    simp [h]
+  cases c with
+  | zero => cases hc
+  | succ n => simp [Nat.mul_eq_zero]
 
 /-- Adding a nonnegative component is a canonical staged frame transition. -/
 theorem added_component_refines_zeroKernel
@@ -63,7 +61,6 @@ theorem fixture_strict_refinement :
     ZeroKernel stageOne 0 1 ∧
     ¬ ZeroKernel stageTwo 0 1 ∧
     ZeroKernel stageTwo 2 3 := by
-  unfold ZeroKernel stageOne stageTwo
-  decide
+  simp [ZeroKernel, stageOne, stageTwo]
 
 end Basilisk
