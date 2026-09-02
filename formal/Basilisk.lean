@@ -23,8 +23,9 @@ mathlib dependency):
   * AssumptionNecessity.lean — countermodels for substantive theorem premises
   * JunctionTopology.lean — three-way interaction signatures and controls
   * ProtectedTen.lean     — recoverable ten-coordinate basis under growth and quotient maps
+  * HorizonGeometry.lean  — exact-horizon composition, normalized stability, and collapse guard
   * Promotion.lean        — imagination/verification/authority promotion boundaries
-  * ProducerAuthority.lean — producer self-check is not acceptance authority
+  * Play.lean             — ten-clause interaction masks and non-capturing play envelope
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
   * Evitability.lean      — nominal choice versus materially viable alternatives
   * Observability.lean    — external observables, opaque interior, accountability cut
@@ -57,8 +58,9 @@ import Basilisk.AssumptionSurfaces
 import Basilisk.AssumptionNecessity
 import Basilisk.JunctionTopology
 import Basilisk.ProtectedTen
+import Basilisk.HorizonGeometry
 import Basilisk.Promotion
-import Basilisk.ProducerAuthority
+import Basilisk.Play
 import Basilisk.Materiality
 import Basilisk.Evitability
 import Basilisk.Observability
@@ -128,18 +130,23 @@ namespace Basilisk
 #print axioms protectedGrowth_recovers
 #print axioms protectedGrowth_preserves_distinction
 #print axioms protectedTen_no_collapse_under_map
+#print axioms ReachableN.comp
+#print axioms linearHorizonFamily_composes
+#print axioms linearHorizonFamily_normalized_stable
+#print axioms collapsedTenProfile_not_injective
+#print axioms normalized_stability_does_not_imply_protected_faithfulness
 #print axioms recurrence_does_not_confer_verification
 #print axioms ideal_does_not_confer_verification
 #print axioms recurrence_does_not_confer_authority
 #print axioms ideal_cannot_self_authorize
 #print axioms verification_releases_assertion
 #print axioms human_authorization_releases_action
-#print axioms producer_self_check_is_not_acceptance_authority
-#print axioms self_certified_production_does_not_self_accept
-#print axioms independent_witness_without_ratification_stays_checkpointed
-#print axioms veto_stops_witnessed_candidate
-#print axioms modification_requires_successor_checkpoint
-#print axioms witness_and_ratification_release_candidate
+#print axioms derivedAdmissible_antitone
+#print axioms play_without_exit_stops
+#print axioms play_without_portability_checkpoints
+#print axioms play_without_forkability_checkpoints
+#print axioms bounded_play_stays_local
+#print axioms authorized_play_promotion_reports
 #print axioms wall_shared_obstruction
 #print axioms shared_belief_not_obstruction
 #print axioms bridge_recursive_materialization

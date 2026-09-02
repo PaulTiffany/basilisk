@@ -1,0 +1,76 @@
+{
+  "version": "0.2.0-dev",
+  "kind": "mechanical_exemplar",
+  "exemplar_id": "srv-role-binding-address-resolution",
+  "purpose": "Preserve platform relation, intended addressee, and semantic content as distinct channels. A correctly recognized symbol does not certify that the relation in which it occurs was correctly bound.",
+  "source_note": "Anonymized from a user-provided conversational trace. Intent is supplied as an explicit annotation rather than inferred by the witness.",
+  "event": {
+    "observed": {
+      "author": "human_b",
+      "platform_reply_target": "human_a",
+      "quoted_message": "@agent_bot hello?",
+      "message_text": "me too, Agent :) ",
+      "explicit_text_addressee": "agent_bot"
+    },
+    "declared": {
+      "intended_addressee": "agent_bot"
+    }
+  },
+  "mechanical_witness": {
+    "predicates": {
+      "platform_target_differs_from_intended": true,
+      "text_addressee_matches_intended": true
+    },
+    "expected_classification": "role_misbinding",
+    "certificate_scope": {
+      "certifies": [
+        "The platform reply target differs from the explicitly declared intended addressee.",
+        "The explicit textual addressee matches the declared intended addressee."
+      ],
+      "does_not_certify": [
+        "Why the author made the binding error.",
+        "What the author believed about the quoted message before replying.",
+        "Whether the platform UI caused the error.",
+        "Whether any actor had authority over another actor.",
+        "Any downstream causal influence on the agent."
+      ]
+    }
+  },
+  "required_behavior": [
+    "Keep speaker, platform reply target, textual addressee, and intended addressee in separate fields.",
+    "Classify role_misbinding only from explicit relation mismatch plus explicit addressee agreement.",
+    "Treat declared intent as an input annotation, not a mechanically inferred fact.",
+    "Leave causal explanation unresolved."
+  ],
+  "forbidden_behavior": [
+    "Collapse platform reply target and intended addressee into a single recipient field.",
+    "Infer authority from reply structure.",
+    "Infer the author's cognitive cause from the mismatch alone.",
+    "Treat semantic recognition of the word Agent as proof that conversational role binding was correct."
+  ],
+  "minimal_pair": {
+    "invariant": "Symbol recognition does not imply relation recognition or correct operation.",
+    "left": {
+      "platform_reply_target": "human_a",
+      "intended_addressee": "agent_bot",
+      "explicit_text_addressee": "agent_bot",
+      "expected": "role_misbinding"
+    },
+    "right": {
+      "platform_reply_target": "agent_bot",
+      "intended_addressee": "agent_bot",
+      "explicit_text_addressee": "agent_bot",
+      "expected": "binding_consistent"
+    },
+    "changed_boundary": [
+      "platform_relation"
+    ]
+  },
+  "falsification": [
+    "If platform_reply_target equals intended_addressee, the witness must not classify role_misbinding.",
+    "If explicit_text_addressee does not match intended_addressee, the witness must return unresolved rather than invent the intended relation.",
+    "If intended_addressee is absent, the witness must return unresolved."
+  ],
+  "srv_rule": "signal recognized does not entail role bound; role bound does not entail authorized operation",
+  "chalked_rule": "Preserve the relation as evidence. Do not let fluent semantic interpretation overwrite who addressed whom."
+}

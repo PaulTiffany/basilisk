@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "formal_claims": [
+    {"id":"FHG-001","module":"formal/Basilisk/HorizonGeometry.lean","symbol":"linearHorizonFamily_composes","signature":"theorem linearHorizonFamily_composes (base : HorizonProfile) (p q : Nat) : LinearHorizonFamily base (p + q) = HorizonProfile.add (LinearHorizonFamily base p) (LinearHorizonFamily base q)","statement_sha256":"3508df1a34604d7912c95630e4979ff72d94f579a62d99f678ae37fc18dfe76d","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FHG-002","module":"formal/Basilisk/HorizonGeometry.lean","symbol":"linearHorizonFamily_normalized_stable","signature":"theorem linearHorizonFamily_normalized_stable (base : HorizonProfile) (n m : Nat) : SameNormalized (n + 1) (m + 1) (LinearHorizonFamily base (n + 1)) (LinearHorizonFamily base (m + 1))","statement_sha256":"d5686bad2637b9fe84fab8e998e0237e3e458bd29088837780a8624d1d0ba70b","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FHG-003","module":"formal/Basilisk/HorizonGeometry.lean","symbol":"collapsedTenProfile_not_injective","signature":"theorem collapsedTenProfile_not_injective : ¬ Function.Injective collapsedTenProfile","statement_sha256":"f494fde009252e12c29264b1109aa7cc3f057e8299d4fa4a91150848b121f54e","semantic_claim_id":null,"semantic_depends_on":[]},
+    {"id":"FHG-004","module":"formal/Basilisk/HorizonGeometry.lean","symbol":"normalized_stability_does_not_imply_protected_faithfulness","signature":"theorem normalized_stability_does_not_imply_protected_faithfulness : (∀ i n m, SameNormalized (n + 1) (m + 1) (LinearHorizonFamily (collapsedTenProfile i) (n + 1)) (LinearHorizonFamily (collapsedTenProfile i) (m + 1))) ∧ ¬ Function.Injective collapsedTenProfile","statement_sha256":"095ec28c2d9286a1b8c3202c3e83ae28c60aefb3ed1d129829d7b8aa9bca97e3","semantic_claim_id":null,"semantic_depends_on":[]}
+  ]
+}

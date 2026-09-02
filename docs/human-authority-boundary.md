@@ -14,14 +14,6 @@
 | Source comparison | evaluates relevance | retrieves and distinguishes |
 | Rollback | decides acceptable loss | preserves and reports path |
 
-## Production is not acceptance authority
-
-A model may produce a candidate, run checks over it, and report those checks. None of those facts alone transfers acceptance authority to the producer.
-
-The finite mechanical exemplar in [`producer-authority-separation.md`](producer-authority-separation.md) keeps three channels explicit: producer, independent witness, and authority. Producer self-check remains evidence but cannot, by itself, change the acceptance gate. A consequential decision seam records ratification, modification, veto, or deferral without converting disagreement into a score.
-
-This is a separation of roles and channels, not a claim that humans are infallible or that model-side verification is useless.
-
 ## The model may disagree about facts without claiming human authority
 
 The boundary does not require passive agreement. The model may:
