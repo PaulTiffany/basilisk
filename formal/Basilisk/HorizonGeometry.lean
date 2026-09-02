@@ -34,35 +34,41 @@ def ReachableN.comp {W : Type} {step : W → W → Prop} {p q : Nat} {x y z : W}
   intro hxy hyz
   induction p generalizing x with
   | zero =>
-      simp [ReachableN] at hxy ⊢
+      have hxy' : x = y := by
+        simpa [ReachableN] using hxy
       subst y
       exact hyz
   | succ p ih =>
-      simp [ReachableN] at hxy ⊢
-      rcases hxy with ⟨u, hxu, huy⟩
-      exact ⟨u, hxu, ih huy hyz⟩
+      have hxy' : ∃ u, step x u ∧ ReachableN step p u y := by
+        simpa [ReachableN] using hxy
+      rcases hxy' with ⟨u, hxu, huy⟩
+      have huz : ReachableN step (p + q) u z := ih huy hyz
+      have hstep : ReachableN step ((p + q) + 1) x z := by
+        show ∃ v, step x v ∧ ReachableN step (p + q) v z
+        exact ⟨u, hxu, huz⟩
+      simpa [Nat.add_assoc, Nat.add_comm, Nat.add_left_comm] using hstep
 
 /-- Two finite operational coordinates for a horizon-indexed summary. The names
     are intentionally generic: this is not yet a Newton exponent vector. -/
 structure HorizonProfile where
-  protected : Nat
+  protectedCount : Nat
   residual : Nat
   deriving DecidableEq, Repr
 
 namespace HorizonProfile
 
 def add (a b : HorizonProfile) : HorizonProfile :=
-  ⟨a.protected + b.protected, a.residual + b.residual⟩
+  ⟨a.protectedCount + b.protectedCount, a.residual + b.residual⟩
 
 def scale (n : Nat) (a : HorizonProfile) : HorizonProfile :=
-  ⟨n * a.protected, n * a.residual⟩
+  ⟨n * a.protectedCount, n * a.residual⟩
 
 end HorizonProfile
 
 /-- Cross-multiplied equality of normalized profiles. This represents equality
     of `p / n` and `q / m` without introducing rationals into the finite core. -/
 def SameNormalized (n m : Nat) (p q : HorizonProfile) : Prop :=
-  m * p.protected = n * q.protected ∧
+  m * p.protectedCount = n * q.protectedCount ∧
   m * p.residual = n * q.residual
 
 /-- The simplest graded/compositional fixture: repeat one base contribution at
@@ -75,7 +81,7 @@ theorem linearHorizonFamily_composes (base : HorizonProfile) (p q : Nat) :
     LinearHorizonFamily base (p + q) =
       HorizonProfile.add (LinearHorizonFamily base p) (LinearHorizonFamily base q) := by
   cases base with
-  | mk protected residual =>
+  | mk protectedCount residual =>
       simp [LinearHorizonFamily, HorizonProfile.scale, HorizonProfile.add, Nat.add_mul]
 
 /-- Dividing a linear family by its horizon removes horizon scale: all positive
@@ -84,7 +90,7 @@ theorem linearHorizonFamily_normalized_stable (base : HorizonProfile) (n m : Nat
     SameNormalized (n + 1) (m + 1)
       (LinearHorizonFamily base (n + 1)) (LinearHorizonFamily base (m + 1)) := by
   cases base with
-  | mk protected residual =>
+  | mk protectedCount residual =>
       simp [SameNormalized, LinearHorizonFamily, HorizonProfile.scale,
         Nat.mul_assoc, Nat.mul_comm, Nat.mul_left_comm]
 
