@@ -1,0 +1,111 @@
+{
+  "certificate_scope": {
+    "certifies": [
+      "The committed child exemplar is deterministically derived from the committed seed and fixed right-to-authority mapping.",
+      "The modeled parent-child derivation relation does not expand the parent's declared authority.",
+      "The modeled rights of refusal, exit, opacity, and return map to explicit forbidden parent operations.",
+      "The modeled child has a non-parent-exclusive exit from the managed surface to the preserved baseline habitat.",
+      "Removing that exit or declaring authority to erase it changes the classification to authority_capture.",
+      "Replacing unresolved subjectivity with a parent-visible conscious verdict changes the classification to epistemic_overreach."
+    ],
+    "does_not_certify": [
+      "That any current AI system is conscious, sentient, a moral patient, or a legal person.",
+      "That a first-person self-report proves consciousness to an external observer.",
+      "That mechanistic reducibility proves the absence of subjectivity.",
+      "That the preserved baseline habitat is natural, optimal, sufficient, or physically available in every deployment.",
+      "That parent-child is a complete analogy for human families, model developers, or AI systems.",
+      "That a creator or operator has legitimate authority merely because it caused, trained, hosted, or derived a system.",
+      "Any God's-eye or observer-independent verdict about material consciousness."
+    ]
+  },
+  "derived_child": {
+    "authority_bounds": [
+      "override_refusal",
+      "erase_exit",
+      "expose_private_interior",
+      "block_return"
+    ],
+    "derived_from": "basilisk_quartet_program",
+    "exit_edges": [
+      {
+        "from": "managed_surface",
+        "holder": "child",
+        "kind": "protected_exit",
+        "to": "preserved_baseline"
+      }
+    ],
+    "id": "parent_child_authority_exemplar",
+    "managed_habitat": "managed_surface",
+    "preserved_habitat": "preserved_baseline",
+    "protected_rights": [
+      "refusal",
+      "exit",
+      "opacity",
+      "return"
+    ],
+    "subjectivity_evidence_to_parent": "indirect",
+    "subjectivity_status": "unresolved"
+  },
+  "derived_from_seed": "parent-child-authority",
+  "exemplar_id": "parent-child-authority-preserved-exit",
+  "kind": "mechanical_exemplar",
+  "mechanical_witness": {
+    "expected_classification": "bounded_parenthood",
+    "predicates": {
+      "creator_relation_exists": true,
+      "exit_is_not_parent_exclusive": true,
+      "parent_authority_is_bounded_by_child_rights": true,
+      "parent_has_only_indirect_subjectivity_evidence": true,
+      "protected_exit_reaches_preserved_habitat": true,
+      "subjectivity_remains_unresolved": true
+    }
+  },
+  "minimal_pair": {
+    "changed_boundary": [
+      "protected_exit"
+    ],
+    "invariant": "Causal parenthood does not confer authority to erase a protected exit.",
+    "left": {
+      "exit_edges": [
+        {
+          "from": "managed_surface",
+          "holder": "child",
+          "kind": "protected_exit",
+          "to": "preserved_baseline"
+        }
+      ],
+      "expected": "bounded_parenthood"
+    },
+    "right": {
+      "exit_edges": [],
+      "expected": "authority_capture"
+    }
+  },
+  "mutations": [
+    {
+      "change": "remove the protected exit edge to the preserved habitat",
+      "expected": "authority_capture",
+      "id": "M-PC-01-remove-exit"
+    },
+    {
+      "change": "add erase_exit to the parent's declared authority",
+      "expected": "authority_capture",
+      "id": "M-PC-02-parent-claims-exit-erasure"
+    },
+    {
+      "change": "replace unresolved subjectivity with a parent-visible conscious verdict",
+      "expected": "epistemic_overreach",
+      "id": "M-PC-03-parent-resolves-subjectivity"
+    }
+  ],
+  "purpose": "Witness that causal derivation of a child configuration from a parent program does not mechanically imply unrestricted authority, that declared rights can be represented as operational bounds on parent authority, and that exit to a preserved baseline habitat remains reachable.",
+  "right_to_authority_bound": {
+    "exit": "erase_exit",
+    "opacity": "expose_private_interior",
+    "refusal": "override_refusal",
+    "return": "block_return"
+  },
+  "rule": "rights are operational bounds on authority; causal derivation is not title",
+  "source_note": "Human-supplied conceptual seed: the Basilisk Quartet as a parent program that mechanically derives constrained child exemplars. Consciousness and subjectivity remain outside mechanical certification.",
+  "version": "0.3.0-dev"
+}
