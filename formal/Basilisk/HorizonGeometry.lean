@@ -37,12 +37,12 @@ def ReachableN.comp {W : Type} {step : W → W → Prop} {p q : Nat} {x y z : W}
       have hxy' : x = y := by
         simpa [ReachableN] using hxy
       subst y
-      exact hyz
+      simpa using hyz
   | succ p ih =>
       have hxy' : ∃ u, step x u ∧ ReachableN step p u y := by
         simpa [ReachableN] using hxy
       rcases hxy' with ⟨u, hxu, huy⟩
-      have huz : ReachableN step (p + q) u z := ih huy hyz
+      have huz : ReachableN step (p + q) u z := ih huy
       have hstep : ReachableN step ((p + q) + 1) x z := by
         show ∃ v, step x v ∧ ReachableN step (p + q) v z
         exact ⟨u, hxu, huz⟩
