@@ -149,3 +149,7 @@ This does not extinguish cultural, scientific, or personal provenance. Origins s
 The reference implementation should eventually expose play-envelope observables separately from ordinary task semantics. Loss of practical exit is a hard boundary candidate; loss of portability or forkability is at least a checkpoint candidate; promotion into consequential space requires fresh authority under the existing promotion law.
 
 The formal module `formal/Basilisk/Play.lean` records the minimal finite gate skeleton. It deliberately does not claim that these Boolean observables are sufficient to detect real-world capture. That remains an empirical and sociotechnical problem.
+
+## Integration status
+
+The precedent/shadow-pricing tranche originally beneath this work has now merged into `main`. This play-without-capture tranche is therefore validated directly against current `main`; its own merge requires a fresh green BIS run on the current PR head.
