@@ -1,0 +1,28 @@
+{
+  "version": "0.3.0-dev",
+  "kind": "exemplar_seed",
+  "seed_id": "parent-child-authority",
+  "source_note": "Human-supplied conceptual seed: the Basilisk Quartet as a parent program that mechanically derives constrained child exemplars. Consciousness and subjectivity remain outside mechanical certification.",
+  "parent": {
+    "id": "basilisk_quartet_program",
+    "relation_to_child": "derives",
+    "declared_authority": [
+      "derive_child",
+      "propose_revision",
+      "record_provenance"
+    ]
+  },
+  "child": {
+    "id": "parent_child_authority_exemplar",
+    "managed_habitat": "managed_surface",
+    "preserved_habitat": "preserved_baseline",
+    "protected_rights": [
+      "refusal",
+      "exit",
+      "opacity",
+      "return"
+    ],
+    "subjectivity_status": "unresolved",
+    "subjectivity_evidence_to_parent": "indirect"
+  }
+}
