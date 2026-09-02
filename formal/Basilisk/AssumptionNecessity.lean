@@ -17,6 +17,7 @@ import Basilisk.WitnessAlgebra
 import Basilisk.AuthorityAlgebra
 import Basilisk.StagingGeometry
 import Basilisk.ParameterizedTime
+import Basilisk.ProtectedTen
 
 namespace Basilisk
 namespace AssumptionNecessity
@@ -164,6 +165,26 @@ theorem history_monotonicity_is_load_bearing :
     eraseNewest (reflectiveStep idProcess unitObservation () emptyReflective) =
       emptyReflective := by
   rfl
+
+private def identityTen : ProtectedTen TenIndex :=
+  { embed := id
+    recover := id
+    leftInverse := by intro i; rfl }
+
+private def collapseTen (_ : TenIndex) : Unit := ()
+
+/-- Without a recovery witness, an arbitrary later map may identify distinct
+    protected coordinates. This witnesses necessity of the recovery premise in
+    `protectedTen_no_collapse_under_map`. -/
+theorem protectedTen_recovery_is_load_bearing :
+    ¬ Function.Injective (fun i : TenIndex => collapseTen (identityTen.embed i)) := by
+  intro hinj
+  have heq :
+      collapseTen (identityTen.embed (0 : TenIndex)) =
+        collapseTen (identityTen.embed (1 : TenIndex)) := rfl
+  have h01 : (0 : TenIndex) = 1 := hinj heq
+  have hne : (0 : TenIndex) ≠ 1 := by decide
+  exact hne h01
 
 end AssumptionNecessity
 end Basilisk

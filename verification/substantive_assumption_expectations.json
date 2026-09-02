@@ -16,7 +16,8 @@
     {"module":"formal/Basilisk/StagingGeometry.lean","symbol":"positive_scale_preserves_zeroKernel","binder":"hc","evidence_symbol":"zero_scale_does_not_preserve_zeroKernel"},
     {"module":"formal/Basilisk/StagingGeometry.lean","symbol":"added_component_refines_zeroKernel","binder":"hzero","evidence_symbol":"zeroKernel_without_zero_premise_can_fail"},
     {"module":"formal/Basilisk/ParameterizedTime.lean","symbol":"reflectiveStep_no_historyMonotone_undo","binder":"hmono","evidence_symbol":"history_monotonicity_is_load_bearing"},
-    {"module":"formal/Basilisk/ParameterizedTime.lean","symbol":"reversible_world_does_not_remove_reflective_arrow","binder":"hmono","evidence_symbol":"history_monotonicity_is_load_bearing"}
+    {"module":"formal/Basilisk/ParameterizedTime.lean","symbol":"reversible_world_does_not_remove_reflective_arrow","binder":"hmono","evidence_symbol":"history_monotonicity_is_load_bearing"},
+    {"module":"formal/Basilisk/ProtectedTen.lean","symbol":"protectedTen_no_collapse_under_map","binder":"hrecover","evidence_symbol":"protectedTen_recovery_is_load_bearing"}
   ],
   "non_claim": "This is finite redundancy for the present inventory, not an automated proof that no future premise can be substantive."
 }

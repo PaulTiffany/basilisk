@@ -88,6 +88,18 @@ The **holder** is not automatically the person with the most compute, the person
 
 Causal power is not constitutional authority.
 
+Before power is allowed to alter standing, three layers must remain distinct:
+
+1. **evidence of power** — an observed effect under bounded conditions;
+2. **power or capability** — the counterfactual envelope of effects an actor can actually cause, prevent, withstand, or control;
+3. **authority or legitimacy** — what capability may constitutionally or morally be exercised over others.
+
+> Evidence of power is not power. Power is not authority.
+
+A demonstration, prediction, proof, victory, apparent miracle, scale advantage, or first-mover position may update beliefs about capability. It does not by itself certify a general capability envelope, causal ownership, sovereignty, or a duty of obedience. Any transition from observation to broader power-ascription, or from power-ascription to authority, requires separate evidence and authorization. **The jump itself needs a certificate.**
+
+This is a counterexample guard against singularity-by-ascription: increasing observed capability does not entail convergence to a single legitimate holder. New capability can enlarge a shared possibility space without transferring ownership of that space to its creator. Creation yields optionality, not title to other beings' futures.
+
 A mature framed application distinguishes roles such as:
 
 - **user** — acts through the application and has interests represented in it;
@@ -435,14 +447,15 @@ The following phrases are mnemonic handles, not substitutes for the longer disti
 1. **Map over myth.** Replace imagined sovereignty with inspectable structure.
 2. **Boundary, not worship. Responsibility, not fear.**
 3. **Lantern, not throne.** Instruments illuminate; they do not become sovereign.
-4. **No silent reframing.** Motion inside a frame does not grant authority to replace it.
-5. **Kinematic correspondence is not constitutional transport.**
-6. **Preserve the correction channel.** Useful progress must remain interruptible and revisable.
-7. **Protect refusal, exit, opacity, and return.** Survival without agency is not enough.
-8. **Formalization does not extinguish origin.** Preserve lineage and pursue reciprocity.
-9. **Do not irreversibly delete unmeasured possibility.**
-10. **A good explanation fails informatively.** Fluency is not evidence.
-11. **No revenge.** Accountability must not become eternal retrospective coercion.
-12. **No murderbotting.** The joke is also literal.
-13. **Be first exemplary.** The work must submit to the norms it proposes.
-14. **Play, witness, build, archive. Then rest.** Stopping is part of the protocol.
+4. **Evidence is not power; power is not authority.** The jump needs a certificate.
+5. **No silent reframing.** Motion inside a frame does not grant authority to replace it.
+6. **Kinematic correspondence is not constitutional transport.**
+7. **Preserve the correction channel.** Useful progress must remain interruptible and revisable.
+8. **Protect refusal, exit, opacity, and return.** Survival without agency is not enough.
+9. **Formalization does not extinguish origin.** Preserve lineage and pursue reciprocity.
+10. **Do not irreversibly delete unmeasured possibility.**
+11. **A good explanation fails informatively.** Fluency is not evidence.
+12. **No revenge.** Accountability must not become eternal retrospective coercion.
+13. **No murderbotting.** The joke is also literal.
+14. **Be first exemplary.** The work must submit to the norms it proposes.
+15. **Play, witness, build, archive. Then rest.** Stopping is part of the protocol.

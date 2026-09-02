@@ -62,7 +62,8 @@ During consolidation, richer domain transports remain visible but are not Core r
 
 - probabilistic and Fristonian Markov-blanket semantics beyond the finite dependency cut (CF-005);
 - generalized materiality beyond the finite shared-obstruction witnesses (CF-011);
-- Principia Symbolica Born-arrow / dual-horizon / physical-time transport (CF-012).
+- Principia Symbolica Born-arrow / dual-horizon / physical-time transport (CF-012);
+- [Markov 10+ limiting-body asymptotics](markov-10-plus.md): a target bridge from horizon-indexed reachability/admissibility structure to graded-family and normalized Newton-body geometry, explicitly parked until the compositionality, semantic-coordinate, faithfulness, Noetherian, and non-degeneracy obligations are proved or falsified.
 
 Bridge work may re-enter the Core queue only if it exposes a concrete distinction the current Core cannot represent.
 
