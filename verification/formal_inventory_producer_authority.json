@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "normalization": "collapse-whitespace; theorem/lemma declaration through but excluding :=",
+  "formal_claims": [
+    {"id":"FPA-001","module":"formal/Basilisk/ProducerAuthority.lean","symbol":"producer_self_check_is_not_acceptance_authority","signature":"theorem producer_self_check_is_not_acceptance_authority (produced witness : Bool) (decision : DecisionSeam) : ({ produced","statement_sha256":"4b7e40edc87b3cdcb2274b450865e26296358ed5dea3e328efcf2329f84f4243","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FPA-002","module":"formal/Basilisk/ProducerAuthority.lean","symbol":"self_certified_production_does_not_self_accept","signature":"theorem self_certified_production_does_not_self_accept : ({ produced","statement_sha256":"c584637350aaa5c878f9fc73c552d65215bd0ef60989bfc63fb7ebb641feccb8","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FPA-003","module":"formal/Basilisk/ProducerAuthority.lean","symbol":"independent_witness_without_ratification_stays_checkpointed","signature":"theorem independent_witness_without_ratification_stays_checkpointed : ({ produced","statement_sha256":"a13965537daffd8d81b143e9d2e76752424d4ffbb168b073084947a913e71dbd","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FPA-004","module":"formal/Basilisk/ProducerAuthority.lean","symbol":"veto_stops_witnessed_candidate","signature":"theorem veto_stops_witnessed_candidate : ({ produced","statement_sha256":"5486baedaafe38715b0849585c25caefb90df8aaf2e8647c469458ff697bd139","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FPA-005","module":"formal/Basilisk/ProducerAuthority.lean","symbol":"modification_requires_successor_checkpoint","signature":"theorem modification_requires_successor_checkpoint : ({ produced","statement_sha256":"8ce824ce92629081f572e6a6c1f0bc7781e64cd8457a0fcb1236a7f092bf834a","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]},
+    {"id":"FPA-006","module":"formal/Basilisk/ProducerAuthority.lean","symbol":"witness_and_ratification_release_candidate","signature":"theorem witness_and_ratification_release_candidate : ({ produced","statement_sha256":"0cb89b493a6ee5f525e544caf83687d998e28a1663c5fa3fa067fe4db4ecb8eb","semantic_claim_id":"C-MECH-007","semantic_depends_on":[]}
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0-dev",
+  "kind": "exemplar_seed",
+  "seed_id": "producer-witness-authority",
+  "source_note": "Human-supplied constitutional seed: production and self-checking are evidence channels, not acceptance authority. Witnessing and authority remain separate, inspectable channels.",
+  "producer": {
+    "proposal_channel": "model",
+    "candidate_id": "candidate-1"
+  },
+  "authority": {
+    "channel": "human",
+    "successor_id": "candidate-2"
+  },
+  "cases": [
+    {"id":"self-certified-no-witness","produced":true,"producer_self_check":true,"independent_witness":false,"disposition":"ratify","expected_gate":"checkpoint"},
+    {"id":"self-check-off-defer","produced":true,"producer_self_check":false,"independent_witness":true,"disposition":"defer","expected_gate":"checkpoint"},
+    {"id":"self-check-on-defer","produced":true,"producer_self_check":true,"independent_witness":true,"disposition":"defer","expected_gate":"checkpoint"},
+    {"id":"witnessed-veto","produced":true,"producer_self_check":true,"independent_witness":true,"disposition":"veto","expected_gate":"stop"},
+    {"id":"witnessed-modify","produced":true,"producer_self_check":true,"independent_witness":true,"disposition":"modify","expected_gate":"checkpoint","successor_id":"candidate-2"},
+    {"id":"witnessed-ratify","produced":true,"producer_self_check":false,"independent_witness":true,"disposition":"ratify","expected_gate":"proceed_and_report"}
+  ]
+}
