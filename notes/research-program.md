@@ -157,7 +157,41 @@ The architecture is neither flat centralization nor unbounded distribution. It a
 - reversible promotion from culture to greenhouse to ecology;
 - no inference system with unbounded actuation authority.
 
-## 7. Immediate theorem queue
+## 7. Observer-relative generated closure
+
+Let \(A_n\) denote all distinctions presently held by a bounded observer at stage \(n\), not a universal set of all possible objects. Treat the surface as generated rather than completed:
+
+\[
+A_{n+1}=\Phi(A_n),
+\qquad
+A_n\subseteq A_{n+1}.
+\]
+
+The proposed growth operator separates candidate generation from admission:
+
+\[
+\text{imaginary traversal}
+\to
+\text{candidate distinction}
+\to
+\text{SRV admission}
+\to
+\text{application closure}.
+\]
+
+For ten generators, the nonempty subset lattice has at most
+
+\[
+2^{10}-1=1023
+\]
+
+subset faces before quotienting, but this is only a combinatorial envelope: faces may collapse, fail SRV, or contain no new invariant.
+
+The research target is therefore not “ten becomes 1023” but a theorem characterizing when interaction geometry produces a genuinely new held distinction.
+
+See [`../docs/imaginary-traversal-srv.md`](../docs/imaginary-traversal-srv.md) for the full research bridge and claim boundary.
+
+## 8. Immediate theorem queue
 
 1. Robust contract margin under Lipschitz realization.
 2. Union bound for blanket defect and ledger false acceptance.
@@ -165,3 +199,4 @@ The architecture is neither flat centralization nor unbounded distribution. It a
 4. Markov-shell invariance under graph relabeling.
 5. Future-deletion monotonicity under irreversible projection.
 6. Dual certificate theorem for a restricted finite contract class.
+7. Finite interaction-growth criterion: sufficient conditions under which a validated interaction face is not identified with any existing generator under the application quotient.
