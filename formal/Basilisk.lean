@@ -27,6 +27,7 @@ mathlib dependency):
   * Promotion.lean        — imagination/verification/authority promotion boundaries
   * Play.lean             — ten-clause interaction masks and non-capturing play envelope
   * ProducerAuthority.lean — production/self-check do not confer acceptance authority
+  * RecursiveHumanAuthority.lean — human-rooted recursive authority and affected-party bounds
   * Materiality.lean      — shared obstruction and recursive materialization witnesses
   * Evitability.lean      — nominal choice versus materially viable alternatives
   * Observability.lean    — external observables, opaque interior, accountability cut
@@ -63,6 +64,7 @@ import Basilisk.HorizonGeometry
 import Basilisk.Promotion
 import Basilisk.Play
 import Basilisk.ProducerAuthority
+import Basilisk.RecursiveHumanAuthority
 import Basilisk.Materiality
 import Basilisk.Evitability
 import Basilisk.Observability
@@ -154,7 +156,17 @@ namespace Basilisk
 #print axioms independent_witness_without_ratification_stays_checkpointed
 #print axioms veto_stops_witnessed_candidate
 #print axioms modification_requires_successor_checkpoint
+#print axioms model_ratification_does_not_confer_acceptance_authority
+#print axioms mechanical_ratification_does_not_confer_acceptance_authority
 #print axioms witness_and_ratification_release_candidate
+#print axioms HumanAuthorityPath.endpoint_is_human
+#print axioms nonhuman_self_recognition_does_not_confer_human
+#print axioms human_recognition_confers_human
+#print axioms affected_human_dissent_blocks_admissibility
+#print axioms prior_to_current_is_recursive_human_authority
+#print axioms model_self_recognition_is_rejected
+#print axioms current_human_may_recognize_model
+#print axioms downstream_human_dissent_blocks_current_holder
 #print axioms wall_shared_obstruction
 #print axioms shared_belief_not_obstruction
 #print axioms bridge_recursive_materialization
