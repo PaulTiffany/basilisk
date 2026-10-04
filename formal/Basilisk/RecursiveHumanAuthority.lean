@@ -51,11 +51,11 @@ inductive HumanAuthorityPath
     (s : HumanAuthorityState Actor) (root : Actor) : Actor → Prop where
   | root (rootHuman : s.isHuman root = true) :
       HumanAuthorityPath s root root
-  | delegate {from to : Actor}
-      (prefix : HumanAuthorityPath s root from)
-      (delegated : s.delegates from to = true)
-      (toHuman : s.isHuman to = true) :
-      HumanAuthorityPath s root to
+  | delegate {source target : Actor}
+      (prefix : HumanAuthorityPath s root source)
+      (delegated : s.delegates source target = true)
+      (toHuman : s.isHuman target = true) :
+      HumanAuthorityPath s root target
 
 theorem HumanAuthorityPath.endpoint_is_human
     {Actor : Type}
@@ -136,8 +136,8 @@ private def recursiveAuthorityFixture :
       | .currentHuman => true
       | .model => false
       | .downstreamHuman => true
-    delegates := fun from to =>
-      match from, to with
+    delegates := fun source target =>
+      match source, target with
       | .priorHuman, .currentHuman => true
       | _, _ => false
     affected := fun actor =>
