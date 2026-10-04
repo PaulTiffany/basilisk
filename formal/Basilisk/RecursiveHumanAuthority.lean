@@ -52,7 +52,7 @@ inductive HumanAuthorityPath
   | root (rootHuman : s.isHuman root = true) :
       HumanAuthorityPath s root root
   | delegate {source target : Actor}
-      (prefix : HumanAuthorityPath s root source)
+      (priorPath : HumanAuthorityPath s root source)
       (delegated : s.delegates source target = true)
       (toHuman : s.isHuman target = true) :
       HumanAuthorityPath s root target
@@ -66,7 +66,7 @@ theorem HumanAuthorityPath.endpoint_is_human
   cases path with
   | root rootHuman =>
       exact rootHuman
-  | delegate prefix delegated toHuman =>
+  | delegate priorPath delegated toHuman =>
       exact toHuman
 
 /-- A nonhuman participant cannot make itself human merely by issuing its own
