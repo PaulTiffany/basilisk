@@ -16,6 +16,8 @@ Basilisk/
   Reachability.lean            -- hypothesis-relative reachable-future monotonicity
   Counterexamples.lean         -- Script/Ledger non-identifiability witness
   ConstitutionalLipschitz.lean -- Lipschitz ≠ constitutional preservation
+  ProducerAuthority.lean       -- producer/witness/human-acceptance separation
+  RecursiveHumanAuthority.lean -- recursive human delegation, recognition, affected-party bounds
 ```
 
 ## What is proved now
@@ -30,13 +32,15 @@ Basilisk/
 8. **Hypothesis-relative reachable-future monotonicity** — done (`Reachability.lean`); strict loss remains open.
 9. **Lipschitz boundedness does not imply constitutional preservation** — done (`ConstitutionalLipschitz.lean`) by a minimal two-point, 0-Lipschitz counterexample.
 10. **Constitutional predicate preservation composes** — done (`ConstitutionalLipschitz.lean`).
+11. **Human acceptance authority does not arise from model or mechanical ratification** — done (`ProducerAuthority.lean`) for the finite decision-channel projection.
+12. **Recursive human authority remains human-rooted and affected-party bounded** — done (`RecursiveHumanAuthority.lean`) for a finite constitutional model: recursive delegation has human endpoints, nonhuman self-recognition cannot create human standing, human recognition can extend that standing, and an affected human's dissent blocks the deliberately conservative all-affected-humans-assent predicate.
 
 ## Important non-claims
 
 - The current `Blanket.lean` does **not** prove a Bayesian-network Markov blanket theorem.
 - The current graph core has no probability distribution and therefore cannot state conditional independence honestly.
 - The operational action “metric” has not yet been formalized; until a separation hypothesis is supplied, the natural weighted construction should be called a **pseudometric**.
-- The authority lattice is not implemented; Python and Lean still compress much of authority into booleans.
+- The finite permission/freshness authority algebra is implemented, but richer institutional legitimacy, collective choice, and affected-party aggregation remain outside the current core. `DecisionChannel.HUMAN` is a finite gate projection rather than a universal theory of human governance.
 - The boundary-aware Lipschitz inequality is a target specification, not a proved property of an LLM or the reference controller.
 - “Constitutional completion of integrability” is currently a programmatic construction: boundedness plus explicitly chosen preservation predicates. It is not yet a single general theorem.
 
