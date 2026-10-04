@@ -14,13 +14,16 @@ def load_seed(path: Path = DEFAULT_SEED) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def derive_gate(case: dict[str, Any]) -> str:
+def derive_gate(case: dict[str, Any], *, default_authority_channel: str) -> str:
     if not case["produced"]:
         return "stop"
     disposition = case["disposition"]
     if disposition == "veto":
         return "stop"
     if disposition in {"modify", "defer"}:
+        return "checkpoint"
+    authority_channel = case.get("authority_channel", default_authority_channel)
+    if authority_channel != "human":
         return "checkpoint"
     if not case["independent_witness"]:
         return "checkpoint"
@@ -31,7 +34,12 @@ def derive(seed: dict[str, Any]) -> dict[str, Any]:
     cases = []
     for case in seed["cases"]:
         derived = dict(case)
-        derived["derived_gate"] = derive_gate(case)
+        derived["authority_channel"] = case.get(
+            "authority_channel", seed["authority"]["channel"]
+        )
+        derived["derived_gate"] = derive_gate(
+            case, default_authority_channel=seed["authority"]["channel"]
+        )
         derived["matches_expected"] = derived["derived_gate"] == case["expected_gate"]
         cases.append(derived)
 
@@ -58,6 +66,12 @@ def derive(seed: dict[str, Any]) -> dict[str, Any]:
             "all_cases_match_expected": all(case["matches_expected"] for case in cases),
             "producer_self_check_is_not_acceptance_authority": len(set(self_check_pair.values())) == 1,
             "witness_and_authority_are_distinct_inputs": True,
+            "nonhuman_ratification_is_not_acceptance_authority": all(
+                case["derived_gate"] == "checkpoint"
+                for case in cases
+                if case["authority_channel"] != "human"
+                and case["disposition"] == "ratify"
+            ),
         },
         "minimal_pair": {
             "invariant": "Changing only producer self-check does not change acceptance authority.",
@@ -69,7 +83,8 @@ def derive(seed: dict[str, Any]) -> dict[str, Any]:
                 "The committed exemplar is deterministically derived from the committed seed and fixed finite acceptance law.",
                 "Producer self-check alone cannot change the modeled acceptance gate.",
                 "A witnessed veto remains stop and a witnessed modification remains checkpointed.",
-                "Witness plus ratification releases the modeled candidate to proceed_and_report.",
+                "Witness plus human ratification releases the modeled candidate to proceed_and_report.",
+                "Model or mechanical ratification does not confer acceptance authority.",
             ],
             "does_not_certify": [
                 "That a real witness channel is operationally independent.",

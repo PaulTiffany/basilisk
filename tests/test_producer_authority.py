@@ -83,6 +83,24 @@ class ProducerAuthorityTests(unittest.TestCase):
         )
         self.assertEqual(assess_candidate(candidate), ActionGate.CHECKPOINT)
 
+    def test_model_ratification_does_not_confer_acceptance_authority(self) -> None:
+        candidate = self.candidate(
+            self_check=False,
+            witness=True,
+            disposition=DecisionDisposition.RATIFY,
+            authority=DecisionChannel.MODEL,
+        )
+        self.assertEqual(assess_candidate(candidate), ActionGate.CHECKPOINT)
+
+    def test_mechanical_ratification_does_not_confer_acceptance_authority(self) -> None:
+        candidate = self.candidate(
+            self_check=False,
+            witness=True,
+            disposition=DecisionDisposition.RATIFY,
+            authority=DecisionChannel.MECHANICAL,
+        )
+        self.assertEqual(assess_candidate(candidate), ActionGate.CHECKPOINT)
+
     def test_witness_plus_ratification_releases_candidate(self) -> None:
         candidate = self.candidate(
             self_check=False,

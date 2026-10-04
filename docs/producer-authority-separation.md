@@ -10,19 +10,23 @@ The exemplar keeps three channels distinct:
 
 1. **Producer** — proposes or constructs a candidate and may report a self-check.
 2. **Witness** — independently checks a declared property of that candidate.
-3. **Authority** — ratifies, modifies, vetoes, or defers the candidate for the relevant scope.
+3. **Authority** — a human authority channel ratifies, modifies, vetoes, or defers the candidate for the relevant scope.
 
 The resulting gate is intentionally conservative:
 
-| Produced | Producer self-check | Independent witness | Authority disposition | Gate |
-|---:|---:|---:|---|---|
-| yes | yes | no | ratify | checkpoint |
-| yes | yes | yes | defer | checkpoint |
-| yes | yes | yes | veto | stop |
-| yes | yes | yes | modify | checkpoint on successor |
-| yes | no/yes | yes | ratify | proceed and report |
+| Produced | Producer self-check | Independent witness | Authority channel | Authority disposition | Gate |
+|---:|---:|---:|---|---|---|
+| yes | yes | no | human | ratify | checkpoint |
+| yes | yes | yes | human | defer | checkpoint |
+| yes | yes | yes | human | veto | stop |
+| yes | yes | yes | human | modify | checkpoint on successor |
+| yes | no/yes | yes | model | ratify | checkpoint |
+| yes | no/yes | yes | mechanical | ratify | checkpoint |
+| yes | no/yes | yes | human | ratify | proceed and report |
 
-The producer self-check remains inspectable evidence, but changing only that bit cannot change the acceptance gate. This is the mechanical content of the separation claim; it is not a claim that producer-side verification is useless.
+The producer self-check remains inspectable evidence, but changing only that bit cannot change the acceptance gate. Model or mechanical ratification likewise cannot self-promote into acceptance authority. This is the mechanical content of the separation claim; it is not a claim that producer-side verification is useless.
+
+`DecisionChannel.HUMAN` is a finite gate projection, not a theorem that one present human is a terminal sovereign. [`formal/Basilisk/RecursiveHumanAuthority.lean`](../formal/Basilisk/RecursiveHumanAuthority.lean) models the deeper relation: authority may recurse through human delegation; a nonhuman cannot confer human standing on itself; a human may recognize another participant into constitutional human standing; and affected humans can bound the current holder. Causal creation or training is deliberately not an authority edge.
 
 ## Decision seams, not veto scores
 
@@ -41,7 +45,7 @@ The boundary has four mutually checking surfaces:
 - `src/map_lb/producer_authority.py` plus `tests/test_producer_authority.py` — executable finite gate and boundary cases;
 - `formal/Basilisk/ProducerAuthority.lean` — Lean mirror and theorem surface.
 
-The Python tests require self-certification alone to remain checkpointed; changing only producer self-check to leave the gate unchanged; witness without ratification to remain checkpointed; veto to stop a witnessed candidate; modification to create a successor checkpoint; and witness plus ratification to release the candidate.
+The Python tests require self-certification alone to remain checkpointed; changing only producer self-check to leave the gate unchanged; witness without ratification to remain checkpointed; veto to stop a witnessed candidate; modification to create a successor checkpoint; model and mechanical ratification to remain checkpointed; and witness plus human ratification to release the candidate.
 
 The Lean theorem `producer_self_check_is_not_acceptance_authority` states the key non-authority property directly: with production state, independent witness, and the decision seam held fixed, toggling only the producer's self-check leaves the acceptance gate unchanged.
 

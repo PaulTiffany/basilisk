@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased — 2026-10-04
+
+- made producer acceptance authority explicitly human-rooted: model and mechanical ratification remain checkpointed even with an independent witness;
+- added a Lean finite model of recursive human authority, human recognition, non-self-promotion, and affected-human bounds on current holding;
+- extended the mechanically derived producer/witness/authority exemplar with nonhuman-ratification regressions.
+
+
 ## 0.2.0-dev — 2026-08-02
 
 - added MAP-LB protocol and boundary-aware Lipschitz model;

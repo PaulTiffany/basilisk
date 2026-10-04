@@ -62,6 +62,9 @@ def assess_candidate(candidate: ProductionCandidate) -> ActionGate:
     }:
         return ActionGate.CHECKPOINT
 
+    if candidate.decision.authority_channel is not DecisionChannel.HUMAN:
+        return ActionGate.CHECKPOINT
+
     if not candidate.independent_witness:
         return ActionGate.CHECKPOINT
 
