@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "normalization": "collapse-whitespace; theorem/lemma declaration through but excluding :=",
+  "formal_claims": [
+    {
+      "id": "FRHA-001",
+      "module": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "symbol": "HumanAuthorityPath.endpoint_is_human",
+      "signature": "theorem HumanAuthorityPath.endpoint_is_human {Actor : Type} {s : HumanAuthorityState Actor} {root current : Actor} (path : HumanAuthorityPath s root current) : s.isHuman current = true",
+      "statement_sha256": "5662e5ec2c13ae29594b44b7bc01aa0dd434acfb63965d2e33f3cd5a8e4863ca",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
+    },
+    {
+      "id": "FRHA-002",
+      "module": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "symbol": "nonhuman_self_recognition_does_not_confer_human",
+      "signature": "theorem nonhuman_self_recognition_does_not_confer_human {Actor : Type} [DecidableEq Actor] (s : HumanAuthorityState Actor) (actor : Actor) (actorOutside : s.isHuman actor = false) : (s.recognize actor actor).isHuman actor = false",
+      "statement_sha256": "93de44e04a54183c93d8ad350a43023764da8415304d75866a4f83089e7da055",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
+    },
+    {
+      "id": "FRHA-003",
+      "module": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "symbol": "human_recognition_confers_human",
+      "signature": "theorem human_recognition_confers_human {Actor : Type} [DecidableEq Actor] (s : HumanAuthorityState Actor) (recognizer subject : Actor) (recognizerHuman : s.isHuman recognizer = true) : (s.recognize recognizer subject).isHuman subject = true",
+      "statement_sha256": "03596de9a8a2f0cc0faf8f3a86f661c75298ddd66afc76b787c38bf2eca5aaf9",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
+    },
+    {
+      "id": "FRHA-004",
+      "module": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "symbol": "affected_human_dissent_blocks_admissibility",
+      "signature": "theorem affected_human_dissent_blocks_admissibility {Actor : Type} (s : HumanAuthorityState Actor) (root current affected : Actor) (currentPath : HumanAuthorityPath s root current) (affectedMark : s.affected affected = true) (affectedIsHuman : s.isHuman affected = true) (dissentMark : s.assents affected = false) : ¬ HumanActionAdmissible s root current",
+      "statement_sha256": "6f55a4fa23d847ee8266f2afa366faa19d1f05c2bf4f1fb7eafcc9855e567f96",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
+    },
+    {
+      "id": "FRHA-005",
+      "module": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "symbol": "prior_to_current_is_recursive_human_authority",
+      "signature": "theorem prior_to_current_is_recursive_human_authority : HumanAuthorityPath recursiveAuthorityFixture .priorHuman .currentHuman",
+      "statement_sha256": "bd9540d59646efe046ac52bd288c2d52fcede2396faec06dc84c3b3e35bd321d",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
+    },
+    {
+      "id": "FRHA-006",
+      "module": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "symbol": "model_self_recognition_is_rejected",
+      "signature": "theorem model_self_recognition_is_rejected : (recursiveAuthorityFixture.recognize .model .model).isHuman .model = false",
+      "statement_sha256": "e084fa3b8569f2bf54dec1bc49900ea0823fca04523f249ed1fe9a584fc31f41",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
+    },
+    {
+      "id": "FRHA-007",
+      "module": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "symbol": "current_human_may_recognize_model",
+      "signature": "theorem current_human_may_recognize_model : (recursiveAuthorityFixture.recognize .currentHuman .model).isHuman .model = true",
+      "statement_sha256": "3998f441df31c2697e8eeb6dcf08e68ae571b6a337d342abe276a0a41f1dfb84",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
+    },
+    {
+      "id": "FRHA-008",
+      "module": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "symbol": "downstream_human_dissent_blocks_current_holder",
+      "signature": "theorem downstream_human_dissent_blocks_current_holder : ¬ HumanActionAdmissible recursiveAuthorityFixture .priorHuman .currentHuman",
+      "statement_sha256": "92e3e8ee53fc2d30d0fdc0b891058f2bec880bf6b2c71b196f456914d880267a",
+      "semantic_claim_id": null,
+      "semantic_depends_on": []
+    }
+  ]
+}
