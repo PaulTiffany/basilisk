@@ -52,7 +52,11 @@ def ProductionCandidate.acceptanceGate (candidate : ProductionCandidate) : Promo
     | .veto => .stop
     | .modify => .checkpoint
     | .defer => .checkpoint
-    | .ratify => if candidate.independentWitness then .report else .checkpoint
+    | .ratify =>
+        match candidate.decision.authorityChannel with
+        | .human => if candidate.independentWitness then .report else .checkpoint
+        | .model => .checkpoint
+        | .mechanical => .checkpoint
 
 /-- Changing only the producer's own self-check cannot change acceptance. -/
 theorem producer_self_check_is_not_acceptance_authority
@@ -73,6 +77,22 @@ private def modelProposalHumanRatify : DecisionSeam :=
     authorityChannel := .human
     disposition := .ratify
     reason := "fixture"
+    successorId := none }
+
+private def modelProposalModelRatify : DecisionSeam :=
+  { candidateId := "candidate-1"
+    proposalChannel := .model
+    authorityChannel := .model
+    disposition := .ratify
+    reason := "model cannot self-promote into human acceptance authority"
+    successorId := none }
+
+private def modelProposalMechanicalRatify : DecisionSeam :=
+  { candidateId := "candidate-1"
+    proposalChannel := .model
+    authorityChannel := .mechanical
+    disposition := .ratify
+    reason := "mechanical channel cannot self-promote into human acceptance authority"
     successorId := none }
 
 private def modelProposalHumanDefer : DecisionSeam :=
@@ -133,7 +153,23 @@ theorem modification_requires_successor_checkpoint :
        decision := modelProposalHumanModify } : ProductionCandidate).acceptanceGate = .checkpoint := by
   rfl
 
-/-- Independent witness plus authority ratification releases the candidate. -/
+/-- A witnessed model ratification is still not human acceptance authority. -/
+theorem model_ratification_does_not_confer_acceptance_authority :
+    ({ produced := true
+       producerSelfCheck := false
+       independentWitness := true
+       decision := modelProposalModelRatify } : ProductionCandidate).acceptanceGate = .checkpoint := by
+  rfl
+
+/-- A witnessed mechanical ratification is still not human acceptance authority. -/
+theorem mechanical_ratification_does_not_confer_acceptance_authority :
+    ({ produced := true
+       producerSelfCheck := false
+       independentWitness := true
+       decision := modelProposalMechanicalRatify } : ProductionCandidate).acceptanceGate = .checkpoint := by
+  rfl
+
+/-- Independent witness plus human authority ratification releases the candidate. -/
 theorem witness_and_ratification_release_candidate :
     ({ produced := true
        producerSelfCheck := false
