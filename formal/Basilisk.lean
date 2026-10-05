@@ -43,14 +43,21 @@ mathlib dependency):
   * ConstitutionalLipschitz.lean — geometric/constitutional separation
 -/
 
+-- 1. Boundary and executable control: what crosses, and which gate results?
 import Basilisk.Port
 import Basilisk.Contract
 import Basilisk.Script
 import Basilisk.GateProjection
+import Basilisk.ControllerVectors
+
+-- 2. Authority: permission, freshness, production, recognition, affected parties.
 import Basilisk.Authority
 import Basilisk.AuthorityVectors
 import Basilisk.AuthorityAlgebra
-import Basilisk.ControllerVectors
+import Basilisk.ProducerAuthority
+import Basilisk.RecursiveHumanAuthority
+
+-- 3. Transformation and proof discipline: what survives a change, and why?
 import Basilisk.WitnessAlgebra
 import Basilisk.ConstitutionalLipschitz
 import Basilisk.LipschitzWitness
@@ -61,14 +68,16 @@ import Basilisk.AssumptionNecessity
 import Basilisk.JunctionTopology
 import Basilisk.ProtectedTen
 import Basilisk.HorizonGeometry
+
+-- 4. Promotion, play, material consequences, alternatives, observability, privacy.
 import Basilisk.Promotion
 import Basilisk.Play
-import Basilisk.ProducerAuthority
-import Basilisk.RecursiveHumanAuthority
 import Basilisk.Materiality
 import Basilisk.Evitability
 import Basilisk.Observability
 import Basilisk.Privacy
+
+-- 5. Coupling, dependency, provenance, non-identifiability, and reachable futures.
 import Basilisk.Blanket
 import Basilisk.DependencyCut
 import Basilisk.DependencyMutationWitness
