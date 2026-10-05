@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "bindings": [
+    {
+      "claim_id": "C-MECH-015",
+      "kind": "lean",
+      "path": "formal/Basilisk/RecursiveHumanAuthority.lean",
+      "fragment": "theorem nonhuman_self_recognition_does_not_confer_human",
+      "sha256": "f1c78a75b705709f6025489add6a67fbf822da86d16fba848a036e7a7e09ad7f"
+    },
+    {
+      "claim_id": "C-MECH-015",
+      "kind": "mechanism",
+      "path": "evals/producer_authority_seed.json",
+      "fragment": "Human-supplied constitutional seed: production and self-checking are evidence channels, not acceptance authority. Witnessing and authority remain separate, inspectable channels. Acceptance authority is human-rooted; model or mechanical ratification cannot self-promote into human authorization.",
+      "sha256": "982f1b2ae73c8fd67d324e121ac0346f1e33e0e57e83207a7ffdeb190f86174e"
+    },
+    {
+      "claim_id": "C-MECH-015",
+      "kind": "prose",
+      "path": "formal/INTERPRETABILITY.md",
+      "fragment": "Human meaning comes first.",
+      "sha256": "f872e2987b914ed9cb346d264cd99cbecf87df598e9d42abf4987767f6620306"
+    }
+  ]
+}
