@@ -1,5 +1,7 @@
 # Formalization plan
 
+> **High cognitive load? Start with [`INTERPRETABILITY.md`](INTERPRETABILITY.md).** It explains the Lean surface in plain English: what is upstream, what each module means, what each theorem can establish, and what it explicitly cannot.
+
 **Status:** the finite combinatorial core below builds in Lean 4 without mathlib and is intended to stay conservative about what has actually been formalized. The probabilistic and real-valued metric layers should follow the finite core rather than being axiomatized prematurely.
 
 Lean modules:

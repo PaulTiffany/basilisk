@@ -4,10 +4,10 @@
 
 ## Claim surface
 
-- **Core:** 22 claims
+- **Core:** 23 claims
 - **Parameterized Transformation Theory:** 3 claims
 - **Research Bridges:** 1 claims
-- **Total:** 26 claims
+- **Total:** 27 claims
 
 ### Core claims
 
@@ -33,6 +33,7 @@
 - `C-MECH-012` — Canonical project registries have a mechanically total machine join
 - `C-MECH-013` — The finite gate quotient has an exhaustively characterized interaction-order spectrum
 - `C-MECH-014` — Mechanical witnesses preserve provenance without assuming identity or total judgment
+- `C-MECH-015` — Human authority is human-rooted, recursively delegated, and affected-party bounded
 
 ### Theory claims
 
