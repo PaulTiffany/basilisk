@@ -111,6 +111,7 @@ PYTHONPATH=src python3 -m map_lb assess examples/sample_intent.json
 - [`AI-COLLABORATORS.md`](AI-COLLABORATORS.md) — LLM-mediated authorship and attribution ledger;
 - [`MEDIA.md`](MEDIA.md) — visual gallery, accession record, and preservation policy;
 - [`docs/core-scope.md`](docs/core-scope.md) — finite Core / Theory / Research Bridge consolidation boundary;
+- [`formal/INTERPRETABILITY.md`](formal/INTERPRETABILITY.md) — plain-English map of the Lean lake: upstream human meaning, module roles, theorem scope, observer bounds, and non-claims;
 - [`docs/project-state.md`](docs/project-state.md) — generated current claim/debt/scheduling surface;
 - [`docs/protocol.md`](docs/protocol.md) — normative protocol;
 - [`docs/mathematical-model.md`](docs/mathematical-model.md) — boundary-aware Lipschitz model;
